@@ -1,0 +1,9 @@
+El Parlamento Europeo aprobó el miércoles la primera ley integral del mundo sobre inteligencia artificial. La norma, conocida como Ley de Inteligencia Artificial, clasifica los sistemas según su nivel de riesgo y prohíbe algunos usos considerados inaceptables.
+
+Entre las prácticas prohibidas figuran los sistemas de puntuación social y el reconocimiento de emociones en el lugar de trabajo. El reconocimiento facial en espacios públicos solo se permitirá en casos excepcionales, como la búsqueda de víctimas de secuestro.
+
+Las empresas que desarrollen modelos de inteligencia artificial de uso general deberán publicar resúmenes de los datos utilizados para entrenarlos. Las multas por incumplimiento podrán alcanzar el 7 % de la facturación mundial.
+
+España ha sido pionera en la supervisión de la inteligencia artificial. La Agencia Española de Supervisión de la Inteligencia Artificial, con sede en A Coruña, será la encargada de vigilar el cumplimiento de la ley en territorio español.
+
+Las asociaciones de consumidores celebran la aprobación, aunque consideran que la ley llega tarde. Algunas empresas tecnológicas, en cambio, advierten de que la regulación podría frenar la innovación en Europa frente a Estados Unidos y China.

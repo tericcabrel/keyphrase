@@ -1,0 +1,17 @@
+version: 2
+
+builds:
+  - skip: true
+
+changelog:
+  # Empty sort keeps git log order, so the newest commit is first.
+  # asc and desc reorder the lines by commit message.
+  use: github
+  # A matched GitHub account is shown as @login. Otherwise the name only.
+  # The default format appends the author email.
+  format: "{{ .SHA }}: {{ .Message }}{{ if .Logins }} ({{ .Logins | englishJoin }}){{ else }} ({{ .AuthorName }}){{ end }}"
+
+release:
+  github:
+    owner: tericcabrel
+    name: keyphrase

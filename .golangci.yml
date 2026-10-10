@@ -1,0 +1,72 @@
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  # nlreturn is left off. The code returns early without a blank line, and
+  # inserting one before every return would fight that style.
+  enable:
+    - bodyclose
+    - copyloopvar
+    - errcheck
+    - gocyclo
+    - gosec
+    - govet
+    - ineffassign
+    - intrange
+    - makezero
+    - misspell
+    - modernize
+    - nestif
+    - noctx
+    - prealloc
+    - reassign
+    - recvcheck
+    - revive
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - thelper
+    - unconvert
+    - unparam
+    - unused
+  settings:
+    govet:
+      enable-all: true
+      disable:
+        # Struct fields are grouped by meaning. Reordering them for padding
+        # would scramble that.
+        - fieldalignment
+    misspell:
+      ignore-rules:
+        - complets
+        - decisiones
+        - problemas
+        - decembre
+    gosec:
+      # These rules flag the local tools, not the library. Training uses a
+      # seeded math/rand so a rerun is byte-identical. Eval files are mode
+      # 0644 on purpose. The binary format checks its widths.
+      excludes:
+        - G115
+        - G204
+        - G301
+        - G302
+        - G304
+        - G306
+        - G404
+        - G703
+    revive:
+      rules:
+        - name: "exported"
+          disabled: true
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - gocyclo
+formatters:
+  enable:
+    - gofmt
+    - goimports

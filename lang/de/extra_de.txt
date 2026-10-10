@@ -1,0 +1,23 @@
+# Supplementary German boundary words. Original work for this project.
+sagte sagt sagten laut sowie bereits noch schon mehr sehr etwa rund ab seit
+gegen bis beim vom zum zur ins im am wurde wurden worden werden wird kann
+können soll sollen sollte sollten muss müssen will wollen habe hat hatte hatten
+ist sind war waren dabei dafür dazu daher damit jedoch aber zudem außerdem
+immer heute gestern morgen jetzt dies diese dieser dieses eines einer einem einen
+zwei drei vier fünf viele vielen beiden neben unter über nach vor ohne zwischen
+# Spelled-out cardinals: the tagger labels them nouns or names.
+sechs sieben acht neun zehn elf zwölf zwanzig dreißig vierzig fünfzig sechzig
+siebzig achtzig neunzig
+während wegen sei seien sich uns ihr ihre man z b zb bzw usw ca
+warum weshalb wieso weswegen wer wann
+erste ersten erster letzte letzten nächste nächsten
+fast knapp gut ganz etwas nichts alles jede jeder jedes jeden
+herr frau dr prof
+# Daten und Einheiten.
+montag dienstag mittwoch donnerstag freitag samstag sonntag
+januar februar märz april mai juni juli august september oktober november dezember
+prozent million millionen milliarde milliarden tausend hundert euro dollar kilometer
+# Generische Zeitnomen.
+jahr jahre jahren jahres monat monate monaten woche wochen tag tage tagen mal
+# SI and energy unit symbols.
+gw mw kw kwh mwh gwh twh mj gj kj km kg cm mm ha

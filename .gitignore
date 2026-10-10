@@ -1,0 +1,16 @@
+/server
+/bench
+/samples
+/tmp
+/postag/models/ud/
+/rarity/leipzig/
+build-errors.log
+/data-text/
+improvements.md
+.DS_Store
+/site/node_modules/
+/site/.yarn/
+/site/.dev.vars
+/site/public/assets/extract.wasm
+/site/public/js/lib/wasm_exec.js
+/site/.wrangler/

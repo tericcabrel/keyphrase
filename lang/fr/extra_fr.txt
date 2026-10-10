@@ -1,0 +1,22 @@
+# Supplementary French boundary words. Original work for this project.
+a à est dit selon aussi ainsi comme plus très déjà encore alors donc
+cette cet tout tous toute toutes autre autres sans sous entre depuis vers chez
+après avant pendant lors dont où peut peuvent doit doivent faire fait être avoir
+été sont sera seront ont était étaient notamment plusieurs chaque leurs afin puis
+un une deux trois quatre cinq cependant également lorsque quand parce si non oui
+# Spelled-out cardinals: the tagger labels them nouns or names.
+six sept huit neuf dix onze douze treize quatorze quinze seize vingt trente
+quarante cinquante soixante septante huitante nonante
+bien ici là aujourd'hui hier demain moins environ près presque
+premier première dernier dernière selon contre
+pourquoi comment quoi combien
+quelque quelques certains certaines aucun aucune rien tout
+m mme mm
+# Dates et unités.
+lundi mardi mercredi jeudi vendredi samedi dimanche
+janvier février mars avril mai juin juillet août septembre octobre novembre décembre
+million millions milliard milliards millier milliers cent cents euro euros dollars kilomètres
+# Possessifs et noms de temps génériques.
+son sa ses leur leurs notre nos votre vos an ans année années mois semaine semaines jour jours fois
+# SI and energy unit symbols.
+gw mw kw kwh mwh gwh twh mj gj kj km kg cm mm ha

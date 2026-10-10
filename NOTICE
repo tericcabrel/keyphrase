@@ -1,0 +1,10 @@
+The code in this repository is under the MIT License. See LICENSE.
+
+The embedded data files keep their own terms. See lang/THIRD_PARTY.md.
+
+- Part-of-speech models (lang/<code>/model.bin.gz) are CC BY-SA. The Italian
+  model also cites CC BY-SA 3.0 and CC BY 4.0.
+- Rarity tables (lang/<code>/rarity.bin.gz) are CC BY (Leipzig Corpora
+  Collection).
+- Snowball stopword lists are BSD-3-Clause. The licence text is
+  lang/data/SNOWBALL_COPYING.

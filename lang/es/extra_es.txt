@@ -1,0 +1,21 @@
+# Supplementary Spanish boundary words. Original work for this project.
+dijo dice afirmó explicó según además también así sin entre hasta desde sobre
+tras durante mediante ya aún muy más menos puede pueden debe deben hay ha han
+fue ser sido hacer hace cada dos tres cuatro cinco varios varias otras otros otra
+# Spelled-out cardinals: the tagger labels them nouns or names.
+seis siete ocho nueve diez once doce trece catorce quince dieciséis veinte
+treinta cuarenta cincuenta sesenta setenta ochenta noventa
+otro todo todos toda todas cuando donde porque aunque embargo mientras sí no
+ahora hoy ayer mañana casi unos unas cerca alrededor
+primer primera primero último última próximo próxima
+algo nada alguien nadie algún alguna algunos algunas
+cómo quién quiénes dónde cuándo cuánto cuánta cuántos cuántas
+sr sra dr dra
+# Fechas y unidades.
+lunes martes miércoles jueves viernes sábado domingo
+enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre
+ciento cientos millón millones mil miles euros dólares kilómetros
+# Posesivos y sustantivos temporales genéricos.
+su sus año años mes meses semana semanas día días vez veces
+# SI and energy unit symbols.
+gw mw kw kwh mwh gwh twh mj gj kj km kg cm mm ha

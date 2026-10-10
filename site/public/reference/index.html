@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>extractor.Extract · keyphrase</title>
+  <meta name="description" content="extractor.Extract returns phrases, byte offsets, and scores. Limits, language codes, empty text, and the count summary are on this page.">
+  <link rel="canonical" href="https://keyphrase.tericcabrel.com/reference/">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta property="og:title" content="extractor.Extract · keyphrase">
+  <meta property="og:description" content="extractor.Extract returns phrases, byte offsets, and scores. Limits, language codes, empty text, and the count summary are on this page.">
+  <meta property="og:url" content="https://keyphrase.tericcabrel.com/reference/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="keyphrase">
+  <meta property="og:image" content="https://keyphrase.tericcabrel.com/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="extractor.Extract · keyphrase">
+  <meta name="twitter:description" content="extractor.Extract returns phrases, byte offsets, and scores. Limits, language codes, empty text, and the count summary are on this page.">
+  <meta name="twitter:image" content="https://keyphrase.tericcabrel.com/og.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <script>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      var theme = stored || "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://keyphrase.tericcabrel.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Reference",
+          "item": "https://keyphrase.tericcabrel.com/reference/"
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="/"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect class="logo-tile" width="32" height="32" rx="6"/><text class="logo-mark" x="16" y="22.5" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">k.</text></svg>keyphrase</a>
+    <a class="repo" href="https://github.com/tericcabrel/keyphrase" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    <button type="button" class="theme-toggle" aria-label="Switch to light theme">
+      <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.1A5.2 5.2 0 0 1 6.9 2.6 5.4 5.4 0 1 0 13.2 9.1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+  <div class="shell">
+    <nav class="sidebar" aria-label="Documentation">
+      <div class="sidebar-nav">
+      <a href="/">Home</a>
+      <a href="/install/">Installation</a>
+      <a href="/try/">Try the extractor</a>
+      <a href="/reference/" aria-current="page">Reference</a>
+      <a href="/languages/">Languages</a>
+      <a href="/how-it-works/">How it works</a>
+      <a href="/licenses/">Licenses</a>
+      </div>
+    </nav>
+    <main>
+      <article>
+        <h1>Reference</h1>
+        <p><code>Extract</code> returns up to <code>limit</code> non-overlapping phrases. <code>ExtractWithCounts</code> is the same call plus a count summary.</p>
+        <pre><code class="language-go">kws, err := extractor.Extract(text, "en", 10)
+kws, counts, err := extractor.ExtractWithCounts(text, "en", 10)</code></pre>
+        <h2>Keyword</h2>
+        <p>Each result is a span of the caller's text. <code>Text</code> is <code>text[StartByte:EndByte]</code>. Offsets are zero-based, half-open UTF-8 byte indexes.</p>
+        <table>
+          <thead>
+            <tr><th>Field</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>Text</code></td><td>The phrase, sliced from the input.</td></tr>
+            <tr><td><code>StartByte</code></td><td>First byte of the span.</td></tr>
+            <tr><td><code>EndByte</code></td><td>Byte after the span.</td></tr>
+            <tr><td><code>Score</code></td><td>Ranking signal in <code>[0, 1]</code>.</td></tr>
+          </tbody>
+        </table>
+        <p><code>Score</code> is relative to this document. The best phrase scores 1. It is not a probability, and scores are not comparable across documents.</p>
+        <h2>Order</h2>
+        <p>Results are ordered by score descending, then by earlier <code>StartByte</code>, then by <code>Text</code>. Spans never overlap. The returned text is always a slice of the input.</p>
+        <h2>Limit</h2>
+        <p>The default limit is 5. <code>limit</code> must be at least 1. There is no maximum: a limit greater than the number of phrases returns all of them. A limit below 1 returns <code>ErrInvalidLimit</code>.</p>
+        <h2>Language</h2>
+        <p><code>language</code> is the code of a package the program imported: <code>en</code>, <code>fr</code>, <code>de</code>, <code>es</code>, or <code>it</code>. A code whose package was not imported returns <code>ErrUnsupportedLanguage</code>.</p>
+        <h2>Empty text</h2>
+        <p>Empty or whitespace-only text is success and returns no phrases.</p>
+        <h2>Counts</h2>
+        <p><code>ExtractWithCounts</code> adds:</p>
+        <ul>
+          <li><code>Words</code> — words in the text. Punctuation is not counted. A hyphenated compound such as "e-mail" is one word.</li>
+          <li><code>Extracted</code> — every candidate phrase.</li>
+          <li><code>Ranked</code> — how many of those were returned.</li>
+          <li><code>ExtractedMoreThanOneWord</code> and <code>RankedMoreThanOneWord</code> — the same counts for phrases of two or more words, including connectors.</li>
+          <li><code>MoreThanOneWord</code> — every extracted phrase of two or more words, best-ranked first. Its length equals <code>ExtractedMoreThanOneWord</code>.</li>
+        </ul>
+        <p>The Try page always uses this summary. A 64 KiB clip applies there, and to text loaded from a URL. The library call itself does not reject longer text.</p>
+      </article>
+      <footer class="thanks">
+        <p><a href="https://github.com/tericcabrel/keyphrase">GitHub</a></p>
+        <p>Hosted on <a href="https://www.cloudflare.com/">Cloudflare</a>. URLs are loaded with <a href="https://www.firecrawl.dev/">Firecrawl</a>.</p>
+      </footer>
+    </main>
+  </div>
+  <script src="/js/site.js"></script>
+</body>
+</html>

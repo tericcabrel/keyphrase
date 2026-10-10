@@ -1,0 +1,27 @@
+name: Feature request
+description: A phrase that should have been returned
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      description: The language code, for example fr
+      placeholder: fr
+    validations:
+      required: true
+  - type: textarea
+    id: phrase
+    attributes:
+      label: Phrase
+      description: The phrase that should have been returned, and a little of the text around it
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Why
+      description: What you were trying to do
+    validations:
+      required: false

@@ -1,0 +1,42 @@
+name: Bug report
+description: A phrase came back wrong, or a call failed
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: input
+    id: go-version
+    attributes:
+      label: Go version
+      description: Output of `go version`
+      placeholder: go1.26.0
+    validations:
+      required: true
+  - type: input
+    id: language
+    attributes:
+      label: Language package
+      description: The package you imported, for example lang/fr
+      placeholder: lang/fr
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Input
+      description: A small text that shows the problem
+    validations:
+      required: true
+  - type: textarea
+    id: returned
+    attributes:
+      label: Phrases returned
+      description: What Extract returned, including offsets if they matter
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Phrases expected
+      description: What you expected instead
+    validations:
+      required: true

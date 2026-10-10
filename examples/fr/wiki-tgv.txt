@@ -1,0 +1,99 @@
+Un train à grande vitesse ou train apte à la grande vitesse (TAGV) est, selon l'Union internationale des chemins de fer (UIC) :
+
+un train roulant à des vitesses supérieures à 250 km/h sur des lignes spécialisées ;
+
+un train roulant à environ 200 km/h sur des lignes standards adaptées ;
+
+un train pouvant rouler à des vitesses inférieures en raison de conditions particulières de relief, de contraintes topographiques ou en environnement urbain.
+
+En France, dans les projets d'infrastructure ferroviaire, on parle plutôt de TAGV (Trains aptes à la grande vitesse) dans le but de respecter les règles européennes d'ouverture à la concurrence.
+
+La grande vitesse ferroviaire est née au Japon en 1964 avec le Shinkansen, puis s'est étendue dans plusieurs pays d'Europe et d'Asie. Elle a transformé le transport de voyageurs par trains et donné un nouvel élan à ce mode de transport.
+
+Cet article évoque également, à titre secondaire, les véhicules à sustentation magnétique, qui ne peuvent être définis comme des matériels ferroviaires puisqu'ils ne sont pas guidés par des rails, ne disposent pas de roues, et n'ont pas de contact avec leur infrastructure de guidage.
+
+C'est au Japon que les premiers trains à grande vitesse apparurent. Mis au point par la compagnie japonaise Japanese National Railways (depuis le 1er avril 1987 : Japan Railways), ils entrèrent en service en 1964 avec l'inauguration de la première ligne à grande vitesse reliant Tokyo à Osaka. L'ensemble est alors baptisé Shinkansen qui littéralement signifie « nouvelle grande ligne ». En 1981, La SNCF inaugure la LGV Sud-Est (LN1) et les premières circulations commerciale de TGV.
+
+En 2017, après dix ans de développement des lignes à grande vitesse en Chine, China Railway présente sa nouvelle gamme de train à grande vitesse, baptisée Fuxing (CR), de technologie entièrement chinoise, qui vise à remplacer les trains Hexie (CRH), issus de technologies étrangères. Les nouveaux trains Fuxing circulent à la vitesse commerciale de 400 km/h, qui est la plus rapide au monde, devant la France ou le Japon (320 km/h).
+
+Le Transrapid de Shanghai, ouverte en 2004 est la première ligne Maglev à grande vitesse ouverte, avec une vitesse commerciale de 400 km/h.
+
+Néanmoins, pendant la même période, un autre concept de train à grande vitesse est étudié. Toujours au Japon, en 1962, alors que les premiers Shinkansen ne sont pas encore en service, le système de sustentation magnétique est étudié. De là est conçu le Maglev, un train qui ne roule pas sur des rails, mais « flotte » à quelques centimètres du sol à l'aide d'électro-aimants. Bien que la traînée de roulement d'une rame de TGV ne représente que ~19 % de sa résistance au mouvement à 320 km/h, il peut être intéressant de s'en affranchir et de passer à la sustentation magnétique. Ainsi, les Japonais sont-ils les détenteurs des deux records de vitesse pour un train magnétique, avec le JR-Maglev MLX01, qui a atteint les 581 km/h en 2003, vitesse battue le 21 avril 2015, lorsqu'un Maglev a atteint 603 km/h. L'ouverture d'une ligne commerciale n'est cependant pas prévue avant 2037.
+
+La SNCF détient le record de vitesse sur rail, en atteignant 574,8 km/h le 3 avril 2007, avec la rame TGV POS 4402.
+
+Celle-ci avait également été la première, en 1955, à dépasser le cap des 300 km/h, avec les BB 9004 et CC 7107
+
+En 1988, la DB fut la première à franchir le cap des 400 km/h.
+
+Les 500 km/h furent dépassés pour la première fois par la SNCF en 1990 avec 515,3 km/h, avec la rame TGV Atlantique 325.
+
+Cependant en vitesse commerciale le China Railways CR 450 chinois est le plus rapide, avec une vitesse de 400 km/h sur de nombreux tronçons de Chine.
+
+Certaines expérimentations ont utilisé des turbines à combustion : TGV 001 ou Advanced passenger train par exemple. Le JetTrain de Bombardier Transport, avec une vitesse de 240 km/h s'approche de la grande vitesse.
+
+À l'exception des rames (bientôt remplacées) circulant sur la ligne Direttissima Rome-Florence, alimentée par 3 000 V en continu, les trains à grande vitesse utilisent une alimentation en courant alternatif à tension élevée : 15 kV sur les réseaux où ce système est la norme, avec deux fréquences proches : 16,667 Hz (pays scandinaves) ou 16,7 Hz (pays germaniques) ; 25 kV 50 Hz ou 60 Hz dans une grande partie du monde, 20 kV - 50 ou 60 Hz au Japon. Seuls ces systèmes permettent les appels de puissance instantanée très élevés nécessaires aux accélérations. En fonction des parcours à effectuer sur les réseaux préexistants certaines rames sont polycourants (cas des TGV Thalys, TGV POS et ICE 3 notamment).
+
+En traction, deux types de répartition de motorisation existent : motorisation répartie (moteurs sur tous les bogies) et la motorisation concentrée (sur les bogies des locomotives uniquement).
+
+La motorisation possède la particularité de disposer la motorisation tout au long de la rame. La motorisation répartie permet de se dispenser de la présence de locomotives dédiées à la traction. Les rames sont ainsi composées de motrices et éventuellement de remorques. Cette composition permet de gagner de la place pour les voyageurs au niveau des motrices, l'ensemble des composants techniques étant répartis au long de la rame et non uniquement dans les motrices ce qui permet une optimisation de l'espace.
+
+Quelques exemples de trains à grande vitesse embarquant une motorisation répartie : Shinkansen, Vélaro, AGV.
+
+À l'inverse de la motorisation répartie, la motorisation concentrée place la motorisation aux extrémités des rames. Un train est alors généralement composé de deux motrices comportant tous les équipements techniques encadrant les remorques pour passagers. Les motrices sont alors occupées par tous les équipements techniques (transformateurs, CVS, onduleur etc.) et non par les voyageurs. Cette disposition présente différents avantages comme le mariage de nouvelles motrices avec des remorques commandées auparavant afin de s'adapter aux contraintes d'une desserte internationale et de renforcer les dessertes intérieures (Cas des rames TGV POS. Quelques exemples de trains à grande vitesse à motorisation concentrée : les premiers ICE (ICE 1 et 2), toutes les séries de TGV ainsi que leurs déclinaisons.
+
+Les ICE étaient auparavant à motorisation concentrée : ICE 1, rames longues à deux motrices d'extrémité et ICE2 rames courtes à une seule motrice et couplables par deux. En France, les TGV et leurs dérivés, Thalys, Eurostar, AVE, KTX, Acela, mis au point par Alstom en coopération avec la SNCF, utilisent des rames formées de deux motrices à deux bogies encadrant un tronçon articulé, composé de remorques dont les bogies intermédiaires sont communs à deux caisses adjacentes. Les deux bogies extrêmes du tronçon articulé peuvent être motorisés (TGV Sud-Est, TGV TMST, KTX-I).
+
+Le TGV construit par Alstom n'utilise pas la technologie du bogie Jacobs car le boggie intermédiaire du TGV ne comporte que deux appuis, sur lesquels repose une caisse.
+
+Le KTX-II de Hyundai Rotem utilise la technologie du bogie Jacobs (bogie commun entre deux caisses avec quatre appuis-caisse permettant à deux caisses adjacentes d'être supportées par un seul boggie. Cela permet de réduire l'espace entre deux voitures et apporte une rigidité suffisante, à l'ensemble de la rame, en cas de déraillement, et ainsi éviter que le train ne se couche ou se mette en accordéon et ne fasse de nombreuses victimes. Ainsi, la sécurité des voyageurs n'est pas dépendante de l'infrastructure ferroviaire contrairement à l'ICE de Siemens ou du Frecciarossa de Bombardier qui ne disposent pas de cette technologie.
+
+L'impact environnemental des trains grande vitesse est utilisé à la fois comme argument marketing par les exploitants, par exemple le programme Voyage Vert de la société Eurostar, et comme argument contre les projets de ligne grande vitesse.
+
+Le bruit est la principale nuisance pour les riverains.
+
+Il est mesuré en Laeq (France) ou LDEN (Europe).
+
+On observe moins de plaintes venant des riverains de LGV que des riverains d'autoroute, observations confortées par des études qui ont montré que le bruit ferroviaire était mieux toléré que le bruit routier (différentiel de 5 dB à sensation nuisance égale).
+
+Les bruits de roulement sont dus à des défauts de l'état de surface de la roue. Ils provoquent des vibrations transmises par l'air (bruits aériens) et par le sol (bruit solidiens).
+
+Les bruits solidiens sont très courants sur les lignes anciennes (on les ressent par exemple dans les immeubles construits au-dessus des lignes du métro de Paris). Aujourd'hui, on sait construire les voies de manière à éviter ce problème.
+
+Les défauts des roues sont dus à l'usure. Sur les TGV, elle a été diminuée en remplaçant les freins à sabot par des freins à disque.
+
+Négligeables sur les trains classiques, ils deviennent prépondérants à partir de 300 km/h.
+
+La trajectoire latérale d'une rame TGV est précise à 2 cm près, cela permet d'implanter les écrans anti-bruit au plus près de la voie, ce qui augmente leur efficacité. Ils sont construits à l'aide de matériaux absorbants (technique peu utilisée en France), ou sont constitués de murs en béton ou d'écrans vitrés. Il peut aussi s'agir de simples remblais de terre (Merlons), là où l'on dispose d'emprises suffisantes. Les merlons de terre sont économiques et peuvent être végétalisés. Le creusement d'une tranchée n'est pas forcément plus cher qu'un mur sur une voie nouvelle et cette solution est plus discrète.
+
+La majorité des bruits venant du sol (contact roue-rail, aérodynamique des bogies, etc.), il est souvent possible de faire des murets (ou des tranchées) bas qui permettent aux voyageurs de voir le paysage.
+
+La tranchée couverte, voire le tunnel, apportent une solution plus radicale au problème de bruit ; mais c'est la technique la plus chère à mettre en œuvre.
+
+Un certain nombre de technologies utilisées sur LGV permettent d'éviter les vibrations de la voie :
+
+voies en longs rails soudés (évitent le « tac-tac » des raccords des joints de dilatation) ;
+
+utilisation de plate-forme de voie en béton (Chine, Pays-Bas, Allemagne, Japon) ;
+
+les anciens ponts en treillis étaient très bruyants, les nouveaux viaducs en béton armé le sont beaucoup moins.
+
+Les progrès existent aussi sur le matériel roulant :
+
+un TGV sud-est à 270 km/h n'est pas plus bruyant qu'un train corail à 200 km/h ;
+
+un TGV atlantique à 300 km/h émet 6 dB de moins par rapport au TGV sud-est.
+
+Il peut aussi être avantageux de suivre le tracé d'une autoroute à petites distance pour mutualiser les nuisances, la loi d'addition des bruits n'étant pas linéaire. Par exemple, la somme de deux bruits de 63 dB équivaut à un bruit de 66 dB, alors que physiologiquement la sensation de gêne double quand le bruit augmente de 10 dB.
+
+L'accident ferroviaire d'Eschede, impliquant un ICE le 3 juin 1998, est la plus grande catastrophe ferroviaire à grande vitesse. Il a fait 101 morts et une centaine de blessés.
+
+Le Shinkansen a connu un déraillement partiel sur un viaduc lors d'un tremblement de terre le 23 octobre 2004 dans la région de Niigata ; il n'a pas fait de victimes. Une rame (sans voyageurs) a déraillé partiellement près de Kumamoto en 2016 lors d'un important séisme
+
+Le TGV a connu trois déraillements à grande vitesse : le 14 décembre 1992 à 270 km/h en gare de Mâcon-Loché-TGV, le 21 décembre 1993 à 249 km/h à hauteur d'Ablaincourt-Pressoir et le 5 juin 2000 près d'Arras. Ces accidents n'ont provoqué que des blessures légères.
+
+L'accident ferroviaire de 2011 à Wenzhou en Chine, survenu par télescopage de deux trains à grande vitesse, a fait 38 morts et 192 blessés le 23 juillet 2011.
+
+L'accident ferroviaire de Saint-Jacques-de-Compostelle de 2013 impliquait une rame S-730, version modifiée hybride des S-130, au départ de Madrid à destination de Ferrol en Galice et transportant 222 personnes, qui a déraillé dans une courbe avant la gare de Saint-Jacques-de-Compostelle en raison d'une vitesse excessive (faute du conducteur). Le bilan définitif fait état de 79 morts et de 143 blessés.
+
+L’accident ferroviaire d'Eckwersheim est un déraillement (de type renversement) survenu en France en dehors de la ligne à grande vitesse (LGV) Est européenne le 14 novembre 2015 à Eckwersheim, près de la gare de Vendenheim, à une dizaine de kilomètres au nord de Strasbourg, dans le Bas-Rhin. L'accident implique une rame TGV spéciale qui circulait pour réaliser des essais d'homologation du deuxième tronçon de cette nouvelle ligne mais dans une courbe serrée classique avec un rayon de seulement 945 mètres donc très loin d'un virage de ligne à grande vitesse , Ces essais étaient encadrés par Systra, société d'ingénierie ferroviaire. Le train transportait cinquante-trois personnes, des cheminots et des invités (parmi lesquels on comptait des enfants), dont onze ont été tués ou gravement blessés. Avant cet accident, d'autres déraillements de TGV ont eu lieu en France, qui n'ont tout au plus provoqué que des blessures légères. Le déraillement de cette rame est ainsi le premier à causer des morts et des blessures graves (cause principale : procédure de décélération trop tardive de la rame en regard de la configuration de la voie LGV à cet endroit).

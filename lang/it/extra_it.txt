@@ -1,0 +1,22 @@
+# Supplementary Italian boundary words. Original work for this project.
+ha hanno è sono detto dice secondo anche così inoltre già ancora molto più
+meno tra fra senza dopo prima durante verso presso può possono deve devono
+essere stato stata stati state fare fatto ogni due tre quattro cinque alcuni
+# Spelled-out cardinals: the tagger labels them nouns or names. "venti" is
+# left out because it is also the plural of "vento" (wind).
+sei sette otto nove dieci undici dodici tredici quattordici quindici sedici
+trenta quaranta cinquanta sessanta settanta ottanta novanta
+alcune altri altre altro altra tutto tutti tutte tutta quando dove perché però
+mentre oggi ieri domani ora sì no cui quale quali questo questa questi queste
+quello quella quelli quelle circa quasi cosa
+primo prima ultimo ultima prossimo prossima
+qualcosa niente nulla qualche
+sig dott prof
+# Date e unità.
+lunedì martedì mercoledì giovedì venerdì sabato domenica
+gennaio febbraio marzo aprile maggio giugno luglio agosto settembre ottobre novembre dicembre
+cento milione milioni miliardo miliardi mila euro dollari chilometri
+# Possessivi e nomi temporali generici.
+suo sua suoi sue loro anno anni mese mesi settimana settimane giorno giorni volta volte
+# SI and energy unit symbols.
+gw mw kw kwh mwh gwh twh mj gj kj km kg cm mm ha

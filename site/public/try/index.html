@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Try keyphrase in the browser · keyphrase</title>
+  <meta name="description" content="Paste article text or load a page. keyphrase extracts short phrases in your browser for English, French, German, Spanish, and Italian.">
+  <link rel="canonical" href="https://keyphrase.tericcabrel.com/try/">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta property="og:title" content="Try keyphrase in the browser · keyphrase">
+  <meta property="og:description" content="Paste article text or load a page. keyphrase extracts short phrases in your browser for English, French, German, Spanish, and Italian.">
+  <meta property="og:url" content="https://keyphrase.tericcabrel.com/try/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="keyphrase">
+  <meta property="og:image" content="https://keyphrase.tericcabrel.com/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Try keyphrase in the browser · keyphrase">
+  <meta name="twitter:description" content="Paste article text or load a page. keyphrase extracts short phrases in your browser for English, French, German, Spanish, and Italian.">
+  <meta name="twitter:image" content="https://keyphrase.tericcabrel.com/og.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <script>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      var theme = stored || "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://keyphrase.tericcabrel.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Try the extractor",
+          "item": "https://keyphrase.tericcabrel.com/try/"
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="/"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect class="logo-tile" width="32" height="32" rx="6"/><text class="logo-mark" x="16" y="22.5" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">k.</text></svg>keyphrase</a>
+    <a class="repo" href="https://github.com/tericcabrel/keyphrase" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    <button type="button" class="theme-toggle" aria-label="Switch to light theme">
+      <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.1A5.2 5.2 0 0 1 6.9 2.6 5.4 5.4 0 1 0 13.2 9.1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+  <div class="shell">
+    <nav class="sidebar" aria-label="Documentation">
+      <div class="sidebar-nav">
+      <a href="/">Home</a>
+      <a href="/install/">Installation</a>
+      <a href="/try/" aria-current="page">Try the extractor</a>
+      <a href="/reference/">Reference</a>
+      <a href="/languages/">Languages</a>
+      <a href="/how-it-works/">How it works</a>
+      <a href="/licenses/">Licenses</a>
+      </div>
+    </nav>
+    <main>
+      <article>
+        <h1>Try the extractor</h1>
+        <p>Paste article text, or load a page. Extraction runs in the browser. Text in the box is what gets extracted.</p>
+        <form id="try">
+          <div class="row">
+            <label class="field">
+              <span>Language</span>
+              <select id="language">
+                <option value="en">English</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="es">Spanish</option>
+                <option value="it">Italian</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Phrases</span>
+              <input id="limit" type="number" min="1" value="5" inputmode="numeric">
+            </label>
+          </div>
+          <div class="field">
+            <label for="url">URL</label>
+            <div class="url-line">
+              <input id="url" type="url" placeholder="https://example.com/article" autocomplete="off">
+              <button id="load" class="secondary" type="button">Load</button>
+            </div>
+            <p id="url-error" class="url-error" hidden></p>
+          </div>
+          <p id="quota-note" class="note" hidden></p>
+          <label class="field">
+            <span>Text</span>
+            <textarea id="text"></textarea>
+          </label>
+          <div class="actions">
+            <button id="extract" class="primary" type="submit">Extract</button>
+            <p id="wasm-note" class="note" hidden></p>
+          </div>
+          <p id="status" class="note" hidden></p>
+        </form>
+        <div id="results" hidden>
+          <div class="tabs" role="tablist" aria-label="Results">
+            <button type="button" role="tab" id="tab-phrases" aria-controls="panel-phrases" aria-selected="true" tabindex="0">Phrases</button>
+            <button type="button" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="false" tabindex="-1">In the text</button>
+            <button type="button" role="tab" id="tab-more" aria-controls="panel-more" aria-selected="false" tabindex="-1">More than one word</button>
+          </div>
+          <div id="panel-phrases" class="tab-panel" role="tabpanel" aria-labelledby="tab-phrases">
+            <div class="keyword-head">
+              <span>Phrase</span>
+              <span>Score</span>
+              <span>Bytes</span>
+            </div>
+            <ul id="keywords" class="keywords"></ul>
+            <p class="label">Counts</p>
+            <div id="counts" class="counts"></div>
+          </div>
+          <div id="panel-text" class="tab-panel" role="tabpanel" aria-labelledby="tab-text" hidden>
+            <div id="passage" class="passage"></div>
+          </div>
+          <div id="panel-more" class="tab-panel" role="tabpanel" aria-labelledby="tab-more" hidden>
+            <ul id="more" class="phrases"></ul>
+          </div>
+        </div>
+      </article>
+      <footer class="thanks">
+        <p><a href="https://github.com/tericcabrel/keyphrase">GitHub</a></p>
+        <p>Hosted on <a href="https://www.cloudflare.com/">Cloudflare</a>. URLs are loaded with <a href="https://www.firecrawl.dev/">Firecrawl</a>.</p>
+      </footer>
+    </main>
+  </div>
+  <script src="/js/site.js"></script>
+</body>
+</html>

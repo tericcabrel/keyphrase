@@ -1,0 +1,29 @@
+# Supplementary English boundary words. Original work for this project.
+# Reporting verbs, auxiliaries, quantifiers, and discourse adverbs that make
+# poor anchor boundaries but are not in the Snowball list.
+said says say saying told tell tells according also however although though
+would could may might must shall will can cannot one two three four five
+# Spelled-out cardinals: the tagger labels them nouns or names ("Thirty").
+six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen
+seventeen eighteen nineteen twenty thirty forty fifty sixty seventy eighty ninety
+many much several various another every each either neither less least
+like just even still yet well since while whether per among within without
+across around including include includes included
+often already now today yesterday tomorrow recently currently
+make makes made get gets got take takes took use uses used see seen saw
+went come came comes put set known called become became becomes
+there here way thing things lot lots part number kind
+mr mrs ms dr prof
+around nearly almost roughly about approximately
+first second third last next previous
+even though rather quite really
+something anything nothing everything someone anyone everyone
+# Dates and units: poor anchors on their own and as phrase boundaries.
+monday tuesday wednesday thursday friday saturday sunday
+january february march april june july august september october november december
+percent per cent million millions billion billions trillion thousand thousands hundred hundreds
+dollars euros pounds kilometres kilometers miles
+# Generic time nouns.
+year years month months week weeks day days time times
+# SI and energy unit symbols.
+gw mw kw kwh mwh gwh twh mj gj kj km kg cm mm ha

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Extract keyphrases in Go · keyphrase</title>
+  <meta name="description" content="A Go library that returns short phrases copied from the text you pass. English, French, German, Spanish, and Italian. Requires Go 1.26.">
+  <link rel="canonical" href="https://keyphrase.tericcabrel.com/">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta property="og:title" content="Extract keyphrases in Go · keyphrase">
+  <meta property="og:description" content="A Go library that returns short phrases copied from the text you pass. English, French, German, Spanish, and Italian. Requires Go 1.26.">
+  <meta property="og:url" content="https://keyphrase.tericcabrel.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="keyphrase">
+  <meta property="og:image" content="https://keyphrase.tericcabrel.com/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Extract keyphrases in Go · keyphrase">
+  <meta name="twitter:description" content="A Go library that returns short phrases copied from the text you pass. English, French, German, Spanish, and Italian. Requires Go 1.26.">
+  <meta name="twitter:image" content="https://keyphrase.tericcabrel.com/og.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <script>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      var theme = stored || "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "keyphrase",
+      "description": "A Go library that returns short phrases copied from the text you pass. English, French, German, Spanish, and Italian. Requires Go 1.26.",
+      "url": "https://keyphrase.tericcabrel.com/",
+      "codeRepository": "https://github.com/tericcabrel/keyphrase",
+      "programmingLanguage": "Go",
+      "runtimePlatform": "Go 1.26",
+      "license": "https://opensource.org/licenses/MIT"
+    }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="/"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect class="logo-tile" width="32" height="32" rx="6"/><text class="logo-mark" x="16" y="22.5" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">k.</text></svg>keyphrase</a>
+    <a class="repo" href="https://github.com/tericcabrel/keyphrase" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+    <button type="button" class="theme-toggle" aria-label="Switch to light theme">
+      <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.1A5.2 5.2 0 0 1 6.9 2.6 5.4 5.4 0 1 0 13.2 9.1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+  <div class="shell">
+    <nav class="sidebar" aria-label="Documentation">
+      <div class="sidebar-nav">
+      <a href="/" aria-current="page">Home</a>
+      <a href="/install/">Installation</a>
+      <a href="/try/">Try the extractor</a>
+      <a href="/reference/">Reference</a>
+      <a href="/languages/">Languages</a>
+      <a href="/how-it-works/">How it works</a>
+      <a href="/licenses/">Licenses</a>
+      </div>
+    </nav>
+    <main>
+      <article>
+        <h1>Extract keyphrases in Go</h1>
+        <p>keyphrase is a Go library that returns a few short phrases from plain text. Each phrase is copied from the text you pass in. You pass the language code.</p>
+        <p>A phrase is at most three words and contains no verbs. A single word is kept only when it is a name, written like a name, or a rare common noun.</p>
+        <pre><code class="language-go">import (
+    "github.com/tericcabrel/keyphrase/extractor"
+    _ "github.com/tericcabrel/keyphrase/lang/en"
+)
+
+text := `Offshore wind farms are becoming the backbone of Britain's energy
+strategy. The government wants offshore wind capacity to reach 50
+gigawatts by 2030, enough to power every home in the country.
+
+The largest project, Dogger Bank Wind Farm, sits more than 130
+kilometres off the Yorkshire coast. When complete, Dogger Bank will
+use 277 turbines, each taller than the Eiffel Tower. Engineers say
+the turbines can generate electricity even in moderate winds.
+
+Grid connections remain the biggest obstacle. National Grid has
+warned that some offshore wind farms may wait years before they can
+connect to the transmission network. Developers also face rising
+steel prices and higher interest rates, which have pushed up the
+cost of building turbines at sea.`
+
+kws, err := extractor.Extract(text, "en", 10)</code></pre>
+        <p>The call returns these phrases.</p>
+        <table>
+          <thead>
+            <tr><th>Phrase</th><th>Score</th><th>Bytes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Offshore wind</td><td>1.0000</td><td>0-13</td></tr>
+            <tr><td>Dogger Bank</td><td>0.8017</td><td>309-320</td></tr>
+            <tr><td>Britain</td><td>0.7768</td><td>49-56</td></tr>
+            <tr><td>Yorkshire</td><td>0.7406</td><td>277-286</td></tr>
+            <tr><td>turbines</td><td>0.7376</td><td>334-342</td></tr>
+            <tr><td>Eiffel Tower</td><td>0.7371</td><td>365-377</td></tr>
+            <tr><td>National Grid</td><td>0.6649</td><td>502-515</td></tr>
+            <tr><td>backbone</td><td>0.5958</td><td>37-45</td></tr>
+            <tr><td>wind capacity</td><td>0.5389</td><td>106-119</td></tr>
+            <tr><td>largest project</td><td>0.4944</td><td>199-214</td></tr>
+          </tbody>
+        </table>
+        <p>Supported languages are English, French, German, Spanish, and Italian. Requires Go 1.26.</p>
+        <p><a href="/try/">Try the extractor</a> on text you paste, or on a page you load. Then <a href="/install/">install the module</a> and read the <a href="/reference/">function reference</a>.</p>
+      </article>
+      <footer class="thanks">
+        <p><a href="https://github.com/tericcabrel/keyphrase">GitHub</a></p>
+        <p>Hosted on <a href="https://www.cloudflare.com/">Cloudflare</a>. URLs are loaded with <a href="https://www.firecrawl.dev/">Firecrawl</a>.</p>
+      </footer>
+    </main>
+  </div>
+  <script src="/js/site.js"></script>
+</body>
+</html>

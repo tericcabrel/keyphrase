@@ -1,0 +1,95 @@
+Eine Wärmepumpe ist allgemein eine Kraftwärmemaschine, die unter Aufwendung technischer Arbeit thermische Energie aus einem Reservoir mit niedrigerer Temperatur (in der Regel ist das die Umgebung) aufnimmt und – zusammen mit der Antriebsenergie – als Nutzwärme auf ein zu beheizendes System mit höherer Temperatur überträgt. Umgangssprachlich ist damit meist die Wärmepumpenheizung gemeint, die in Gebäuden für Heizzwecke eingesetzt wird.
+
+Weitere Anwendungen sind die Brauchwassererwärmung, die Erzeugung von Prozesswärme und der Einsatz in Wäschetrocknern. Den Kreisprozess der Wärmepumpe verwendet man auch zum Kühlen (so beim Kühlschrank oder der Klimaanlage). Im Gegensatz zur Wärmepumpe ist beim Kälteprozess die aus dem zu kühlenden Raum abgeführte Wärme die Nutzenergie, die zusammen mit der Antriebsenergie als Abwärme an die Umgebung abgeführt wird.
+
+Adsorption (zum Beispiel Adsorption und Desorption eines Stoffes an einer Oberfläche wie Aktivkohle oder einem Zeolith, dabei wird die Adsorptionswärme frei oder auch die Desorptionswärme aufgenommen)
+
+Nutzung von Umwandlungsenthalpie beim Phasenübergang in Form eines Eisspeichers
+
+Es gibt verschiedene physikalische Effekte, die in einer Wärmepumpe Verwendung finden können. Die wichtigsten sind:
+
+die Temperaturabsenkung bei der Expansion eines (nicht idealen) Gases (Joule-Thomson-Effekt);
+
+Wärmepumpen werden vielfach auch zur Erwärmung von Wasser für die Gebäudeheizung (Wärmepumpenheizung) und Bereitstellung von Warmwasser eingesetzt. Wärmepumpen können allein, in Kombination mit anderen Heizungsarten sowie in Fern- und Nahwärmesystemen eingesetzt werden. Zu letzteren zählt z. B. die Kalte Nahwärme. Üblich sind die folgenden Kombinationen (Abkürzungen in Klammern):
+
+Wasser/Wasser-Wärmepumpe (WWWP) mit Entzug der Wärme aus dem Grundwasser über Förder- und Schluckbrunnen, aus Oberflächenwässern oder Abwässern
+
+Luft/Wasser-Wärmepumpe (LWWP) mit Entzug der Wärme aus Abluft oder Außenluft, seltener auch mit Vorerwärmung durch Erdwärmetauscher, Fassadenkollektoren oder ähnliches; Wärmeabgabe über wasserführende Heizsysteme, preiswert und häufig verwendet
+
+Luft/Luft-Wärmepumpen (LLWP) werden in Gebäuden zur Erwärmung oder Kühlung der Zuluft von Lüftungsanlagen (Klimaanlagen) verwendet
+
+Split-Wärmepumpen (Kältekreis verteilt auf Baugruppen, Erstellung vor Ort, bei Montage)
+
+Wärmepumpen können reversibel sowohl zum Heizen, als auch zum Kühlen eingesetzt werden, indem der Kältekreislauf durch ein Umschaltventil umgekehrt wird und die Wärmepumpe im Sommer Wärme aus dem Gebäude an die Aussenluft oder das Erdreich abgibt. Bei simultanen Systemen (gleichzeitiges Heizen und Kühlen) wird die bei der Kühlung einer Zone anfallende Abwärme direkt zur Erwärmung einer anderen Zone genutzt, was in Gebäuden mit gemischten Nutzungsprofilen — etwa Büro und Serverräumen — den Gesamtenergiebedarf erheblich senkt. Alternativ können Wärmepumpen mit einem separaten passiven Kühlkreislauf kombiniert werden, bei dem das Erdreich oder Grundwasser im Sommer direkt als Kältequelle dient, ohne dass der Kompressor läuft (sogenanntes «Free Cooling»), was den elektrischen Energieverbrauch für die Kühlung auf ein Minimum reduziert. Die Auslegung von Wärmepumpensystemen mit Kühlfunktion erfordert eine dynamische Gebäudesimulation, da die gleichzeitigen Lastprofile für Heizung und Kühlung zeitlich variieren und eine statische Berechnung weder die optimale Maschinengrösse noch die Speicherkapazität zuverlässig bestimmen kann.
+
+nutzt den physikalischen Effekt der Verdampfungsenthalpie. In ihr zirkuliert ein Kältemittel in einem Kreislauf, das, angetrieben durch einen Kompressor, die Aggregatzustände flüssig und gasförmig abwechselnd annimmt.
+
+nutzt den physikalischen Effekt der Reaktionswärme bei Mischung zweier Flüssigkeiten oder Gase. Sie verfügt über einen Lösungsmittelkreis und einen Kältemittelkreis. Das Lösungsmittel wird im Kältemittel wiederholt gelöst oder ausgetrieben.
+
+arbeitet mit einem festen Lösungsmittel, dem „Adsorbens“, an dem das Kältemittel ad- oder desorbiert wird. Dem Prozess wird Wärme bei der Desorption zugeführt und bei der Adsorption entnommen. Da das Adsorbens nicht in einem Kreislauf umgewälzt werden kann, kann der Prozess nur diskontinuierlich ablaufen, indem zwischen Ad- und Desorption zyklisch gewechselt wird.
+
+nutzt die magnetische Kühlung. Prototypen erreichen Wirkungsgrade ähnlich denen von Kompressions-Wärmepumpen.
+
+Die elektrisch angetriebene Kompressionswärmepumpe stellt den Hauptanwendungsfall von Wärmepumpen dar. Mit der Wärmepumpe kann ein Vielfaches der eingesetzten elektrischen Energie als Wärmeenergie bereitgestellt werden. Der Wärmepumpenprozess, nach Rudolf Plank Plank-Prozess genannt, wird auch als Kraftwärmemaschine bezeichnet. Der Grenzfall einer reversibel arbeitenden Kraftwärmemaschine ist der linksläufige Carnot-Prozess.
+
+Elektrisch angetriebene Wärmepumpen werden mit einem geschlossenen Kältemittelkreislauf betrieben. Das Kältemittel verdampft bei niedrigem Druck unter Wärmezufuhr und nach der Verdichtung kondensiert das Kältemittel unter Abgabe der Nutzwärme. In der Drossel wird das flüssige Kältemittel von dem Hochdruck auf den Niederdruck entspannt. Dabei verdampft der größte Anteil des Kältemittels und die Temperatur sinkt. Die Drossel besteht bei sehr kleinen Anlagen aus einer Kapillaren, bei größeren Anlagen werden geregelte Ventile eingesetzt, die den Druck im Verdampfer so einstellen, dass die entsprechende Sattdampftemperatur etwas tiefer als die Temperatur der Wärmequelle liegt, so dass das Kältemittel durch die Wärmeaufnahmen verdampft. Der Abluft, der Außenluft, dem Erdboden, dem Abwasser oder dem Grundwasser kann Wärme durch Einsatz einer Wärmepumpe entzogen werden.
+
+Der Verdichter wird so geregelt, dass die zum Verdichtungsenddruck zugehörige Sattdampftemperatur geringfügig über der Temperatur der Wärmesenke liegt. Die Wärmequelle für Wärmepumpen ist die Umgebungsluft, die Erdwärme oder ein Wasserfluss. Die Wärmesenke ist z. B. der Heizkreis- oder Warmwasserkreislauf, der eine Seite des Verflüssiger-Wärmetauschers bildet.
+
+Das Verhältnis von in den Heizkreis abgegebener Wärmeleistung zu zugeführter elektrischer Verdichterleistung wird als Leistungszahl (coefficient of performance, kurz COP) bezeichnet. Die Leistungszahl hat einen oberen Wert, der aus dem Carnot-Kreisprozess abgeleitet und nicht überschritten werden kann. Die Leistungszahl wird auf einem Prüfstand gemäß der Norm EN 14511 (früher EN 255) ermittelt und gilt nur unter den jeweiligen Prüfbedingungen. Der COP ist Gütekriterium für Wärmepumpen, erlaubt jedoch keine energetische Bewertung der Gesamtanlage.
+
+Das Verhältnis des COP bezogen auf die jahreszeitabhängigen Temperaturen wird als SCOP (seasonal coefficient of performance), jahreszeitabhängige Raumeffizienz, bezeichnet und gemäß Norm EN 14825 ermittelt und gilt nur unter den dort genannten Prüfbedingungen. Er erlaubt einen Vergleich gleichartiger Geräte, jedoch keine Bewertung einer Gesamtanlage.
+
+Das Kältemittel wird in Bezug auf den Prozess so gewählt, dass die Temperaturen des Phasenübergangs einen für die Wärmeübertragung ausreichenden Abstand zu den Temperaturen von Wärmequelle und Wärmesenke haben. Soweit möglich wird ein Kältemittel verwendet, dessen Verdampfungsdruck bei der niedrigsten Arbeitstemperatur über dem Umgebungsdruck liegt, um das Eindringen von Luft in den Kältemittelkreislauf zu verhindern. Weitere Aspekte zur Auswahl des Kältemittels siehe Abschnitt Kältemittel (Arbeitsgase).
+
+Im Gegensatz zur Kältemaschine wird bei der Wärmepumpe die Energie auf der warmen Seite genutzt. Der Wärmepumpenkreislauf ist in der Abbildung 1 dargestellt. Eine Wärmepumpe besteht mindestens aus den vier dargestellten Komponenten: Verdampfer, Verdichter (Kompressor), Verflüssiger und Drossel (Expansionsventil).
+
+Die in der Thermodynamik verwendeten Diagramme für Kreislaufprozesse (Log-p-h-Diagramm oder T-s-Diagramm) sind gute Hilfen, um Kreisprozesse darzustellen. Die spezifischen Parameter können in dem Diagramm des betrachteten Stoffes direkt ermittelt werden. In dem Log-p-h-Diagramm können zu den Arbeitspunkten direkt die Enthalpien h für die spezifischen Wärmeströme und Verdichterarbeit auf der Ordinate abgelesen werden.
+
+Bei der Wärmepumpe werden oft physikalische Effekte des Phasenübergangs einer Flüssigkeit in die gasförmige Phase und umgekehrt ausgenutzt. So kann zum Beispiel Propan – technische Bezeichnung R-290 – in Wärmepumpen als Kältemittel verwendet werden, da es in dem Temperaturbereich für Gebäudeheizungen je nach Druckstufe in der Gas- und Flüssigphase auftritt. Der Einsatz von Kältemitteln in dem Zweiphasengebiet ist effektiv, da die Stoffe bei dem Phasenübergang einen sehr hohen Wärmeübergangskoeffizienten aufweisen und der Wärmeübergang bei einer durch den Druck eingestellten konstanten Temperatur erfolgt.
+
+In Abbildung 6 ist in dem T-s-Diagramm die Taulinie (rechts vom kritischen Punkt an der Spitze der Kurve) und die Siedelinie (links vom kritischen Punkt) dargestellt. Propan ist bei normalem Luftdruck (1,013 bar) und niedriger Außentemperatur (zum Beispiel 5 °C) gasförmig. Wenn das Gas komprimiert, bleibt es gasförmig und wird überhitzt. Kühlt das Gas bei dem hohen Druck ab, wird es flüssig, wenn die Taulinie erreicht wird. Beim Verflüssigen (Kondensieren) und konstantem Druck bleibt die Temperatur konstant, bis das gesamte Kältemittel kondensiert ist. Wenn das flüssige Kältemittel anschließend ohne Wärmeübertragung nach außen entspannt wird (adiabate Drosselung), verdampft es zum größten Teil und die Temperatur fällt. Diesen Effekt kann man an einer Propangasflasche nachvollziehen; bei starker Entnahme kann sich ein Eisansatz an der Flasche bilden.
+
+Das gasförmige Kältemittel wird im Verdichter durch einen elektrisch angetriebenen Verdichter komprimiert (verdichtet), wobei sich das Gas erhitzt. Der Enddruck des Verdichters wird so geregelt, dass die zugehörige Sattdampftemperatur einige Grad über der Temperatur der Wärmesenke liegt. Dies ist bei Heizungen die Vorlauftemperatur.
+
+Das heiße, komprimierte Gas gibt im Wärmetauscher seine Wärme an das Wasser der Heizungsanlage ab. Dabei kühlt sich das komprimierte und überhitzte Gas erst geringfügig ab (Überhitzung des Gases), bis die Temperatur erreicht ist, die dem Sattdampfdruck entspricht. Anschließend kondensiert das Kältemittel bei einer konstanten Temperatur in einem Wärmetauscher (Kondensator, in der Kältetechnik ist der Begriff Verflüssiger üblich). Das Kältemittel im flüssigen Zustand wird noch geringfügig unterkühlt, damit Blasen sicher vermieden werden, die die Funktion des nachgeschalteten thermostatischen Expansionsventils beeinträchtigen können.
+
+Beim anschließenden Durchgang durch das Expansionsventil, einer Drossel, wird das flüssige Kältemittel entspannt, verdampft dabei weitgehend und kühlt ab und wird dem Verdampfer zugeführt.
+
+Der Verdampfer ist der zweite Wärmetauscher, an dem bei niedriger Temperatur die Wärme aus der Umgebungsluft oder dem Erdreich an das Kältemittel übertragen wird. Hierbei verdampft das Kältemittel bei konstanter Temperatur. Optimalerweise sollte der Druck im Verdampfer von dem Expansionsventil so geregelt werden, dass die Temperatur des Gases nur geringfügig über der Umgebungstemperatur liegt. Außerdem muss verhindert werden, dass flüssiges Kältemittel in den Verdichter gelangt und diesen beschädigt (Flüssigkeitsschlag, Kavitation). Die Temperatur der Wärmequelle muss immer höher sein als die Verdampfungstemperatur des Kältemittels, damit ein Temperaturgradient vorhanden ist, der für eine Wärmeübertragung erforderlich ist. Eine Wärmepumpe muss nicht zwingend diesem typischen Wärmepumpenprozess folgen, beispielsweise kann auch ein linkslaufender Stirlingmotor die Funktion der Wärmepumpe erfüllen.
+
+In der Abbildung 4 ist der ideale Wärmepumpenprozess mit dem Kältemittel R-134a dargestellt. Die Anergie (Umweltwärme) wird bei 0 °C dem Verdampfer zugeführt und bei 50 °C wird die Wärme ins Heizungssystem abgeführt. Die einzelnen Prozessschritte sind:
+
+1 - 2: Isentrope Verdichtung von 2,93 bar auf 13,18 bar; Das Kältemittel ist geringfügig überhitzt (50,1 °C).
+
+2 - 3: Das Kältemittel kühlt im Verflüssiger auf die Sattdampftemperatur (50,1 °C auf 50 °C) ab und anschließend kondensiert das gesamte Kältemittel bei einer Temperatur von 50 °C durch Wärmeabgabe an das Heizungssystem.
+
+3 - 4 Das flüssige Kältemittel wird auf den Sattdampfdruck von 0 °C entspannt. Der Endpunkt liegt im Zweiphasengebiet, wobei bei dem speziellen Arbeitspunkt „4“ 64 % des Kältemittels noch flüssig sind.
+
+4 - 1 Das gesamte Kältemittel verdampft im Verdampfer durch Wärmeaufnahme aus der Umgebung. Es wird anschließend wieder dem Verdichter zugeführt.
+
+Aus dem Beispiel kann auf der Koordinate oder anhand thermodynamischer Näherungsfunktionen abgelesen werden:
+
+{\displaystyle {\dot {q}}_{\mathrm {U} }=h_{1}-h_{4}=398{,}6\,\mathrm {kJ/kg} -271{,}6\,\mathrm {kJ/kg} =127{,}0\,\mathrm {kJ/kg} }
+
+{\displaystyle {\dot {w}}_{\mathrm {t} }=h_{2}-h_{1}=428\,\mathrm {kJ/kg} -398{,}6\,\mathrm {kJ/kg} =29{,}4\,\mathrm {kJ/kg} }
+
+{\displaystyle {\dot {q}}_{\mathrm {h} }=h_{2}-h_{3}=428\,\mathrm {kJ/kg} -271{,}6\,\mathrm {kJ/kg} =156{,}4\,\mathrm {kJ/kg} }
+
+Mit diesen Angaben kann der COP dieses idealisierten Prozesses berechnet werden:
+
+{\displaystyle \mathrm {COP} _{\text{ideal}}={\frac {{\dot {q}}_{\mathrm {h} }}{{\dot {w}}_{\mathrm {t} }}}=5{,}32}
+
+Vergleicht man den COPideal mit dem Kehrwert des Carnotwirkungsgrades des reversiblen Prozesses
+
+{\displaystyle {\frac {1}{\eta _{\mathrm {c} }}}={\frac {\text{thermische Energie}}{\text{Exergie}}}=6{,}46}
+
+so liegt der COPideal niedriger. Die Ursache ist, dass auch der idealisierte Wärmepumpenprozess (isentrope Verdichtung, Temperaturgradient an den Wärmetauschern wird vernachlässigt, Druckverluste werden nicht berücksichtigt) nicht reversibel ist. Die realen Gase weichen von den idealen Gasen ab, und die Entspannung an der Drossel ist adiabat und nicht reversibel, da aus dem Druckgefälle auch bei dem idealisierten Prozess keine Arbeit gewonnen wird. Der Kehrwert des Carnotfaktors ist aber sehr hilfreich, die Auswirkung unterschiedlicher Arbeitstemperaturen abzuschätzen. Der COP des realen Prozesses kann man mit dem Produkt aus COPmax und dem Gütegrad ηWP abgeschätzt werden, der hier mit 0,5 als Erfahrungswert herangezogen wird. Damit erhält man einen COP von 3,23, wobei in dem Beispiel (0 °C / 50 °C) ein ungünstiger Betriebspunkt gewählt wurde.
+
+Abbildung 6 zeigt den Prozess im T-s-Diagramm. Theoretisch wäre es möglich, die Arbeitsfähigkeit des Kondensates beim Entspannen (Drossel) auf den niedrigeren Druck durch eine Kraftmaschine, beispielsweise eine Turbine, zu nutzen, wie es der reversible Carnot-Prozess beschreibt. Doch dabei würde die Flüssigkeit teilweise verdampfen. Die Nutzung der Entspannungsenthalpie ist technisch nur sehr aufwändig zu realisieren und wird daher nicht angewendet. Deshalb verwendet man der Einfachheit halber hier eine Drossel (Entspannung mit konstanter Totalenthalpie). Insofern liegt der COP des idealen Wärmepumpenprozesses mit Drosselung niedriger als der Carnot-Faktor.
+
+Die Leistungszahl ε einer Wärmepumpe, in der Literatur auch als Heizzahl bezeichnet (englisch coefficient of performance
+
+), ist der Quotient aus der Wärme Qc, die in den Heizkreis abgegeben wird, und der eingesetzten Energie
+
+Bei typischen Leistungszahlen von 4 bis 5 steht das Vier- bis Fünffache der eingesetzten Leistung als nutzbare Wärmeleistung zur Verfügung, der Zugewinn stammt aus der entzogenen Umgebungswärme.

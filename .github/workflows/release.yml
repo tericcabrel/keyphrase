@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (${{ matrix.go-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go-version: ["1.26.x", "1.27.x"]
+    env:
+      # The toolchain line would otherwise download go1.27.1 inside the 1.26 job.
+      GOTOOLCHAIN: ${{ matrix.go-version == '1.26.x' && 'local' || 'auto' }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Install gotestsum
+        run: go install gotest.tools/gotestsum@v1.13.0
+      - name: Test
+        run: gotestsum -- ./...
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-go@v7.0.0
+        with:
+          # 1.27.2 writes export data v5, which golangci-lint v2.13.2 cannot read.
+          go-version: "1.27.1"
+      - name: Lint
+        uses: golangci/golangci-lint-action@v9.3.0
+        with:
+          version: v2.13.2
+
+  release:
+    name: release
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Tag this version
+        id: version
+        run: |
+          set -eu
+          before="${{ github.event.before }}"
+          if [ "$before" = "0000000000000000000000000000000000000000" ]; then
+            names=$(git diff-tree --root --no-commit-id --name-only -r HEAD)
+          else
+            names=$(git diff --name-only "$before" HEAD)
+          fi
+          if ! printf '%s\n' "$names" | grep -qx CHANGELOG.md; then
+            echo "CHANGELOG.md is unchanged"
+            echo "tag=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          heading=$(grep -m1 -E '^## ' CHANGELOG.md || true)
+          if ! printf '%s\n' "$heading" | grep -Eq '^## v[0-9]+\.[0-9]+\.[0-9]+( - [0-9]{4}-[0-9]{2}-[0-9]{2})?$'; then
+            echo "CHANGELOG.md has no version heading"
+            exit 1
+          fi
+          version=$(printf '%s\n' "$heading" | sed -E 's/^## (v[0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+          body=$(awk '/^## / { if (seen) exit; seen=1; next } seen { print }' CHANGELOG.md)
+          if ! printf '%s\n' "$body" | grep -q '[^[:space:]]'; then
+            echo "CHANGELOG.md version $version has no body"
+            exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/$version" >/dev/null; then
+            echo "tag $version already exists"
+            echo "tag=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git tag "$version"
+          git push origin "$version"
+          echo "tag=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-go@v7.0.0
+        if: steps.version.outputs.tag != ''
+        with:
+          go-version: "1.27.x"
+
+      - name: Release notes
+        if: steps.version.outputs.tag != ''
+        uses: goreleaser/goreleaser-action@v7.2.3
+        with:
+          distribution: goreleaser
+          version: v2.18.3
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
