@@ -97,7 +97,7 @@ kws, counts, err := extractor.ExtractWithCounts(text, "en", 10)</code></pre>
         <h2>Limit</h2>
         <p>The default limit is 5. <code>limit</code> must be at least 1. There is no maximum: a limit greater than the number of phrases returns all of them. A limit below 1 returns <code>ErrInvalidLimit</code>.</p>
         <h2>Language</h2>
-        <p><code>language</code> is the code of a package the program imported: <code>en</code>, <code>fr</code>, <code>de</code>, <code>es</code>, or <code>it</code>. A code whose package was not imported returns <code>ErrUnsupportedLanguage</code>.</p>
+        <p><code>language</code> is the code of a package the program imported: <code>en</code>, <code>fr</code>, <code>de</code>, <code>es</code>, <code>it</code>, or <code>pt</code>. A code whose package was not imported returns <code>ErrUnsupportedLanguage</code>.</p>
         <h2>Empty text</h2>
         <p>Empty or whitespace-only text is success and returns no phrases.</p>
         <h2>Counts</h2>

@@ -92,6 +92,12 @@ func TestVerbsBreakPhrases(t *testing.T) {
 			text: "La toma de decisiones es compleja.",
 			want: []string{"toma de decisiones"},
 		},
+		{
+			name: "pt past tense verb", language: "pt",
+			text:    "O Banco de Portugal reviu as previsões económicas.",
+			want:    []string{"Banco de Portugal", "previsões económicas"},
+			wantNot: []string{"reviu", "Portugal reviu"},
+		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -165,6 +171,12 @@ func TestModifiersNeedAHead(t *testing.T) {
 			text:    "La banca centrale ha invece alzato i tassi. Il tasso resta alto.",
 			want:    []string{"banca centrale"},
 			wantNot: []string{"centrale", "invece", "alto"},
+		},
+		{
+			name: "pt adjective after its noun", language: "pt",
+			text:    "A inteligência artificial avança rapidamente em sistemas novos.",
+			want:    []string{"inteligência artificial", "sistemas novos"},
+			wantNot: []string{"artificial", "novos", "rapidamente"},
 		},
 	}
 	for _, tc := range tests {

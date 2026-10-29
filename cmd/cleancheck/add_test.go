@@ -41,7 +41,7 @@ func TestReadURLList(t *testing.T) {
 		t.Fatalf("got %v, want %v", got, want)
 	}
 
-	for _, bad := range []string{"https://a.example/ no-lang-first\n", "pt https://a.example/\n", "fr\n", "fr https://a.example/ held\n", "fr https://a.example/ holdout extra\n"} {
+	for _, bad := range []string{"https://a.example/ no-lang-first\n", "nl https://a.example/\n", "fr\n", "fr https://a.example/ held\n", "fr https://a.example/ holdout extra\n"} {
 		path := filepath.Join(dir, "bad.txt")
 		writeFile(t, path, bad)
 		if _, err := readURLList(path); err == nil {

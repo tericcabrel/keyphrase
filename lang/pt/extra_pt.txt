@@ -1,0 +1,30 @@
+# Supplementary Portuguese boundary words. Original work for this project.
+é ser sido sendo estar estado estando ter tido tendo haver havido havendo
+têm vai vão irá irão disse diz afirmou explicou segundo além também assim
+sem entre até desde sobre após perante durante mediante ainda muito mais menos
+pode podem deve devem fazer faz feito feita feitos feitas cada dois duas três
+quatro cinco vários várias outras outros outra
+# Spelled-out cardinals: the tagger labels them nouns or names.
+seis sete oito nove dez onze doze treze catorze quatorze quinze dezasseis
+dezesseis dezanove dezenove vinte trinta quarenta cinquenta sessenta setenta
+oitenta noventa
+outro todo todos toda todas quando onde porque embora contudo porém todavia
+enquanto sim não agora hoje ontem amanhã quase uns umas cerca redor
+primeiro primeira primeiros primeiras último última últimos últimas próximo
+próxima próximos próximas
+algo nada alguém ninguém algum alguma alguns algumas nenhum nenhuma nenhuns
+nenhumas tudo todos todas
+como quem quanto quanta quantos quantas quais cujo cuja cujos cujas próprio
+própria próprios próprias tal tais tanto tanta tantos tantas sob contra
+conforme provavelmente
+sr sra srta dr dra prof eng
+# Datas e unidades.
+segunda-feira terça-feira quarta-feira quinta-feira sexta-feira sábado domingo
+janeiro fevereiro março abril maio junho julho agosto setembro outubro novembro dezembro
+cento centos milhão milhões milhar milhares mil bilhão bilhões bilião biliões
+euros dólares reais quilómetros quilômetros metro metros polegada polegadas
+hora horas minuto minutos segundo segundos
+# Possessivos e substantivos temporais genéricos.
+seu sua seus suas ano anos mês meses semana semanas dia dias vez vezes tempo tempos
+# SI and energy unit symbols.
+gw mw kw kwh mwh gwh twh mj gj kj km kg cm mm ha tb gb mb kb hz

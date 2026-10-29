@@ -13,8 +13,8 @@
 | [github.com/rivo/uniseg](https://github.com/rivo/uniseg) | v0.4.7 (pinned in `go.mod`/`go.sum`) | MIT |
 | [golang.org/x/net](https://pkg.go.dev/golang.org/x/net) | v0.59.0 (HTML parse and charset; pulls in `golang.org/x/text` v0.42.0). Used by the development server, not by `extractor` | BSD-3-Clause |
 | Snowball stop word lists (embedded data) | snowball-website master, fetched 2026-09-28 | BSD-3-Clause, see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
-| Part-of-speech models (embedded data), trained on [Universal Dependencies](https://universaldependencies.org/) treebanks | UD release r2.18: EWT (en), GSD (fr, de, es), ParlaMint + PUD + TWITTIRO + MarkIT (it) | CC BY-SA 4.0 (it: also CC BY-SA 3.0 and CC BY 4.0), see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
-| Rarity tables (embedded data), counted from [Leipzig Corpora Collection](https://wortschatz-leipzig.de/en/download/) 1M-sentence news and Wikipedia samples | eng news 2024 + Wikipedia 2016; deu news 2024 + Wikipedia 2021; fra news 2023 + Wikipedia 2021; spa news 2024 + Wikipedia 2021; ita news 2023 + Wikipedia 2021 | CC BY, see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
+| Part-of-speech models (embedded data), trained on [Universal Dependencies](https://universaldependencies.org/) treebanks | UD release r2.18: EWT (en), GSD (fr, de, es, pt), ParlaMint + PUD + TWITTIRO + MarkIT (it) | CC BY-SA 4.0 (it: also CC BY-SA 3.0 and CC BY 4.0), see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
+| Rarity tables (embedded data), counted from [Leipzig Corpora Collection](https://wortschatz-leipzig.de/en/download/) 1M-sentence news and Wikipedia samples | eng news 2024 + Wikipedia 2016; deu news 2024 + Wikipedia 2021; fra news 2023 + Wikipedia 2021; spa news 2024 + Wikipedia 2021; ita news 2023 + Wikipedia 2021; por news 2024 + Wikipedia 2021 | CC BY, see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
 | Wikipedia texts (test data only) | revisions in [examples/SOURCES.md](../examples/SOURCES.md) | CC BY-SA 4.0 |
 | This project's code | | MIT |
 
@@ -53,17 +53,17 @@ A change that would alter the published site also deploys it to the Cloudflare P
 The tests cover:
 
 - the exact-slice, non-overlap, ordering and score-range invariants on every example file, on 300 random multilingual strings, and under fuzzing;
-- candidate boundaries in all five languages: connectors, conjunctions, punctuation, line breaks, numbers, acronyms, truncated names and article-initial names;
+- candidate boundaries in all six languages: connectors, conjunctions, punctuation, line breaks, numbers, acronyms, truncated names and article-initial names;
 - straight and curly apostrophes, elision offsets, German compounds and hyphen compounds;
-- sentence-abbreviation handling in all five languages;
+- sentence-abbreviation handling in all six languages;
 - repeated-phrase aggregation with earliest-occurrence choice, containment and overlap removal, plural near duplicates, and generic-word suppression;
 - determinism and the tie-break order;
 - empty, whitespace-only and stopword-only input;
 - text exactly at 64 KiB;
 - language and limit errors;
 - pack data, and per-language spot checks of expected phrases;
-- verbs: phrases break at verbs in all five languages, nouns that can also be verbs are kept ("rise of energy prices", "toma de decisiones"), no phrase of any example contains a verb-labelled token, and the document-level vote keeps "acqua alta";
-- modifiers: in all five languages, adjectives, numerals and adverbs are not returned on their own but stay inside phrases ("big effort", "inteligencia artificial"), and "Offshore wind" survives the tagger calling "Offshore" an adverb;
+- verbs: phrases break at verbs in all six languages, nouns that can also be verbs are kept ("rise of energy prices", "toma de decisiones"), no phrase of any example contains a verb-labelled token, and the document-level vote keeps "acqua alta";
+- modifiers: in all six languages, adjectives, numerals and adverbs are not returned on their own but stay inside phrases ("big effort", "inteligencia artificial"), and "Offshore wind" survives the tagger calling "Offshore" an adverb;
 - the tagger: per-language verb and noun spot checks, learning from context on a toy corpus, reproducible training, model save and reload, and rejection of corrupt model files;
 - HTTP: normal responses, field names, default and null limit, limit bounds, empty text for every language, 20 bad-request cases, 413 for text and body, the worst-case escaped body, 405/404, `/healthz`, exact spans after a JSON round trip, and `POST /v1/text` (visible text, plain text, truncation, 400, 413, 502, and 405);
 - main-content extraction: fixture pages for Ghost's Source and Casper themes, a non-Ghost news page and a div-only page, the more-than-half rule, exact content classes, whole-part class matching and date lines. The clean-check tool's own checks have unit tests too.
@@ -75,8 +75,8 @@ Fuzzing found no failures during development: a 60 s run (about 700,000 inputs),
 ```
 extractor/          core: tokenize.go, segment.go, candidates.go, rank.go, select.go, extractor.go
 lang/               registry, Pack, Normalize; THIRD_PARTY.md; data/SNOWBALL_COPYING
-lang/en fr de es it one package per language: word lists, model.bin.gz, rarity.bin.gz
-lang/all            blank-imports the five languages, for tests and local commands
+lang/en fr de es it pt  one package per language: word lists, model.bin.gz, rarity.bin.gz
+lang/all            blank-imports the six languages, for tests and local commands
 postag/             part-of-speech tagger: features, model format, training, evaluation
 postag/models/      fetch.sh (treebank download) and train.sh
 rarity/             corpus rarity tables, fetch.sh, build.sh
@@ -122,7 +122,7 @@ curl -s localhost:8080/v1/text \
 
 ## HTTP contract
 
-`POST /v1/keywords` with body `{"text": string, "language": "en|fr|de|es|it", "limit": integer, "counts": bool}`.
+`POST /v1/keywords` with body `{"text": string, "language": "en|fr|de|es|it|pt", "limit": integer, "counts": bool}`.
 
 - `limit` is optional and defaults to 5; `null` is treated as omitted. It must be at least 1. At most `limit` phrases are returned, so a limit greater than the number of phrases returns all of them.
 - `counts` is optional. `null` and `false` are treated as omitted. When `true`, the response adds `counts: {"words", "extracted", "ranked", "extracted_more_than_one_word", "ranked_more_than_one_word", "more_than_one_word"}`. `words` is the number of words in the submitted text. Punctuation is not counted, and a hyphenated compound such as "e-mail" is one word. `extracted` is every candidate phrase. `ranked` is how many of those were returned. The other two counts are phrases of two or more words, including connectors. `more_than_one_word` lists every extracted phrase of two or more words, best-ranked first. Its length equals `extracted_more_than_one_word`.

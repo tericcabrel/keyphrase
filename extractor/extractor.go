@@ -61,8 +61,8 @@ type Counts struct {
 
 // Extract returns up to limit non-overlapping keyphrases for text.
 // language is the code of a language package the program imports (lang/en,
-// lang/fr, lang/de, lang/es, or lang/it). A code whose package was not
-// imported returns ErrUnsupportedLanguage. limit must be at least 1. There
+// lang/fr, lang/de, lang/es, lang/it, or lang/pt). A code whose package was
+// not imported returns ErrUnsupportedLanguage. limit must be at least 1. There
 // is no maximum: a limit greater than the number of phrases returns all of
 // them. The call uses DefaultWeights.
 func Extract(text, language string, limit int) ([]Keyword, error) {

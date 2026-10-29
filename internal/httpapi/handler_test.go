@@ -171,7 +171,7 @@ func TestCounts(t *testing.T) {
 }
 
 func TestEmptyTextEveryLanguage(t *testing.T) {
-	for _, l := range []string{"en", "fr", "de", "es", "it"} {
+	for _, l := range []string{"en", "fr", "de", "es", "it", "pt"} {
 		for _, text := range []string{"", "   \n\t"} {
 			rec := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": text, "language": l}))
 			if rec.Code != http.StatusOK {
@@ -193,7 +193,7 @@ func TestBadRequests(t *testing.T) {
 		{"trailing data", `{"text":"x","language":"en"} {"x":1}`},
 		{"missing language", `{"text":"x"}`},
 		{"null language", `{"text":"x","language":null}`},
-		{"unsupported language", `{"text":"x","language":"pt"}`},
+		{"unsupported language", `{"text":"x","language":"nl"}`},
 		{"uppercase language", `{"text":"x","language":"EN"}`},
 		{"empty language", `{"text":"x","language":""}`},
 		{"missing text", `{"language":"en"}`},
