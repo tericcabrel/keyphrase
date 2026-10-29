@@ -9,7 +9,7 @@
 | component | version | licence |
 |---|---|---|
 | Go minimum | `go 1.26.0` (`go` line in `go.mod`). `errors.AsType` and `golang.org/x/net` v0.59.0 both require 1.26.0 | BSD-3-Clause |
-| Go toolchain | go1.27.1 (`toolchain` line in `go.mod`). Used when working in this module | BSD-3-Clause |
+| Go toolchain | go1.27.3 (`toolchain` line in `go.mod`). Used when working in this module | BSD-3-Clause |
 | [github.com/rivo/uniseg](https://github.com/rivo/uniseg) | v0.4.7 (pinned in `go.mod`/`go.sum`) | MIT |
 | [golang.org/x/net](https://pkg.go.dev/golang.org/x/net) | v0.59.0 (HTML parse and charset; pulls in `golang.org/x/text` v0.42.0). Used by the development server, not by `extractor` | BSD-3-Clause |
 | Snowball stop word lists (embedded data) | snowball-website master, fetched 2026-09-28 | BSD-3-Clause, see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
@@ -19,6 +19,8 @@
 | This project's code | | MIT |
 
 The code uses recent Go features: range-over-func iterators (`strings.Lines`, `strings.FieldsSeq`, `maps.Keys`, `slices.Sorted`), `errors.AsType`, `sync.WaitGroup.Go`, `testing.B.Loop`, range-over-int, and method-pattern `http.ServeMux` routes. The newest of those is `errors.AsType` (Go 1.26). Together with the `golang.org/x/net` requirement, that sets the minimum at 1.26.0.
+
+Dependabot opens a weekly pull request for Go modules, GitHub Actions refs, and the site's Yarn packages. Patch and minor updates share one pull request per ecosystem. A major update is its own pull request. Those pulls do not change `CHANGELOG.md`, so merging one does not publish a module version. The toolchain is go1.27.3, lint runs on the 1.27 line with golangci-lint v2.15.0, GoReleaser is v2.19.0, just is 1.59.0, Yarn is 4.18.1, Wrangler is 4.153.0, Node is 24, and gotestsum is v1.13.0. Later bumps of the toolchain, golangci-lint, GoReleaser, gotestsum, just, Yarn, Wrangler's workflow pin, and Node stay manual.
 
 ## Commands
 

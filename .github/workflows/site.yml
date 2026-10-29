@@ -53,7 +53,7 @@ jobs:
 
       - name: Install just
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --tag 1.55.0 --to "$HOME/.local/bin"
+          curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --tag 1.59.0 --to "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Build the site
@@ -61,7 +61,7 @@ jobs:
 
       - uses: actions/setup-node@v7.1.0
         with:
-          node-version: "22"
+          node-version: "24"
 
       - name: Install site dependencies
         working-directory: site
@@ -96,6 +96,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: site
           packageManager: yarn
-          wranglerVersion: "4.148.0"
+          wranglerVersion: "4.153.0"
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy --project-name=keyphrase --branch=${{ github.event_name == 'pull_request' && github.head_ref || 'main' }} --commit-hash=${{ github.sha }}

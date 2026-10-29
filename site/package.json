@@ -2,14 +2,14 @@
   "name": "keyphrase-site",
   "private": true,
   "type": "module",
-  "packageManager": "yarn@4.18.0",
+  "packageManager": "yarn@4.18.1",
   "scripts": {
     "dev": "wrangler pages dev",
     "test": "node --test functions/_lib/text.test.mjs functions/_lib/host.test.mjs"
   },
   "devDependencies": {
     "sugar-high": "2.5.1",
-    "wrangler": "4.148.0"
+    "wrangler": "4.153.0"
   },
   "dependenciesMeta": {
     "esbuild": {
