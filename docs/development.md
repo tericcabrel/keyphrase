@@ -48,7 +48,7 @@ A user-facing change is a section at the top of `CHANGELOG.md`. The heading is `
 
 A pull request into `main` runs test and lint. Every push to `main` runs them again. The tag and the GitHub release happen only after both succeed and that push changed `CHANGELOG.md`. The release notes are the commits since the previous tag, newest first, and each line names its author. The changelog is the product summary. A push to another branch does not publish.
 
-A change that would alter the published site also deploys it to the Cloudflare Pages project `keyphrase`. That is a file under `site/` that ships, or Go that `just site-build` compiles into the Try page. A pull request deploys a preview on the pull request branch. The merge to `main` deploys production. A docs-only change, or a test-only change, leaves the site unpublished.
+A change that would alter the published site also deploys it to the Cloudflare Pages project `keyphrase`. That is a file under `site/` that ships, or Go that `just site-build` compiles into the Try page. A pull request deploys a preview on the pull request branch when its head branch is in this repository and Dependabot did not open it. The merge to `main` deploys production. A docs-only change, or a test-only change, leaves the site unpublished.
 
 The tests cover:
 
