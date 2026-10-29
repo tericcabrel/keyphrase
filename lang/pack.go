@@ -1,8 +1,8 @@
 // Package lang is the registry of language packs that the extractor looks up.
 //
 // Built-in languages are separate packages: lang/en, lang/fr, lang/de,
-// lang/es, and lang/it. A program imports the ones it needs, and only those
-// embeds are linked. lang/all imports every built-in language.
+// lang/es, lang/it, and lang/pt. A program imports the ones it needs, and
+// only those embeds are linked. lang/all imports every built-in language.
 //
 // Another language implements Pack and calls Register from its init function.
 // New builds the usual pack from stopword lists.

@@ -97,6 +97,12 @@ func TestCandidateBoundaries(t *testing.T) {
 			wantNot: []string{"dell'Unione europea", "d'Italia", "La Banca"},
 		},
 		{
+			name: "pt connector de", language: "pt",
+			text:    "O Banco de Portugal prevê uma descida.",
+			want:    []string{"Banco de Portugal"},
+			wantNot: []string{"O Banco", "de Portugal"},
+		},
+		{
 			name: "punctuation breaks phrases", language: "en",
 			text:    "Paris, Lyon (Marseille) and Nice.",
 			want:    []string{"Paris", "Lyon", "Marseille", "Nice"},
@@ -200,6 +206,7 @@ func TestSentenceAbbreviations(t *testing.T) {
 		{"fr", "M. Dupont est arrivé. Mme Durand aussi.", 2},
 		{"es", "La Sra. García habló. Luego se fue.", 2},
 		{"it", "Il prof. Rossi ha parlato. Poi è uscito.", 2},
+		{"pt", "A Sra. Silva falou. Depois saiu.", 2},
 		{"en", "J. K. Rowling wrote books. Many sold.", 2},
 	}
 	for _, tc := range tests {
@@ -339,6 +346,7 @@ func TestOnlyStopwordsOrPunctuation(t *testing.T) {
 		{"de", "und der die – das."},
 		{"es", "de la y el; los."},
 		{"it", "di e il, la."},
+		{"pt", "de a e o, os."},
 	} {
 		kws, err := Extract(tc.text, tc.l, 5)
 		if err != nil {
@@ -388,7 +396,7 @@ func TestCounts(t *testing.T) {
 }
 
 func TestLanguageAndLimitErrors(t *testing.T) {
-	for _, l := range []string{"", "EN", "En", "pt", "en-US", "english"} {
+	for _, l := range []string{"", "EN", "En", "nl", "en-US", "english"} {
 		if _, err := Extract("text", l, 5); !errors.Is(err, ErrUnsupportedLanguage) {
 			t.Errorf("language %q: err = %v", l, err)
 		}
@@ -445,6 +453,8 @@ func TestPerLanguageExpectations(t *testing.T) {
 		{"es/inteligencia-artificial.txt", []string{"inteligencia artificial", "Parlamento Europeo"}},
 		{"it/banca-italia-inflazione.txt", []string{"Banca d'Italia", "tassi di interesse", "prodotto interno lordo"}},
 		{"it/venezia-turismo.txt", []string{"centro storico", "ticket d'accesso", "turismo di massa"}},
+		{"pt/banco-portugal-inflacao.txt", []string{"Banco de Portugal", "taxas de juro", "produto interno bruto"}},
+		{"pt/habitacao-lisboa.txt", []string{"alojamento local", "mercado de arrendamento", "centro histórico"}},
 	}
 	for _, tc := range tests {
 		path := "../examples/" + tc.file

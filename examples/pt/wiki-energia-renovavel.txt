@@ -1,0 +1,63 @@
+Energia renovável é aquela que vem de recursos naturais que são naturalmente reabastecidos, como sol, vento, chuva, marés e energia geotérmica. É importante notar que nem todo recurso natural é renovável, por exemplo, o urânio, carvão e petróleo são retirados da natureza, porém existem em quantidade limitada. Em 2008, cerca de 19% do consumo mundial de eletricidade veio de fontes renováveis, com 13% provenientes da tradicional biomassa, que é usada principalmente para aquecimento, e 3,2% a partir da hidroeletricidade. Novas energias renováveis (pequenas hidrelétricas, biomassa, eólica, solar, geotérmica, biocombustíveis e evaporação de corpos hídricos) representaram outros 2,7% e este percentual está crescendo rapidamente. A proporção das energias renováveis na geração de eletricidade é de cerca de 18%, com 15% da eletricidade global vindo de hidrelétricas e 3% das demais fontes renováveis de energia.
+
+A energia do Sol é convertida de várias formas para formatos conhecidos, como a biomassa (fotossíntese), a energia hidráulica (evaporação), a eólica (ventos) e a fotovoltaica, que contêm imensa quantidade de energia, e que são capazes de se regenerar por meios naturais.
+
+A geração de energia eólica está crescendo à taxa de 30% ao ano, com uma capacidade instalada a nível mundial de 318 105 mil megawatts (MW) em 2013, e é amplamente utilizada na Europa, Ásia e nos Estados Unidos. No final de 2009, as instalações fotovoltaicas (PV) em todo o globo ultrapassaram 21 000 MW e centrais fotovoltaicas são populares na Alemanha e na Espanha. Centrais de energia térmica solar operam nos Estados Unidos e Espanha, sendo a maior destas a usina de energia solar do Deserto de Mojave com capacidade de 354 MW.
+
+A maior instalação de energia geotérmica do mundo é The Geysers, na Califórnia, com uma capacidade nominal de 750 MW. O Brasil tem um dos maiores programas de energia renovável no mundo, envolvendo a produção de álcool combustível a partir da cana de açúcar, e atualmente o etanol representa 18% dos combustíveis automotivos do país. O etanol combustível também é amplamente disponível nos Estados Unidos.
+
+Os rios e correntes de água doce: energia hidráulica
+
+As energias renováveis são consideradas como energias alternativas ao modelo energético tradicional, tanto pela sua disponibilidade (presente e futura) garantida (diferente dos combustíveis fósseis que precisam de milhares de anos para a sua formação) como pelo seu menor impacto ambiental.
+
+As fontes de energia podem ser divididas em dois grupos principais: permanentes (renováveis) e temporários (não-renováveis). As fontes permanentes são aquelas que têm origem solar, no entanto, o conceito de renovabilidade depende da escala temporal que é utilizado e os padrões de utilização dos recursos.
+
+Assim, são considerados os combustíveis fósseis não-renováveis já que a taxa de utilização é muito superior à taxa de formação do recurso propriamente dito.
+
+Os combustíveis fósseis são fontes não-renováveis de energia: não é possível repor o que se gasta, uma vez que podem ser necessários milhões de anos para poder contar novamente com eles. São aqueles cujas reservas são limitadas. As principais são a energia da fissão nuclear e os combustíveis fósseis (petróleo, gás natural e carvão).
+
+Os combustíveis fósseis podem ser usados na forma sólida (carvão), líquida (petróleo) ou gasosa (gás natural). Segundo a teoria mais aceita, foram formados por acumulações de seres vivos que viveram há milhões de anos e que foram fossilizados formando carvão ou hidrocarbonetos. No caso do carvão se trata de bosques e florestas nas zonas húmidas e, no caso do petróleo e do gás natural de grandes massas de plâncton acumuladas no fundo de bacias marinhas ou lacustres. Em ambos os casos, a matéria orgânica foi parcialmente decomposta, pela ação da temperatura, pressão e certas bactérias, na ausência de oxigênio, de forma que foram armazenadas moléculas com ligações de alta energia.
+
+Se distinguem as "reservas identificadas", embora não sejam exploradas, e as "reservas prováveis", que poderão ser descobertas com tecnologias futuras. Segundo os cálculos, o planeta pode fornecer energia para mais 40 anos (se for usado apenas o petróleo) e mais de 200 (se continuar a usar carvão).
+
+Os núcleos atômicos de elementos pesados, como o urânio, podem ser desintegrados (fissão nuclear ou cisão nuclear) e liberar energia radiante e cinética. Usinas nucleares usam essa energia para produzir electricidade utilizando turbinas a vapor.
+
+Uma consequência da atividade de produção deste tipo de energia são os resíduos radioativos, que podem levar milhares de anos para perder a radioatividade. Reatores de tório, que usam como combustível nuclear um isótopo do tório, produzem um volume de resíduos significativamente menor além de não ter utilidade para a fabricação de armas nucleares. Contudo, um reator de tório requer plutónio e/ou urânio (obtido noutras centrais nucleares) para iniciar o funcionamento.
+
+Porém existe uma fonte de energia nuclear que não gera resíduos radioativos, a da fusão nuclear, que ocorre quando 4 núcleos de deutério se fundem formando 1 de hélio liberando energia térmica que pode ser usada em turbinas a vapor. A fusão de deutério e trítio (isótopos do hidrogênio ) pode gerar nêutrons, resultando em emissões de radiações perigosas. Entretanto, a fusão nuclear aneutrônica (sem a emissão de nêutrons) é livre destas radiações. O uso de combustíveis aneutrônicos (boro, lítio, hélio-3, etc.), combinado com confinamento inercial a laser, torna esta forma de fusão possível. Mas a reação de fusão ainda não foi conseguida em grande escala a ponto de ser economicamente viável.
+
+Os combustíveis renováveis são combustíveis que usam como matéria-prima elementos renováveis para a natureza, como a cana-de-açúcar, utilizada para a fabricação do etanol e também, vários outros vegetais como a mamona utilizada para a fabricação do biodiesel ou outros óleos vegetais que podem ser usados diretamente em motores diesel com algumas adaptações.
+
+A energia hidroelétrica é a energia que se produz em barragens construídas em cursos de água . Essa energia parte da chuva que forma os rios que são represados, a água desses rios faz girar turbinas que produzem energia elétrica.
+
+É encontrada sob a forma de energia cinética, sob diferenças de temperatura ou gradientes de salinidade e pode ser aproveitada e utilizada. Uma vez que a água é aproximadamente 800 vezes mais densa que o ar, requer um lento fluxo ou ondas de mar moderadas, que podem produzir uma quantidade considerável de energia.
+
+A energia da biomassa é a energia que se obtém durante a transformação de produtos de origem animal e vegetal para a produção de energia calorífica e elétrica. Na transformação de resíduos orgânicos é possível obter biocombustíveis, como o biogás, o gás de síntese (gasogênio), o bioálcool, a biogasolina, o biodiesel e o etanol de carvão. Pesquisas e experiências recentes demonstram que, alternativamente ao hidrogênio puro, o etanol (álcool combustível) pode abastecer células de combustível automotivas.
+
+A formação de biomassa a partir de energia solar é realizada pelo processo denominado fotossíntese, pelas plantas. Através da fotossíntese, as plantas que contêm clorofila transformam o dióxido de carbono e a água em materiais orgânicos com alto teor energético que, por sua vez, servem de alimento para os outros seres vivos. A biomassa através destes processos armazena a curto prazo a energia solar sob a forma de hidratos de carbono. A energia armazenada no processo fotossintético pode ser posteriormente transformada em calor, liberando novamente o dióxido de carbono e a água armazenados. Esse calor pode ser usado para mover motores  ou esquentar água para gerar vapor e mover uma turbina, gerando energia elétrica.
+
+A energia solar é aquela energia obtida pela luz do Sol, pode ser captada com paineis solares nas usinas fotovoltaicas e através de receptores nas usinas térmicas, chamadas usinas heliotérmicas. A energia solar recebida pela Terra é cerca de 5 mil vezes maior do que o consumo mundial de eletricidade e energia térmica somados.
+
+Existem diferentes tecnologias que utilizam a energia solar, dentre elas estão: energia fotovoltaica, centrais heliotérmicas e o aquecimento solar. Na geração fotovoltaica, a energia luminosa é convertida diretamente em energia elétrica. Nas usinas heliotérmicas, a geração de energia acontece em dois passos: primeiro, os raios solares aquecem um receptor e, depois, este calor é usado para iniciar o processo convencional da geração de energia elétrica por meio da movimentação de uma turbina. No aquecimento solar, a luz do Sol é utilizada para aquecer a água de casas e prédios, o objetivo aqui não é a geração de energia elétrica.
+
+Há dois componentes na radiação solar: radiação directa e radiação difusa. A radiação directa é a que vem diretamente do Sol, sem reflexões ou refrações intermediárias. A difusa, é emitida pelo céu durante o dia, graças aos muitos fenómenos de reflexão e refração da atmosfera solar, nas nuvens, e nos restantes elementos da atmosfera terrestre. A radiação refletida direta pode ser concentrada e utilizada. No entanto, tanto a radiação direta quanto a radiação difusa são utilizáveis.
+
+É possível diferenciar entre receptores ativos e passivos, em que os primeiros utilizam mecanismos para orientar o sistema receptor rumo ao sol (chamado seguidor) para melhor atrair a radiação directa.
+
+Uma grande vantagem da energia solar é que ela permite a geração de energia, no mesmo local de consumo, através da integração da arquitetura. Assim, pode ser levada a sistemas de geração distribuída, quase eliminando completamente as perdas ligadas aos transportes, que representam cerca de 40% do total. Porém essa fonte de energia tem o inconveniente de não poder ser usada à noite, a menos que se tenham bateria.
+
+A energia eólica é a energia obtida pela ação do vento, ou seja, através da utilização da energia cinética gerada pelas correntes atmosféricas.
+
+O vento vem da palavra latina aeolicus, relativa à Eolo, deus dos ventos na mitologia grega. A energia eólica tem sido utilizada desde a Antiguidade para mover os barcos movidos por velas ou operação de outras máquinas. É uma espécie de energia verde. Essa energia também vem do Sol, que aquece a superfície da Terra de forma não homogênea, gerando locais de baixa pressão e locais de alta pressão, fazendo com que o ar se mova gerando ventos.
+
+O vento é a fonte renovável de maior sucesso a nível europeu. No entanto há quem se oponha a esta utilização, por motivos estéticos de alteração da paisagem.
+
+A energia geotérmica é a energia do interior da Terra. A geotermia consiste no aproveitamento de águas quentes e vapores para a produção de electricidade e calor. Exemplo: central geotérmica da Ribeira Grande (Açores).
+
+Parte do calor interno da Terra (5 000 °C) chega à crosta terrestre. Em algumas áreas do planeta, próximas à superfície, as águas subterrâneas podem atingir temperaturas de ebulição, e, dessa forma, servir para impulsionar turbinas para eletricidade ou aquecimento. A energia geotérmica é aquela que pode ser obtida pelo homem através do calor dentro da terra. O calor dentro da terra ocorre devido a vários fatores, entre eles o gradiente geotérmico e o calor radiogênico. Geotérmica provém do grego geo, "Terra" e Thermo, "calor", literalmente "calor da Terra".
+
+A energia dos mares é a energia que se obtém a partir do movimento das ondas, a das marés ou da diferença de temperatura entre os níveis da água do mar.
+
+Ocorre devido à força gravitacional entre a Lua, a Terra e o Sol, que causam as marés, ou seja, a diferença de altura média dos mares de acordo com a posição relativa entre estes três astros. Esta diferença de altura pode ser explorada em locais estratégicos como os golfos, baías e estuários que utilizam turbinas hidráulicas na circulação natural da água, junto com os mecanismos de canalização e de depósito, para avançar sobre um eixo. Através da sua ligação a um alternador, o sistema pode ser usado para a geração de eletricidade, transformando, assim, a energia das marés, em energia elétrica, uma energia mais útil e aproveitável.
+
+A energia das marés têm a qualidade de ser renovável, como fonte de energia primária não está esgotada pela sua exploração e, é limpa, uma vez que, na transformação de energia não produz poluentes derivados na fase operacional. No entanto, a relação entre a quantidade de energia que pode ser obtida com os actuais meios económicos e os custos e o impacto ambiental da instalação de dispositivos para o seu processo impediram uma notável proliferação deste tipo de energia.

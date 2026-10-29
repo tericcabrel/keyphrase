@@ -6,7 +6,7 @@
 
 keyphrase extracts a few short topical phrases that occur verbatim in plain text. The caller names the language and sends clean article text. A phrase is at most three words, verbs are left out, and a single word is the exception.
 
-Supported languages are English (`en`), French (`fr`), German (`de`), Spanish (`es`), and Italian (`it`). There is no language detection. Requires Go 1.26.
+Supported languages are English (`en`), French (`fr`), German (`de`), Spanish (`es`), Italian (`it`), and Portuguese (`pt`). There is no language detection. Requires Go 1.26.
 
 The website is [keyphrase.tericcabrel.com](https://keyphrase.tericcabrel.com). Its [Try page](https://keyphrase.tericcabrel.com/try/) runs the extractor in the browser on any text.
 
@@ -15,7 +15,7 @@ Accuracy is measured on texts that are not versioned. The tools are in this repo
 ## Install
 
 ```sh
-go get github.com/tericcabrel/keyphrase@v0.1.0
+go get github.com/tericcabrel/keyphrase@v0.2.0
 ```
 
 ```go
@@ -172,6 +172,7 @@ kws, err := extractor.Extract(text, "es", 10)
 | German | `lang/de` | `de` |
 | Spanish | `lang/es` | `es` |
 | Italian | `lang/it` | `it` |
+| Portuguese | `lang/pt` | `pt` |
 
 The blank import registers that language. Import only the languages you need. Each one embeds its own part-of-speech model and rarity table: French is about 3.8 MB gzipped (a 3.0 MB model and an 820 KB table). Import more than one package to bundle a subset. `lang/all` embeds and registers every built-in language.
 

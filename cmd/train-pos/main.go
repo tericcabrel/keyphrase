@@ -28,7 +28,7 @@ import (
 )
 
 func main() {
-	language := flag.String("lang", "", "language code (en, fr, de, es, it)")
+	language := flag.String("lang", "", "language code (en, fr, de, es, it, pt)")
 	train := flag.String("train", "", "comma-separated CoNLL-U training files")
 	test := flag.String("test", "", "comma-separated CoNLL-U evaluation files")
 	out := flag.String("out", "", "model output path (.bin.gz)")

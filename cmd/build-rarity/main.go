@@ -26,7 +26,7 @@ import (
 )
 
 func main() {
-	language := flag.String("lang", "", "language code (en, fr, de, es, it)")
+	language := flag.String("lang", "", "language code (en, fr, de, es, it, pt)")
 	out := flag.String("out", "", "table output path (.bin.gz)")
 	minCount := flag.Int("min", rarity.MinCount, "minimum sentences a word must appear in")
 	flag.Parse()

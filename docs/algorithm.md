@@ -47,7 +47,7 @@ The weights are learned offline from Universal Dependencies treebanks: sentences
 
 ```sh
 just pos-fetch   # download the pinned treebanks to postag/models/ud/ (not committed)
-just pos-train   # retrain all five models; the output is byte-identical on rerun
+just pos-train   # retrain all six models; the output is byte-identical on rerun
 ```
 
 `just pos-fetch` runs `postag/models/fetch.sh`. `just pos-train` runs `postag/models/train.sh`, which writes `lang/<code>/model.bin.gz`. The downloads are a local cache. The committed files are the model archives.
@@ -60,9 +60,10 @@ Accuracy on each treebank's held-out test sentences, as printed by the training 
 | fr | GSD, 346k tokens | 96.8% | 96.7% | 98.1% | 3.0 MB | 6.7 MiB |
 | de | GSD, 260k tokens | 93.9% | 96.7% | 97.4% | 3.7 MB | 7.2 MiB |
 | es | GSD, 376k tokens | 95.6% | 97.9% | 96.9% | 3.8 MB | 7.2 MiB |
+| pt | GSD, 238k tokens | 95.9% | 96.7% | 96.8% | 2.5 MB | 5.8 MiB |
 | it | ParlaMint, PUD, TWITTIRO, MarkIT, 90k tokens | 94.4% | 95.5% | 96.4% | 1.6 MB | 3.3 MiB |
 
-Italian uses only openly licensed treebanks. The larger standard Italian treebanks (ISDT, VIT, ParTUT, PoSTWITA) are licensed for non-commercial use only, so the Italian model is trained on about a quarter as much data as the others. It is the weakest of the five. A model is decoded the first time its language is used. Sources and licences are in [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md).
+Italian uses only openly licensed treebanks. The larger standard Italian treebanks (ISDT, VIT, ParTUT, PoSTWITA) are licensed for non-commercial use only, so the Italian model is trained on about a quarter as much data as the others. It is the weakest of the six. A model is decoded the first time its language is used. Sources and licences are in [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md).
 
 ## Adding a language
 
@@ -74,7 +75,7 @@ A language is a package whose `init` calls `lang.Register`. `lang.New` builds th
 - `NounCaps` when the language capitalizes ordinary nouns;
 - optional model and rarity bytes, decoded with `lang.LazyTagger` and `lang.LazyTable`.
 
-The built-in packages (`lang/en` and the others) each embed only that language's lists, `model.bin.gz`, and `rarity.bin.gz`. Importing one of them does not embed the others. `lang/all` imports all five.
+The built-in packages (`lang/en` and the others) each embed only that language's lists, `model.bin.gz`, and `rarity.bin.gz`. Importing one of them does not embed the others. `lang/all` imports all six.
 
 Add examples under `examples/<code>/` and cases in `lang/pack_test.go`. Record any imported list in `lang/THIRD_PARTY.md`.
 

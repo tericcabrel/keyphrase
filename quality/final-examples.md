@@ -128,3 +128,30 @@
 | 7 | 0.6600 | Roma | 564-568 |
 | 8 | 0.6564 | residenti | 416-425 |
 
+#### `examples/pt/banco-portugal-inflacao.txt`
+
+| # | score | text | bytes |
+|---|---|---|---|
+| 1 | 1.0000 | Banco de Portugal | 2-19 |
+| 2 | 0.8238 | taxas de juro | 482-495 |
+| 3 | 0.7804 | produto interno bruto | 165-186 |
+| 4 | 0.6893 | Mário Centeno | 290-304 |
+| 5 | 0.6413 | Euribor | 701-708 |
+| 6 | 0.6298 | dívida pública | 1066-1082 |
+| 7 | 0.6143 | Banco Central Europeu | 420-441 |
+| 8 | 0.5925 | subida | 155-161 |
+
+#### `examples/pt/habitacao-lisboa.txt`
+
+| # | score | text | bytes |
+|---|---|---|---|
+| 1 | 1.0000 | alojamento local | 201-217 |
+| 2 | 0.9220 | Lisboa | 52-58 |
+| 3 | 0.8465 | mercado de arrendamento | 328-351 |
+| 4 | 0.7814 | centro histórico | 392-409 |
+| 5 | 0.6969 | Misericórdia | 436-449 |
+| 6 | 0.6542 | Santa Maria Maior | 416-433 |
+| 7 | 0.6323 | Câmara Municipal | 521-538 |
+| 8 | 0.5402 | rendas | 172-178 |
+
+

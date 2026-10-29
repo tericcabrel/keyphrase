@@ -12,5 +12,6 @@ improvements.md
 /site/.yarn/
 /site/.dev.vars
 /site/public/assets/extract.wasm
+/site/public/assets/extract.wasm.gz
 /site/public/js/lib/wasm_exec.js
 /site/.wrangler/

@@ -8,7 +8,7 @@ import (
 )
 
 func TestEveryLanguageHasAModelAndTable(t *testing.T) {
-	for _, code := range []string{"de", "en", "es", "fr", "it"} {
+	for _, code := range []string{"de", "en", "es", "fr", "it", "pt"} {
 		p, ok := lang.Get(code)
 		if !ok {
 			t.Fatalf("%s: not registered", code)
@@ -58,6 +58,7 @@ func TestSpotChecks(t *testing.T) {
 		{"es", "Los sistemas intentan replicar el cerebro humano .", []string{"intentan", "replicar"}, []string{"sistemas", "cerebro"}},
 		{"es", "El Parlamento Europeo aprobó la ley .", []string{"aprobó"}, []string{"Parlamento", "ley"}},
 		{"es", "La toma de decisiones es compleja .", []string{"es"}, []string{"toma", "decisiones"}},
+		{"pt", "O Banco de Portugal reviu as previsões .", []string{"reviu"}, []string{"Banco", "previsões"}},
 		{"fr", "La sécheresse frappe durement le sud .", []string{"frappe"}, []string{"sécheresse", "sud"}},
 		{"de", "Werder Bremen sicherte sich den Titel .", []string{"sicherte"}, []string{"Bremen", "Titel"}},
 		{"en", "Measles cases have risen sharply .", []string{"have", "risen"}, []string{"Measles", "cases"}},

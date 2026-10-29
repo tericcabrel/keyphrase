@@ -9,3 +9,4 @@ Each file is the plain-text extract of a Wikipedia article at the revision below
 | `de/wiki-waermepumpe.txt` | [Wärmepumpe](https://de.wikipedia.org/w/index.php?oldid=270572265) | 270572265 | 2026-09-17T17:21:39Z | 2006 | 15962 |
 | `es/wiki-inteligencia-artificial.txt` | [Inteligencia artificial](https://es.wikipedia.org/w/index.php?oldid=175511020) | 175511020 | 2026-09-24T17:02:02Z | 2043 | 14024 |
 | `it/wiki-venezia.txt` | [Venezia](https://it.wikipedia.org/w/index.php?oldid=152614082) | 152614082 | 2026-09-25T18:33:45Z | 2106 | 13836 |
+| `pt/wiki-energia-renovavel.txt` | [Energia renovável](https://pt.wikipedia.org/w/index.php?oldid=71067269) | 71067269 | 2025-10-22T12:01:14Z | 2013 | 13173 |

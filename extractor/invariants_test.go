@@ -10,7 +10,7 @@ import (
 	"unicode/utf8"
 )
 
-var languages = []string{"de", "en", "es", "fr", "it"}
+var languages = []string{"de", "en", "es", "fr", "it", "pt"}
 
 // checkInvariants verifies the output contract for one Extract call.
 func checkInvariants(t *testing.T, text string, limit int, kws []Keyword) {

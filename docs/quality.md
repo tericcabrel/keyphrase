@@ -84,7 +84,7 @@ All 69 pages pass, 11 of them with accepted lines. For the first 20 pages, which
 
 The evaluation was restarted from scratch on the cleanly extracted texts. The earlier run labelled texts full of page chrome, so its numbers are not comparable and it is kept only in the archive.
 
-The set has 69 Ghost posts with the top 50 phrases of each labelled: 54 tuning pages and 15 held-out pages, 3 per language. The project owner labelled the English and French held-out pages, and reviewed the implementer's labels on the first 8 English and French tuning pages. The implementer labelled the rest. Run `20261001-222553`, after the rarity feature (see [Quality history](quality-history.md)):
+The set has 83 Ghost posts with the top 50 phrases of each labelled: 65 tuning pages and 18 held-out pages, 3 per language. The project owner labelled the English and French held-out pages, and reviewed the implementer's labels on the first 8 English and French tuning pages. The implementer labelled the rest. Run `20261001-222553`, after the rarity feature (see [Quality history](quality-history.md)), plus the 14 Portuguese pages (`20261029-215729`):
 
 | language | tuning pages | P@10 | P@50 | held-out pages | P@10 | P@50 |
 |---|---|---|---|---|---|---|
@@ -93,7 +93,8 @@ The set has 69 Ghost posts with the top 50 phrases of each labelled: 54 tuning p
 | es | 11 | 51% | 25% | 3 | 77% | 31% |
 | fr | 11 | 67% | 36% | 3 | 60% | 49% |
 | it | 11 | 56% | 31% | 3 | 53% | 33% |
-| all | 54 | 59% | 34% | 15 | 61% | 37% |
+| pt | 11 | 70% | 48% | 3 | 63% | 50% |
+| all | 65 | 61% | 36% | 18 | 63% | 39% |
 
 Against the previous run (`20261001-213729`), tuning P@50 moved from 30% to 34% and held-out P@50 from 33% to 37%. Every language rose on both splits. The new phrases that rarity brought into the top 50 were labelled before those numbers were kept: the implementer labelled the tuning pages, and a separate agent labelled the held-out pages.
 
@@ -107,9 +108,9 @@ These percentages cannot be reproduced from a clone. The labelled pages are not 
 
 - The HTTP contract, validation and size limits in [development](development.md).
 - The exact-span invariant, including accents, straight and curly apostrophes, elision, emoji, invalid UTF-8 input and input at the HTTP server's 64 KiB limit. The library itself has no size limit. The invariant is enforced by tests, fuzzing and the samples tool.
-- Five language packs behind one interface; the core is language-agnostic.
+- Six language packs behind one interface; the core is language-agnostic.
 - A rarity table per language, so words that are common in general text rank below words that are specific to the page.
-- Verbs are kept out of phrases in all five languages by an embedded, reproducibly trained part-of-speech tagger.
+- Verbs are kept out of phrases in all six languages by an embedded, reproducibly trained part-of-speech tagger.
 - Deterministic ranking and stable tie-breaks.
 - The development server ran within an enforced 1 CPU / 512 MiB cgroup during development. `cmd/bench -cgroup` repeats that measurement on Linux; it is not run in CI.
 
