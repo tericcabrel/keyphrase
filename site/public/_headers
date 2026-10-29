@@ -1,3 +1,3 @@
-/assets/extract.wasm
-  Content-Type: application/wasm
+/assets/extract.wasm.gz
+  Content-Type: application/gzip
   Cache-Control: public, max-age=0, must-revalidate

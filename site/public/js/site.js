@@ -123,23 +123,21 @@
       script.src = "/js/lib/wasm_exec.js";
       script.onload = function () {
         const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("/assets/extract.wasm"), go.importObject)
+        fetch("/assets/extract.wasm.gz")
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error("wasm fetch failed");
+            }
+            const stream = response.body.pipeThrough(new DecompressionStream("gzip"));
+            return new Response(stream).arrayBuffer();
+          })
+          .then(function (bytes) { return WebAssembly.instantiate(bytes, go.importObject); })
           .then(function (result) {
             go.run(result.instance);
             return ready;
           })
           .then(resolve)
-          .catch(function () {
-            return fetch("/assets/extract.wasm")
-              .then(function (response) { return response.arrayBuffer(); })
-              .then(function (bytes) { return WebAssembly.instantiate(bytes, go.importObject); })
-              .then(function (result) {
-                go.run(result.instance);
-                return ready;
-              })
-              .then(resolve)
-              .catch(reject);
-          });
+          .catch(reject);
       };
       script.onerror = reject;
       document.head.appendChild(script);
