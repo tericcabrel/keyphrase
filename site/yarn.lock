@@ -773,7 +773,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "keyphrase-site@workspace:."
   dependencies:
-    sugar-high: "npm:2.5.1"
+    sugar-high: "npm:2.6.4"
     wrangler: "npm:4.153.0"
   dependenciesMeta:
     esbuild:
@@ -980,15 +980,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sugar-high@npm:2.5.1":
-  version: 2.5.1
-  resolution: "sugar-high@npm:2.5.1"
-  peerDependencies:
-    gpu-lexer: ">=0.0.2"
-  peerDependenciesMeta:
-    gpu-lexer:
-      optional: true
-  checksum: 10c0/31bbbd77457f4086d0a7f44ef3fd9005920a49d4e2baad54cf6d53682b7479578162e2a9f26313a1d90698a4d4b402b6a60eef4a340d3580ed0c438a06d017c8
+"sugar-high@npm:2.6.4":
+  version: 2.6.4
+  resolution: "sugar-high@npm:2.6.4"
+  checksum: 10c0/6556cd36962a0c993b3b6db9995538784adaa3acb2b654f4099d50ebe5abacbb5ce731180625c28712a132f55064f419cbb931b5017de59fe140ce924ecccc47
   languageName: node
   linkType: hard
 
