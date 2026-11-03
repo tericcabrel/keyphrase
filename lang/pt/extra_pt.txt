@@ -17,12 +17,22 @@ nenhumas tudo todos todas
 como quem quanto quanta quantos quantas quais cujo cuja cujos cujas próprio
 própria próprios próprias tal tais tanto tanta tantos tantas sob contra
 conforme provavelmente
+# Demonstratives contracted with de, em and a: the Snowball list has only
+# the plain forms.
+desse dessa desses dessas deste desta destes destas disso disto daquele
+daquela daqueles daquelas daquilo nesse nessa nesses nessas neste nesta
+nestes nestas nisso nisto naquele naquela naqueles naquelas naquilo àquele
+àquela àqueles àquelas àquilo dum duma duns dumas
+# Quantifiers and adverbs that open or close noun phrases.
+muita muitas muitos qualquer quaisquer bastante bastantes apenas somente
+geralmente altamente realmente totalmente especialmente principalmente
+normalmente facilmente rapidamente atualmente simplesmente
 sr sra srta dr dra prof eng
 # Datas e unidades.
 segunda-feira terça-feira quarta-feira quinta-feira sexta-feira sábado domingo
 janeiro fevereiro março abril maio junho julho agosto setembro outubro novembro dezembro
 cento centos milhão milhões milhar milhares mil bilhão bilhões bilião biliões
-euros dólares reais quilómetros quilômetros metro metros polegada polegadas
+euro euros dólar dólares libra libras reais quilómetros quilômetros metro metros polegada polegadas
 hora horas minuto minutos segundo segundos
 # Possessivos e substantivos temporais genéricos.
 seu sua seus suas ano anos mês meses semana semanas dia dias vez vezes tempo tempos

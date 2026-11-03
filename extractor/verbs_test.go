@@ -264,11 +264,11 @@ func TestDropLoneNouns(t *testing.T) {
 }
 
 func TestRareCommonNounStays(t *testing.T) {
-	w := DefaultWeights
+	w := DefaultExtractOptions
 	w.DropLoneNouns = true
 	w.LoneNounMinRarity = 0.6
 	text := "See the chloroplast. The budget is small. Volunteers arrived yesterday. It is a Scottish company. The committee met Merkel yesterday."
-	kws, err := ExtractWithWeights(text, "en", 1000, w)
+	kws, _, err := Extract(text, "en", 1000, w)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -285,6 +285,43 @@ func TestRareCommonNounStays(t *testing.T) {
 	}
 }
 
+func TestDropOneOffPhrases(t *testing.T) {
+	text := "The open question stayed. Climate change is real, and climate change is costly. We met Angela Merkel today."
+	tests := []struct {
+		name      string
+		drop      bool
+		minOthers int
+		want      []string
+		wantNot   []string
+	}{
+		{"rule off", false, 0, []string{"open question", "Climate change", "Angela Merkel"}, nil},
+		{"rule on", true, 0, []string{"Climate change", "Angela Merkel"}, []string{"open question"}},
+		{"too few other candidates", true, 10, []string{"open question", "Climate change", "Angela Merkel"}, nil},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			weights := DefaultExtractOptions
+			weights.DropOneOffPhrases = tc.drop
+			weights.OneOffMinOthers = tc.minOthers
+			kws, _, err := Extract(text, "en", 1000, weights)
+			if err != nil {
+				t.Fatal(err)
+			}
+			got := texts(kws)
+			for _, w := range tc.want {
+				if !slices.Contains(got, w) {
+					t.Errorf("missing %q in %q", w, got)
+				}
+			}
+			for _, w := range tc.wantNot {
+				if slices.Contains(got, w) {
+					t.Errorf("unexpected %q in %q", w, got)
+				}
+			}
+		})
+	}
+}
+
 // TestNoKeywordContainsVerb checks every returned keyword of every example
 // and benchmark article against the tokens flagged as verbs.
 func TestNoKeywordContainsVerb(t *testing.T) {
@@ -297,7 +334,7 @@ func TestNoKeywordContainsVerb(t *testing.T) {
 		}
 		tokens, _ := tokenize(text, pack)
 		markTags(text, tokens, pack.Tagger())
-		kws, err := Extract(text, language, 1000)
+		kws, _, err := Extract(text, language, 1000)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -313,7 +350,7 @@ func TestNoKeywordContainsVerb(t *testing.T) {
 
 func TestVerbRemovalOnKnownOutputs(t *testing.T) {
 	readme := "La Banca d'Italia ha rivisto le stime. Il governatore della Banca d'Italia parla dei tassi di interesse e dei tassi di interesse reali."
-	kws, err := Extract(readme, "it", 3)
+	kws, _, err := Extract(readme, "it", 3)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -321,7 +358,7 @@ func TestVerbRemovalOnKnownOutputs(t *testing.T) {
 		t.Errorf("README example still returns the verb: %q", got)
 	}
 
-	kws, err = Extract(mustRead(t, "../examples/es/wiki-inteligencia-artificial.txt"), "es", 10)
+	kws, _, err = Extract(mustRead(t, "../examples/es/wiki-inteligencia-artificial.txt"), "es", 10)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -337,7 +374,7 @@ func TestVerbRemovalOnKnownOutputs(t *testing.T) {
 // occurrences, and the phrase must still be returned. Rarity can rank
 // specific names above it, so the check is the full limit, not the top 10.
 func TestMostlyNonVerbWordKeepsPhrase(t *testing.T) {
-	kws, err := Extract(mustRead(t, "../examples/it/wiki-venezia.txt"), "it", 1000)
+	kws, _, err := Extract(mustRead(t, "../examples/it/wiki-venezia.txt"), "it", 1000)
 	if err != nil {
 		t.Fatal(err)
 	}

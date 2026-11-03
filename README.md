@@ -24,9 +24,11 @@ import (
     _ "github.com/tericcabrel/keyphrase/lang/fr"
 )
 
-kws, err := extractor.Extract(text, "fr", 10)
+kws, counts, err := extractor.Extract(text, "fr", 10)
 // kws[i].Text == text[kws[i].StartByte:kws[i].EndByte]
 ```
+
+`counts` reports the words in the text, the candidate phrases, and the phrases returned. Leave the `ExtractOptions` argument out for `DefaultExtractOptions`. [Adjusting the output](#adjusting-the-output) shows how to pass one value.
 
 ## Results
 
@@ -53,24 +55,24 @@ connect to the transmission network. Developers also face rising
 steel prices and higher interest rates, which have pushed up the
 cost of building turbines at sea.`
 
-kws, err := extractor.Extract(text, "en", 10)
+kws, counts, err := extractor.Extract(text, "en", 10)
 ```
 
 ```text
-┌─────────────────┬────────┬─────────┐
-│ phrase          │  score │   bytes │
-├─────────────────┼────────┼─────────┤
-│ Offshore wind   │ 1.0000 │    0-13 │
-│ Dogger Bank     │ 0.8017 │ 309-320 │
-│ Britain         │ 0.7768 │   49-56 │
-│ Yorkshire       │ 0.7406 │ 277-286 │
-│ turbines        │ 0.7376 │ 334-342 │
-│ Eiffel Tower    │ 0.7371 │ 365-377 │
-│ National Grid   │ 0.6649 │ 502-515 │
-│ backbone        │ 0.5958 │   37-45 │
-│ wind capacity   │ 0.5389 │ 106-119 │
-│ largest project │ 0.4944 │ 199-214 │
-└─────────────────┴────────┴─────────┘
+┌──────────────────┬────────┬─────────┐
+│ phrase           │  score │   bytes │
+├──────────────────┼────────┼─────────┤
+│ Offshore wind    │ 1.0000 │    0-13 │
+│ Dogger Bank      │ 0.8017 │ 309-320 │
+│ Britain          │ 0.7768 │   49-56 │
+│ Yorkshire        │ 0.7406 │ 277-286 │
+│ turbines         │ 0.7376 │ 334-342 │
+│ Eiffel Tower     │ 0.7371 │ 365-377 │
+│ National Grid    │ 0.6649 │ 502-515 │
+│ backbone         │ 0.5958 │   37-45 │
+│ obstacle         │ 0.4590 │ 492-500 │
+│ Grid connections │ 0.4503 │ 456-472 │
+└──────────────────┴────────┴─────────┘
 ```
 
 French (`fr`). The passage is the start of [examples/fr/tgv-sncf.txt](examples/fr/tgv-sncf.txt).
@@ -97,7 +99,7 @@ vitesse. La SNCF espère ainsi répondre à la hausse de la demande,
 alors que les trains sont souvent complets pendant les vacances
 scolaires.`
 
-kws, err := extractor.Extract(text, "fr", 10)
+kws, counts, err := extractor.Extract(text, "fr", 10)
 ```
 
 ```text
@@ -143,7 +145,7 @@ la facturación mundial.
 España ha sido pionera en la supervisión de la inteligencia
 artificial.`
 
-kws, err := extractor.Extract(text, "es", 10)
+kws, counts, err := extractor.Extract(text, "es", 10)
 ```
 
 ```text
@@ -163,6 +165,29 @@ kws, err := extractor.Extract(text, "es", 10)
 └─────────────────────────────┴────────┴─────────┘
 ```
 
+## Adjusting the output
+
+Two rules leave out phrases that are rarely good keywords. Both are on in `DefaultExtractOptions`. In the English example above, they are why "government", "electricity", "transmission network" and "steel prices" are missing.
+
+| field | default | what it does |
+|---|---|---|
+| `DropLoneNouns` | `true` | Leaves out a single word that is not a name, such as "government". A capitalized name such as "Britain" is always kept. |
+| `LoneNounMinRarity` | `0.6` | Keeps a single common noun anyway when it is rare in everyday text. Rarity runs from 0, an everyday word, to 1, a word the language's reference text never contains: "government" is 0.32, "electricity" 0.53. Lower it to keep more words; 0 drops every single common noun. |
+| `DropOneOffPhrases` | `true` | Leaves out a phrase of two or more words that occurs once and contains no name, such as "transmission network". A phrase that repeats, or contains a name, is always kept. |
+| `OneOffMinOthers` | `10` | Drops those phrases only when at least this many other candidates remain, because in a short text every phrase occurs once. Raise it to keep them in longer texts; 0 always drops them. |
+
+Start from `DefaultExtractOptions`, change the fields, and pass the result:
+
+```go
+options := extractor.DefaultExtractOptions
+options.DropLoneNouns = false     // return "government", "electricity"
+options.DropOneOffPhrases = false // return "transmission network", "steel prices"
+
+kws, counts, err := extractor.Extract(text, "en", 20, options)
+```
+
+A `LoneNounMinRarity` outside 0 to 1 or a negative `OneOffMinOthers` returns `ErrInvalidExtractOptions`. Passing more than one `ExtractOptions` value returns `ErrTooManyExtractOptions`. Turning a rule off returns more phrases, and more of them are generic: the rules were adopted because they raise precision on the evaluation pages ([Quality](docs/quality.md)). The [Try page](https://keyphrase.tericcabrel.com/try/) has the same four settings.
+
 ## Languages
 
 | language | package | code |
@@ -176,7 +201,7 @@ kws, err := extractor.Extract(text, "es", 10)
 
 The blank import registers that language. Import only the languages you need. Each one embeds its own part-of-speech model and rarity table: French is about 3.8 MB gzipped (a 3.0 MB model and an 820 KB table). Import more than one package to bundle a subset. `lang/all` embeds and registers every built-in language.
 
-`lang`, `postag`, and `rarity` are public. `lang.Pack` is how another language is added. `extractor.Extract` and `ExtractWithCounts`, together with the language imports, are the stable call.
+`lang`, `postag`, and `rarity` are public. `lang.Pack` is how another language is added. `extractor.Extract`, together with the language imports, is the call. Omit the `ExtractOptions` argument for `DefaultExtractOptions`, or pass one value to adjust the settings in [Adjusting the output](#adjusting-the-output).
 
 ## Limitations
 

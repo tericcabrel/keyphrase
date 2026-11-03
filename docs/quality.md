@@ -31,9 +31,20 @@ just eval-diff data-text/.runs/<run>.json         # compare with a saved run
 
 `just eval` runs `go run ./cmd/eval`. These commands read `data-text/`, which is not in the repository.
 
-- `P@10` and `P@50` are good phrases divided by judged phrases among the first 10 and 50, in score order. `?` phrases are excluded and counted separately. `missed` counts phrases labelled good that were not returned.
-- `-draft` only appends; existing lines are never rewritten. To add a text, drop it into `data-text/<lang>/` and run `just eval-draft`; to relabel, edit the marks or delete the labels file and draft again.
-- `just eval-diff` compares only the documents present in both runs and scores both with the current labels, so a corrected label or an added text can't move the deltas. Documents present in only one run are listed separately. For each shared document it lists the phrases added and dropped with their labels.
+- The evaluation keeps every phrase the extractor returns, not only the labelled top, because a caller with a higher limit sees the rest. `-limit N` cuts the output to N instead.
+- `P@10`, `P@50` and `P@100` are good phrases divided by judged phrases among the first 10, 50 and 100, in score order. `G@10`, `G@50` and `G@100` are the mean number of good phrases per page in the same ranks. A change that returns fewer phrases can raise P@k by leaving out awkward ones without adding a good one; G@k shows that, because it can't rise that way. `?` phrases are excluded and counted separately. `A`, `I` and `?` count the first 100. `missed` counts phrases labelled good that were not returned.
+- The rank-band table gives, for ranks 1–10, 11–50, 51–100 and 101 onward, the precision among judged phrases and the share of the band that is judged. A band that is mostly unjudged has an unreliable precision: the labels there are often left over from earlier runs, when those phrases ranked higher.
+- Past rank 100, only a fixed sample of about one phrase in five is labelled and scored. A phrase is in the sample when a hash of its page and normalized text says so, not its rank, so a ranking change does not reshuffle the sample, and only phrases that newly appear need labels. Labels on phrases outside the sample are ignored there, so the 101+ precision is an unbiased estimate of the whole tail.
+- The defect checks flag phrases at every rank without needing labels. Each one is a heuristic, so the report also shows how many of a check's labelled flags are `A` or `I`:
+  - `function-word-edge`: the first or last word is mostly a determiner, pronoun, preposition, conjunction, particle or adverb ("desse artigo", "internacionais geralmente");
+  - `verb`: a word is mostly a verb ("torna ativos valiosos");
+  - `truncated`: the phrase ends on a word that is mostly an adjective, and the next word on the same line is mostly a noun ("talentos de alta" before "qualidade");
+  - `fragment`: a higher-ranked phrase overlaps the phrase or touches it in the text ("remotas internacionais" after "vagas"). Two neighbouring capitalized words, as in a list of names, don't count as touching;
+  - `heading-word`: a single common noun or adjective whose every occurrence is on a heading line ("Criatividade").
+- "Mostly" means at least 80% of at least 3 occurrences in the language's Universal Dependencies treebanks. The treebanks are read from `postag/models/ud/` (`just pos-fetch`; another directory with `-treebanks`). The form as written is used when the treebank has it often enough, so German "Lernen" is a noun and "lernen" a verb. Without the treebanks, only the `fragment` check runs.
+- Each page is also extracted from its first lines alone, up to the line that reaches 150 words: the size of a passage pasted into the Try page. That short text has its own table, with phrases returned per text, `P@10`, the precision over every returned phrase (`P@all`) and the share flagged by a defect check. A long page repeats its key terms, and the ranking counts repetition, so the full-page numbers can overstate what a pasted paragraph gets. The short text shares the page's labels file; the held-out pages' short texts are held out too.
+- `-draft` only appends; existing lines are never rewritten. It drafts the unlabelled phrases of the tuning pages in the first 100, in the tail sample and in the short text. `-draft-holdout` does the same for the held-out pages and prints only counts, so that someone who doesn't tune can label them. To add a text, drop it into `data-text/<lang>/` and run `just eval-draft`; to relabel, edit the marks or delete the labels file and draft again.
+- `just eval-diff` compares only the documents present in both runs and scores both with the current labels, so a corrected label or an added text can't move the deltas. When the runs used different limits, both are cut to the smaller one. Documents present in only one run are listed separately. The short texts get their own delta tables. For each shared document it lists the phrases added and dropped with their labels, and for each check both runs ran, the share of returned phrases it flags.
 - Held-out pages, listed in `data-text/holdout.txt`, check whether a change generalises to pages the rules were not tuned on. They are labelled like the others, but the report and the diff show them only as per-language totals in their own table, and the verbose listing and the phrase diffs skip them. Don't read their phrases while tuning: if the tuning pages improve and the held-out pages don't, the change fits the tuning pages rather than the language.
 
 `go run ./cmd/eval -v -save=false` lists unjudged and missed phrases per document.
@@ -84,21 +95,27 @@ All 69 pages pass, 11 of them with accepted lines. For the first 20 pages, which
 
 The evaluation was restarted from scratch on the cleanly extracted texts. The earlier run labelled texts full of page chrome, so its numbers are not comparable and it is kept only in the archive.
 
-The set has 83 Ghost posts with the top 50 phrases of each labelled: 65 tuning pages and 18 held-out pages, 3 per language. The project owner labelled the English and French held-out pages, and reviewed the implementer's labels on the first 8 English and French tuning pages. The implementer labelled the rest. Run `20261001-222553`, after the rarity feature (see [Quality history](quality-history.md)), plus the 14 Portuguese pages (`20261029-215729`):
+The set has 84 Ghost posts: 66 tuning pages and 18 held-out pages, 3 per language. Each page has its first 100 phrases labelled, the 1-in-5 sample past rank 100, and every phrase of its short text. The project owner labelled the English and French held-out pages of the first top-50 round and reviewed the implementer's labels on the first 8 English and French tuning pages. The implementer labelled the other tuning pages, and separate agents, which report only counts, labelled the held-out phrases added since. Run `20261030-003417`. G@k is the mean number of good phrases per page in the first k:
 
-| language | tuning pages | P@10 | P@50 | held-out pages | P@10 | P@50 |
+| split | pages | P@10 | P@50 | P@100 | G@10 | G@50 | G@100 | 101+ sample | short P@10 | short, all phrases |
+|---|---|---|---|---|---|---|---|---|---|---|
+| tuning | 66 | 64% | 38% | 28% | 6.4 | 18.4 | 23.7 | 14% | 43% | 33% |
+| held-out | 18 | 67% | 42% | 32% | 6.7 | 20.4 | 27.6 | 13% | 47% | 33% |
+
+| language | P@10 | P@100 | short P@10 | held-out P@10 | held-out P@100 | held-out short P@10 |
 |---|---|---|---|---|---|---|
-| de | 11 | 54% | 32% | 3 | 50% | 22% |
-| en | 10 | 65% | 45% | 3 | 67% | 51% |
-| es | 11 | 51% | 25% | 3 | 77% | 31% |
-| fr | 11 | 67% | 36% | 3 | 60% | 49% |
-| it | 11 | 56% | 31% | 3 | 53% | 33% |
-| pt | 11 | 70% | 48% | 3 | 63% | 50% |
-| all | 65 | 61% | 36% | 18 | 63% | 39% |
+| de | 54% | 26% | 39% | 53% | 22% | 40% |
+| en | 66% | 33% | 44% | 70% | 39% | 37% |
+| es | 56% | 20% | 37% | 80% | 31% | 60% |
+| fr | 75% | 27% | 43% | 60% | 32% | 57% |
+| it | 60% | 24% | 35% | 63% | 22% | 41% |
+| pt | 72% | 38% | 58% | 73% | 43% | 44% |
 
-Against the previous run (`20261001-213729`), tuning P@50 moved from 30% to 34% and held-out P@50 from 33% to 37%. Every language rose on both splits. The new phrases that rarity brought into the top 50 were labelled before those numbers were kept: the implementer labelled the tuning pages, and a separate agent labelled the held-out pages.
+Until run `20261030-001512`, `cmd/eval` turned off the lone-noun rule unless a flag turned it back on, so earlier runs scored a configuration `Extract` does not use, and their numbers are lower for that reason. A run now scores `DefaultExtractOptions` unless a flag overrides it.
 
-The first 20 pages scored 35% P@50 on their own before rarity; the 34 pages added later are harder. Of the 2,700 tuning phrases in this run, 1,724 are awkward and 71 irrelevant, and 30 good phrases from earlier labels are no longer returned. Most awkward ones are single generic nouns ("trabajo", "Inhalte", "season"), fragments of longer names or titles ("Autodromo Enzo", "Normandie Rouen"), and, in German, noun phrases cut around a genitive or preposition ("Beitrag zum Architekt", "Arbeitstag pro"). Personal essays and stories with few names score lowest.
+A page returns 90 to 250 phrases on average, depending on the language, and precision falls with rank: 64% in the first 10, 31% at ranks 11–50, 15% at 51–100 and about 14% after. A caller who raises the limit past about 50 gets mostly awkward phrases. A short text of about 150 words returns about 17 phrases, and its first 10 are about 20 points worse than a full page's. Almost none are irrelevant; most are awkward: bare nouns that pass the rarity threshold but are cut from a longer phrase ("machinery", "subordination"), verbs the tagger misses ("Mantén", "Posso"), and pieces of longer names ("sapiens" from "Homo sapiens"). The defect checks flag 3% of the first 10 and 7% of the tail; 93–100% of their labelled flags are not good.
+
+Rarity (see [Quality history](quality-history.md)) moved tuning P@50 from 30% to 34% and held-out P@50 from 33% to 37%, with every language up on both splits.
 
 All labels follow the rules above. They were settled after the project owner relabelled 4 of the implementer's English and French tuning pages blind (200 phrases): the two agreed on good versus not good for 81% of phrases (Cohen's kappa 0.58), and most disagreements were about passing mentions of specific names, on-topic single common words, and the publisher's own products. The implementer's labels were then updated, and a separate agent reviewed the owner's held-out labels against the same rules. The English and French held-out pages still score above their tuning pages; with 3 pages each, that is within what the choice of pages can explain.
 
@@ -116,10 +133,11 @@ These percentages cannot be reproduced from a clone. The labelled pages are not 
 
 ## Limitations
 
-- **Quality is barely measured.** The only precision numbers (see [Results](#results)) come from 69 Ghost posts, 14 per language (13 in English), with the top 50 phrases of each labelled. Most labels are the implementer's; the project owner labelled the English and French held-out pages, with no measure of agreement between the two. Each language has only 3 held-out pages, so one unusual page moves its held-out numbers by several points. The adverb, lone-adjective, number-word and question-word rules were tuned on the first 20 pages. There are no recall numbers beyond the `missed` count.
+- **Quality is barely measured.** The only precision numbers (see [Results](#results)) come from 84 Ghost posts, 14 per language (13 in English, 15 in Portuguese), with the first 100 phrases of each labelled and a sample after. Most labels are the implementer's; the project owner labelled the English and French held-out pages, with no measure of agreement between the two. Each language has only 3 held-out pages, so one unusual page moves its held-out numbers by several points. The adverb, lone-adjective, number-word and question-word rules were tuned on the first 20 pages. There are no recall numbers beyond the `missed` count.
 - **Verb removal depends on the tagger, which is wrong on about 2-4% of verbs.** It sometimes misses a verb, for example "grew" in "The use of energy grew" is labelled a noun, so the verb can still appear. It sometimes labels a non-verb as a verb, which then can't be part of a phrase; the document-level vote catches this only for words that occur several times. Italian, trained on the least data, is the least accurate.
 - **Lone adjectives still get through when the tagger calls them nouns.** The English model often labels an adjective before a noun as a noun ("complex software", "wider reach", "faster"), and its confidence on those labels overlaps with real nouns, so no threshold separates them. Nouns the tagger mostly calls verbs ("work") are no longer returned alone.
 - **No named-entity information.** A lone common noun is kept only when it is rare in the Leipzig table. A generic noun inside a longer phrase, or a rare one, can still rank high.
+- **Short texts and high limits are weak.** On a pasted paragraph of about 150 words, 43% of the first 10 phrases are good; past rank 50 of a full page, about 1 in 7 is.
 - **German long text is weak**, because capitalization doesn't mark names.
 - **Names get truncated or split** when they contain lowercase words or more than three words.
 - **Plural folding is heuristic**, and there is no cross-language deduplication ("IA" versus "AI").

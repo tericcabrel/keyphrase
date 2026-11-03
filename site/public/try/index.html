@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Try keyphrase in the browser · keyphrase</title>
-  <meta name="description" content="Paste article text or load a page. keyphrase extracts short phrases in your browser for English, French, German, Spanish, Italian, and Portuguese.">
+  <title>Try keyphrase · keyphrase</title>
+  <meta name="description" content="Paste article text or load a page. keyphrase extracts short phrases for English, French, German, Spanish, Italian, and Portuguese.">
   <link rel="canonical" href="https://keyphrase.tericcabrel.com/try/">
   <meta name="theme-color" content="#0a0a0a">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <meta property="og:title" content="Try keyphrase in the browser · keyphrase">
-  <meta property="og:description" content="Paste article text or load a page. keyphrase extracts short phrases in your browser for English, French, German, Spanish, Italian, and Portuguese.">
+  <meta property="og:title" content="Try keyphrase · keyphrase">
+  <meta property="og:description" content="Paste article text or load a page. keyphrase extracts short phrases for English, French, German, Spanish, Italian, and Portuguese.">
   <meta property="og:url" content="https://keyphrase.tericcabrel.com/try/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="keyphrase">
   <meta property="og:image" content="https://keyphrase.tericcabrel.com/og.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Try keyphrase in the browser · keyphrase">
-  <meta name="twitter:description" content="Paste article text or load a page. keyphrase extracts short phrases in your browser for English, French, German, Spanish, Italian, and Portuguese.">
+  <meta name="twitter:title" content="Try keyphrase · keyphrase">
+  <meta name="twitter:description" content="Paste article text or load a page. keyphrase extracts short phrases for English, French, German, Spanish, Italian, and Portuguese.">
   <meta name="twitter:image" content="https://keyphrase.tericcabrel.com/og.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="/styles/site.css">
@@ -75,7 +75,7 @@
     <main>
       <article>
         <h1>Try the extractor</h1>
-        <p>Paste article text, or load a page. Extraction runs in the browser. Text in the box is what gets extracted.</p>
+        <p>Paste article text, or load a page. Text in the box is what gets extracted.</p>
         <form id="try">
           <div class="row">
             <label class="field">
@@ -90,10 +90,34 @@
               </select>
             </label>
             <label class="field">
-              <span>Phrases</span>
-              <input id="limit" type="number" min="1" value="5" inputmode="numeric">
+              <span>Maximum phrases</span>
+              <input id="limit" type="number" min="1" value="10" inputmode="numeric">
             </label>
           </div>
+          <details id="filters-panel" class="filters-panel">
+            <summary>Phrase filters</summary>
+            <fieldset id="filters" class="filters" disabled>
+              <p class="hint">Optional rules that drop weak phrases. Both are on by default. <button id="reset-filters" class="link" type="button">Reset defaults</button></p>
+              <div class="filter">
+                <label class="check"><input id="drop-lone-nouns" type="checkbox" checked> Drop lone common nouns</label>
+                <p class="hint">One word that is not a name (e.g. government). Proper names such as Britain stay.</p>
+                <label class="field inline">
+                  <span>Keep lone word if rarity ≥</span>
+                  <input id="lone-noun-min-rarity" type="number" min="0" max="1" step="0.05" value="0.6" inputmode="decimal">
+                </label>
+                <p class="hint">Rarity 0–1: common → rare. At 0.6, chloroplast stays; government (0.32) is dropped. Lower the threshold to keep more lone words.</p>
+              </div>
+              <div class="filter">
+                <label class="check"><input id="drop-one-off" type="checkbox" checked> Drop one-off phrases</label>
+                <p class="hint">Two or more words that appear once and include no name (e.g. transmission network). Repeats and names stay.</p>
+                <label class="field inline">
+                  <span>Only if at least this many other phrases remain</span>
+                  <input id="one-off-min-others" type="number" min="0" step="1" value="10" inputmode="numeric">
+                </label>
+                <p class="hint">Short text has no repeats, so the rule waits until enough candidates exist. Set 0 to always drop one-offs.</p>
+              </div>
+            </fieldset>
+          </details>
           <div class="field">
             <label for="url">URL</label>
             <div class="url-line">
@@ -109,7 +133,7 @@
           </label>
           <div class="actions">
             <button id="extract" class="primary" type="submit">Extract</button>
-            <p id="wasm-note" class="note" hidden></p>
+            <p id="extract-note" class="note" hidden></p>
           </div>
           <p id="status" class="note" hidden></p>
         </form>

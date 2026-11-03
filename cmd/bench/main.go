@@ -1,13 +1,4 @@
 // Command bench measures end-to-end latency of POST /v1/keywords.
-//
-// It starts server as a child process with GOMAXPROCS=1 (optionally
-// pinned to one CPU with taskset), waits for /healthz, sends warm-up
-// requests, then sends the measured requests round-robin over the article
-// files and reports latency percentiles, throughput and the server's peak
-// resident memory (VmHWM from /proc/<pid>/status, Linux only). With -cgroup
-// the server is moved into a prepared cgroup v2 (for example 1 CPU and
-// 512 MiB) before warm-up, and the cgroup's peak memory, OOM kills and CPU
-// throttling are reported too.
 package main
 
 import (
@@ -32,6 +23,8 @@ import (
 	"sync/atomic"
 	"syscall"
 	"time"
+
+	"github.com/tericcabrel/keyphrase/extractor"
 )
 
 type config struct {
@@ -75,7 +68,7 @@ func main() {
 	flag.IntVar(&c.requests, "n", 2000, "measured requests")
 	flag.IntVar(&c.warmup, "warmup", 200, "warm-up requests (not measured)")
 	flag.IntVar(&c.concurrency, "c", 1, "concurrent clients")
-	flag.IntVar(&c.limit, "limit", 5, "limit field of each request")
+	flag.IntVar(&c.limit, "limit", extractor.DefaultLimit, "limit field of each request")
 	flag.StringVar(&c.cgroup, "cgroup", "", "cgroup v2 directory to move the server into before warm-up")
 	flag.Parse()
 
@@ -205,8 +198,6 @@ func run(c config) (report, error) {
 	}, nil
 }
 
-// cgroupReport describes the cgroup v2 limits the server ran under and what
-// it consumed. Values are copied verbatim from the cgroup files.
 type cgroupReport struct {
 	Path          string `json:"path"`
 	MemoryMax     string `json:"memory_max"`
@@ -317,8 +308,7 @@ func waitHealthy(client *http.Client, base string) error {
 	return fmt.Errorf("server at %s did not become healthy", base)
 }
 
-// memStatus returns VmHWM (peak RSS) and VmRSS of pid. With taskset the
-// direct child is the server itself, because taskset execs the command.
+// taskset execs the server, so the direct child is the process to read.
 func memStatus(pid int) (peak, current string) {
 	f, err := os.Open(fmt.Sprintf("/proc/%d/status", pid))
 	if err != nil {

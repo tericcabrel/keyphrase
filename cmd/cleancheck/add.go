@@ -10,23 +10,18 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/tericcabrel/keyphrase/internal/evalset"
+	"github.com/tericcabrel/keyphrase/internal/eval"
 	"github.com/tericcabrel/keyphrase/internal/webtext"
 	"github.com/tericcabrel/keyphrase/lang"
 )
 
-// ghostGenerator matches the generator tag every Ghost site sets.
 var ghostGenerator = regexp.MustCompile(`(?i)<meta\s+name="generator"\s+content="Ghost\b`)
 
-// entry is one line of a URL list: "<lang> <url>", or "<lang> <url> holdout"
-// for a held-out page.
 type entry struct {
 	lang, url string
 	holdout   bool
 }
 
-// readURLList reads a URL list. Blank lines and lines starting with # are
-// skipped.
 func readURLList(path string) ([]entry, error) {
 	lines, err := readLines(path)
 	if err != nil {
@@ -51,11 +46,6 @@ func readURLList(path string) ([]entry, error) {
 	return out, nil
 }
 
-// addPages fetches every listed page that is not saved yet and writes it as
-// <dir>/<lang>/<name>.html with its address in <name>.url. It returns the
-// names of the pages it saved, and the name of every listed page that is
-// saved now, by URL. A page that can't be fetched or isn't a Ghost post
-// (unless anyCMS) is reported and skipped.
 func addPages(dir string, entries []entry, anyCMS bool) (added []string, saved map[string]string) {
 	saved = savedURLs(dir)
 	for _, e := range entries {
@@ -98,8 +88,6 @@ func addPages(dir string, entries []entry, anyCMS bool) (added []string, saved m
 	return added, saved
 }
 
-// markHoldout adds the saved pages of the entries marked holdout to the
-// held-out list, including pages saved by an earlier run.
 func markHoldout(dir string, entries []entry, saved map[string]string) {
 	var names []string
 	for _, e := range entries {
@@ -107,7 +95,7 @@ func markHoldout(dir string, entries []entry, saved map[string]string) {
 			names = append(names, name)
 		}
 	}
-	added, err := evalset.AddHoldout(dir, names)
+	added, err := eval.AddHoldout(dir, names)
 	if err != nil {
 		fatal(err)
 	}
@@ -116,7 +104,6 @@ func markHoldout(dir string, entries []entry, saved map[string]string) {
 	}
 }
 
-// savedURLs maps the address in every <lang>/<name>.url to the page name.
 func savedURLs(dir string) map[string]string {
 	out := map[string]string{}
 	files, _ := filepath.Glob(filepath.Join(dir, "*", "*.url"))
@@ -131,9 +118,7 @@ func savedURLs(dir string) map[string]string {
 	return out
 }
 
-// siteName is the part of the host before its last dot, without a leading
-// "www.", "blog." or similar: "blog.elloha.com" gives "elloha" and
-// "mag.ticketsms.it" gives "ticketsms". An IP address gives "page".
+// The registrable label: "blog.teco.com" is "teco", An IP address is "page".
 func siteName(rawURL string) string {
 	u, err := url.Parse(rawURL)
 	if err != nil || u.Hostname() == "" || net.ParseIP(u.Hostname()) != nil {
@@ -150,12 +135,9 @@ func siteName(rawURL string) string {
 	return labels[i]
 }
 
-// secondLevel holds the labels that sit under a country code, as in
-// "example.co.uk" or "example.com.mx".
+// Labels that sit under a country code, as in "example.co.uk".
 var secondLevel = map[string]bool{"co": true, "com": true, "org": true, "net": true, "gov": true, "ac": true, "edu": true}
 
-// freeName returns base, or base-2, base-3 and so on when a page of that
-// name already exists in the language folder.
 func freeName(dir, language, base string) string {
 	name := base
 	for i := 2; ; i++ {

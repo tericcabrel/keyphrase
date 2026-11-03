@@ -30,7 +30,7 @@ func TestRareWordOutranksCommon(t *testing.T) {
 		phraseAt([]string{"people"}, 20, 1),
 		phraseAt([]string{"chloroplast"}, 20, 1),
 	}
-	rank(phrases, nil, 100, Weights{Rarity: 1}, pack, table)
+	rank(phrases, nil, 100, weights{rarity: 1}, pack, table)
 	if phrases[1].rawScore <= phrases[0].rawScore {
 		t.Fatalf("rare %v, common %v", phrases[1].rawScore, phrases[0].rawScore)
 	}
@@ -44,8 +44,8 @@ func TestPhraseRarityMeanAndMax(t *testing.T) {
 	}
 	mean := []*phrase{phraseAt([]string{"people", "chloroplast"}, 10, 1)}
 	maxP := []*phrase{phraseAt([]string{"people", "chloroplast"}, 10, 1)}
-	rank(mean, nil, 100, Weights{Rarity: 1}, pack, table)
-	rank(maxP, nil, 100, Weights{Rarity: 1, PhraseRarityMax: true}, pack, table)
+	rank(mean, nil, 100, weights{rarity: 1}, pack, table)
+	rank(maxP, nil, 100, weights{rarity: 1, phraseRarityMax: true}, pack, table)
 	if maxP[0].rawScore <= mean[0].rawScore {
 		t.Fatalf("max %v, mean %v", maxP[0].rawScore, mean[0].rawScore)
 	}
@@ -65,7 +65,7 @@ func TestPluralUsesSingularRarity(t *testing.T) {
 		t.Fatalf("stem score %v ok=%v", want, ok)
 	}
 	phrases := []*phrase{phraseAt([]string{"chloroplasts"}, 10, 1)}
-	rank(phrases, nil, 100, Weights{Rarity: 1}, pack, table)
+	rank(phrases, nil, 100, weights{rarity: 1}, pack, table)
 	if math.Abs(phrases[0].rawScore-want) > 1e-12 {
 		t.Fatalf("plural rarity %v, want stem %v", phrases[0].rawScore, want)
 	}
@@ -75,9 +75,9 @@ func TestMissingTableDropsRarityWeight(t *testing.T) {
 	pack, _ := lang.Get("en")
 	without := []*phrase{phraseAt([]string{"people"}, 10, 2), phraseAt([]string{"weather"}, 80, 1)}
 	with := []*phrase{phraseAt([]string{"people"}, 10, 2), phraseAt([]string{"weather"}, 80, 1)}
-	base := Weights{Frequency: 1, Early: 1}
+	base := weights{frequency: 1, early: 1}
 	rank(without, nil, 100, base, pack, nil)
-	base.Rarity = 5
+	base.rarity = 5
 	rank(with, nil, 100, base, pack, nil)
 	for i := range without {
 		if math.Abs(without[i].rawScore-with[i].rawScore) > 1e-12 {
@@ -97,7 +97,7 @@ func TestMinSingleRarityDropsCommonWords(t *testing.T) {
 		phraseAt([]string{"chloroplast"}, 10, 1),
 		phraseAt([]string{"people", "chloroplast"}, 10, 2),
 	}
-	got := rank(phrases, nil, 100, Weights{Rarity: 1, MinSingleRarity: 0.5}, pack, table)
+	got := rank(phrases, nil, 100, weights{rarity: 1, minSingleRarity: 0.5}, pack, table)
 	for _, p := range got {
 		if len(p.contentNorms) == 1 && p.contentNorms[0] == "people" {
 			t.Fatal("common single word kept")

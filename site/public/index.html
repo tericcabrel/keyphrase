@@ -90,7 +90,7 @@ connect to the transmission network. Developers also face rising
 steel prices and higher interest rates, which have pushed up the
 cost of building turbines at sea.`
 
-kws, err := extractor.Extract(text, "en", 10)</code></pre>
+kws, counts, err := extractor.Extract(text, "en", 10)</code></pre>
         <p>The call returns these phrases.</p>
         <table>
           <thead>
@@ -105,8 +105,8 @@ kws, err := extractor.Extract(text, "en", 10)</code></pre>
             <tr><td>Eiffel Tower</td><td>0.7371</td><td>365-377</td></tr>
             <tr><td>National Grid</td><td>0.6649</td><td>502-515</td></tr>
             <tr><td>backbone</td><td>0.5958</td><td>37-45</td></tr>
-            <tr><td>wind capacity</td><td>0.5389</td><td>106-119</td></tr>
-            <tr><td>largest project</td><td>0.4944</td><td>199-214</td></tr>
+            <tr><td>obstacle</td><td>0.4590</td><td>492-500</td></tr>
+            <tr><td>Grid connections</td><td>0.4503</td><td>456-472</td></tr>
           </tbody>
         </table>
         <p>Supported languages are English, French, German, Spanish, Italian, and Portuguese. Requires Go 1.26.</p>

@@ -40,8 +40,15 @@
   const loadButton = document.querySelector("#load");
   const text = document.querySelector("#text");
   const limitInput = document.querySelector("#limit");
+  const filters = document.querySelector("#filters");
+  const dropLoneNouns = document.querySelector("#drop-lone-nouns");
+  const loneNounMinRarity = document.querySelector("#lone-noun-min-rarity");
+  const dropOneOff = document.querySelector("#drop-one-off");
+  const oneOffMinOthers = document.querySelector("#one-off-min-others");
+  const resetFilters = document.querySelector("#reset-filters");
+  let defaultSettings = null;
   const extractButton = document.querySelector("#extract");
-  const wasmNote = document.querySelector("#wasm-note");
+  const extractNote = document.querySelector("#extract-note");
   const quotaNote = document.querySelector("#quota-note");
   const status = document.querySelector("#status");
   const results = document.querySelector("#results");
@@ -76,23 +83,27 @@
     });
   });
 
-  let wasmReady = false;
+  let extractReady = false;
 
   extractButton.disabled = true;
-  wasmNote.hidden = false;
-  wasmNote.textContent = "The extractor is still loading.";
+  filters.disabled = true;
 
-  loadWasm()
-    .then(function () {
-      wasmReady = true;
+  loadExtractConfig()
+    .then(function (body) {
+      if (!body || !body.configured) {
+        extractNote.hidden = false;
+        extractNote.textContent = "Extraction is not configured on this host.";
+        return;
+      }
+      extractReady = true;
       extractButton.disabled = false;
-      wasmNote.hidden = true;
+      filters.disabled = false;
+      defaultSettings = body.defaults;
+      applySettings(defaultSettings);
     })
     .catch(function () {
-      wasmReady = false;
-      extractButton.disabled = true;
-      wasmNote.hidden = false;
-      wasmNote.textContent = "The extractor could not be loaded.";
+      extractNote.hidden = false;
+      extractNote.textContent = "Extraction could not be reached.";
     });
 
   refreshQuota();
@@ -112,36 +123,51 @@
     extract();
   });
 
-  function loadWasm() {
-    return new Promise(function (resolve, reject) {
-      const ready = new Promise(function (readyResolve) {
-        addEventListener("keyphrase-ready", function () {
-          readyResolve();
-        }, { once: true });
-      });
-      const script = document.createElement("script");
-      script.src = "/js/lib/wasm_exec.js";
-      script.onload = function () {
-        const go = new Go();
-        fetch("/assets/extract.wasm.gz")
-          .then(function (response) {
-            if (!response.ok) {
-              throw new Error("wasm fetch failed");
-            }
-            const stream = response.body.pipeThrough(new DecompressionStream("gzip"));
-            return new Response(stream).arrayBuffer();
-          })
-          .then(function (bytes) { return WebAssembly.instantiate(bytes, go.importObject); })
-          .then(function (result) {
-            go.run(result.instance);
-            return ready;
-          })
-          .then(resolve)
-          .catch(reject);
-      };
-      script.onerror = reject;
-      document.head.appendChild(script);
+  dropLoneNouns.addEventListener("change", syncFilterInputs);
+  dropOneOff.addEventListener("change", syncFilterInputs);
+  resetFilters.addEventListener("click", function () {
+    applySettings(defaultSettings);
+  });
+
+  function loadExtractConfig() {
+    return fetch("/extract").then(function (response) {
+      return response.json();
     });
+  }
+
+  function applySettings(settings) {
+    if (!settings) {
+      return;
+    }
+    dropLoneNouns.checked = settings.drop_lone_nouns;
+    loneNounMinRarity.value = String(settings.lone_noun_min_rarity);
+    dropOneOff.checked = settings.drop_one_off_phrases;
+    oneOffMinOthers.value = String(settings.one_off_min_others);
+    syncFilterInputs();
+  }
+
+  function syncFilterInputs() {
+    loneNounMinRarity.disabled = !dropLoneNouns.checked;
+    oneOffMinOthers.disabled = !dropOneOff.checked;
+  }
+
+  function readSettings() {
+    const rarity = Number(loneNounMinRarity.value);
+    if (loneNounMinRarity.value.trim() === "" || !(rarity >= 0 && rarity <= 1)) {
+      setStatus("Rarity must be a number from 0 to 1.");
+      return null;
+    }
+    const minOthers = Number(oneOffMinOthers.value);
+    if (oneOffMinOthers.value.trim() === "" || !Number.isInteger(minOthers) || minOthers < 0) {
+      setStatus("The number of other phrases must be a whole number, 0 or more.");
+      return null;
+    }
+    return {
+      drop_lone_nouns: dropLoneNouns.checked,
+      lone_noun_min_rarity: rarity,
+      drop_one_off_phrases: dropOneOff.checked,
+      one_off_min_others: minOthers,
+    };
   }
 
   function refreshQuota() {
@@ -193,7 +219,6 @@
       body: JSON.stringify({ url: url }),
     })
       .then(function (response) {
-        // The Cloudflare rate limiting rule answers 429 with an HTML page.
         if (response.status === 429) {
           return { status: 429, body: {} };
         }
@@ -233,7 +258,7 @@
   }
 
   function extract() {
-    if (!wasmReady) {
+    if (!extractReady) {
       return;
     }
     const pasted = text.value;
@@ -259,20 +284,45 @@
   function runExtract(source) {
     setStatus("");
     const limit = Number(limitInput.value);
-    let raw;
-    try {
-      raw = keyphraseExtract(source, language.value, limit);
-    } catch (err) {
-      setStatus("The extractor could not be loaded.");
-      return;
-    }
-    const body = JSON.parse(raw);
-    if (body.error) {
+    const settings = readSettings();
+    if (!settings) {
       results.hidden = true;
-      setStatus(body.error);
       return;
     }
-    render(source, body);
+    extractButton.disabled = true;
+    fetch("/extract", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        text: source,
+        language: language.value,
+        limit: limit,
+        drop_lone_nouns: settings.drop_lone_nouns,
+        lone_noun_min_rarity: settings.lone_noun_min_rarity,
+        drop_one_off_phrases: settings.drop_one_off_phrases,
+        one_off_min_others: settings.one_off_min_others,
+      }),
+    })
+      .then(function (response) {
+        return response.json().then(function (body) {
+          return { status: response.status, body: body };
+        });
+      })
+      .then(function (result) {
+        if (result.body.error) {
+          results.hidden = true;
+          setStatus(result.body.error);
+          return;
+        }
+        render(source, result.body);
+      })
+      .catch(function () {
+        results.hidden = true;
+        setStatus("Extraction failed.");
+      })
+      .finally(function () {
+        extractButton.disabled = false;
+      });
   }
 
   function render(source, body) {
@@ -341,9 +391,9 @@
     const rows = [
       ["Words", counts.words],
       ["Extracted", counts.extracted],
-      ["Ranked", counts.ranked],
+      ["Returned", counts.returned],
       ["Extracted, more than one word", counts.extracted_more_than_one_word],
-      ["Ranked, more than one word", counts.ranked_more_than_one_word],
+      ["Returned, more than one word", counts.returned_more_than_one_word],
     ];
     rows.forEach(function (row) {
       const wrap = document.createElement("div");
@@ -371,7 +421,7 @@
     });
     let html = "";
     let cursor = 0;
-    marks.forEach(function (keyword, index) {
+    marks.forEach(function (keyword) {
       const start = atByte.get(keyword.keyword.start_byte);
       const end = atByte.get(keyword.keyword.end_byte);
       if (start == null || end == null || start < cursor || end < start) {

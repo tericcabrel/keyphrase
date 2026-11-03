@@ -20,8 +20,6 @@ func init() {
 		Lists:         [][]byte{lang.MustRead(files, "snowball_es.txt"), lang.MustRead(files, "extra_es.txt")},
 		Connectors:    "de del la el los las para",
 		Abbreviations: "sr sra srta dr dra ud uds núm pág p.ej av avda",
-		// Strip a plural -s, then a final -e, so that "presidente" and
-		// "presidentes", or "ciudad" and "ciudades", share a key.
 		Variant: func(word string) string {
 			return lang.TrimSuffixMin(lang.TrimSuffixMin(word, 3, "s"), 3, "e")
 		},

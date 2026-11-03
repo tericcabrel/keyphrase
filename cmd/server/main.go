@@ -13,8 +13,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/tericcabrel/keyphrase/internal/httpapi"
-
 	_ "github.com/tericcabrel/keyphrase/lang/all"
 )
 
@@ -36,7 +34,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:              *addr,
-		Handler:           httpapi.NewHandler(),
+		Handler:           NewHandler(),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       15 * time.Second,
 		WriteTimeout:      15 * time.Second,

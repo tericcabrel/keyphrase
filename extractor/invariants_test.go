@@ -75,15 +75,16 @@ func TestExamplesSatisfyContract(t *testing.T) {
 		}
 		t.Run(filepath.Base(f), func(t *testing.T) {
 			for _, limit := range []int{1, 5, 1000} {
-				kws, err := Extract(string(raw), language, limit)
+				kws, _, err := Extract(string(raw), language, limit)
 				if err != nil {
 					t.Fatal(err)
 				}
 				checkInvariants(t, string(raw), limit, kws)
-				// Lone common nouns are not keywords, so some articles no
-				// longer reach 25. Small limits must still be filled, and a
-				// limit of 1000 returns every keyword the article has.
-				if want := min(limit, 19); len(kws) < want {
+				// Lone common nouns and one-off common phrases are not
+				// keywords, so a 150-word article returns 12 to 20. Small
+				// limits must still be filled, and a limit of 1000 returns
+				// every keyword the article has.
+				if want := min(limit, 12); len(kws) < want {
 					t.Errorf("limit %d: got only %d keywords from a full article, want at least %d", limit, len(kws), want)
 				}
 			}
@@ -119,7 +120,7 @@ func TestRandomTextSatisfiesContract(t *testing.T) {
 		text := b.String()
 		language := languages[i%len(languages)]
 		limit := 1 + r.IntN(50)
-		kws, err := Extract(text, language, limit)
+		kws, _, err := Extract(text, language, limit)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -132,7 +133,7 @@ func FuzzExtract(f *testing.F) {
 	f.Add("Die Bundesregierung plant z. B. neue Regeln.", "de", 3)
 	f.Add("\xff\xfe invalid UTF-8 Banca d'Italia", "it", 20)
 	f.Fuzz(func(t *testing.T, text, language string, limit int) {
-		kws, err := Extract(text, language, limit)
+		kws, _, err := Extract(text, language, limit)
 		if err != nil {
 			return
 		}
@@ -158,7 +159,7 @@ func TestTextAtInputLimit(t *testing.T) {
 	if len(text) != size {
 		t.Fatalf("built %d bytes, want %d", len(text), size)
 	}
-	kws, err := Extract(text, "fr", 1000)
+	kws, _, err := Extract(text, "fr", 1000)
 	if err != nil {
 		t.Fatal(err)
 	}

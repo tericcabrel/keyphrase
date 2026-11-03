@@ -9,7 +9,7 @@ import (
 
 func ExampleExtract() {
 	text := "Offshore wind farms are growing along the Yorkshire coast."
-	kws, err := extractor.Extract(text, "en", 2)
+	kws, _, err := extractor.Extract(text, "en", 2)
 	if err != nil {
 		panic(err)
 	}

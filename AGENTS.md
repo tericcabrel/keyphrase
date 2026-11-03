@@ -1,6 +1,6 @@
 # Project guidelines
 
-keyphrase is a library. A caller passes text, a language, and a limit, and receives phrases. The HTTP server and the local commands are development tools.
+keyphrase is a library. A caller passes text, a language, a limit, and an optional ExtractOptions value, and receives phrases and a count summary. The HTTP server and the local commands are development tools.
 
 How extraction works, the layout, and how quality is judged already live in these docs. This file states the coding rules.
 
@@ -24,7 +24,7 @@ The library has no domain, use case, or repository packages. Keep new behavior i
 
 A returned phrase is a slice of the caller's text, for example `text[start:end]`. Leave the caller's string unchanged.
 
-Public results are values. They have no setters. A selected phrase, a count summary, and a set of ranking weights are examples.
+Public results are values. They have no setters. A selected phrase, a count summary, and an ExtractOptions value are examples.
 
 Invalid input returns a sentinel error. At the fetch boundary, return a typed error that carries the status to use. Empty or whitespace-only text is success and returns an empty result.
 
@@ -34,7 +34,7 @@ Phrase order is part of the contract: score descending, then earlier position, t
 
 ## Dependency injection
 
-Pass policy as a value. Ranking weights on the extraction call are an example. Prefer a value parameter over an interface.
+Pass policy as a value. ExtractOptions on the extraction call are an example. Prefer a value parameter over an interface.
 
 Language packs register themselves when their package is imported. That registry is how a program adds a language. Leave it as the extension point.
 

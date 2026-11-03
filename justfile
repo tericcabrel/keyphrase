@@ -65,17 +65,14 @@ rarity-fetch:
 rarity-build:
     sh rarity/build.sh
 
-# Build the browser extractor into the documentation site.
+# Prepare the documentation site static assets.
 [group('site')]
 site-build:
     mkdir -p site/public/assets site/public/js/lib
-    GOOS=js GOARCH=wasm go build -ldflags="-s -w" -o site/public/assets/extract.wasm ./cmd/sitewasm
-    gzip -f -9 site/public/assets/extract.wasm
-    root="$(go env GOROOT)"; if [ -f "$root/lib/wasm/wasm_exec.js" ]; then src="$root/lib/wasm/wasm_exec.js"; else src="$root/misc/wasm/wasm_exec.js"; fi; cp -f "$src" site/public/js/lib/wasm_exec.js && chmod u+w site/public/js/lib/wasm_exec.js
 
-# Build the browser extractor and serve the documentation site.
+# Serve the documentation site.
 [group('site')]
-site: site-build
+site:
     cd site && yarn dev
 
 # Check the URL-text fixture and the host allowlist. Does not call Firecrawl.

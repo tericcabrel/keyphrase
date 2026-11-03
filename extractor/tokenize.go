@@ -19,40 +19,24 @@ const (
 	kindPunct
 )
 
-// token is a span of the original text. Offsets are half-open byte indices
-// into the input; norm is used only for counting and comparison.
 type token struct {
-	start, end int
-	kind       tokenKind
-	norm       string
-	sentence   int
-	// upper: the first rune is uppercase. allCaps: every letter is uppercase
-	// and there are at least two letters.
-	upper, allCaps bool
-	// sentenceInitial: first word token of its sentence.
+	start, end      int
+	kind            tokenKind
+	norm            string
+	sentence        int
+	upper, allCaps  bool
 	sentenceInitial bool
-	// number: contains a digit and no letters.
-	number bool
-	// letters is the rune count of letters, used for minimum-length checks.
-	letters int
-	// newline is set on space tokens that contain a line break.
-	newline bool
-	// verb: the part-of-speech tagger labelled this word VERB or AUX.
-	verb bool
-	// adverb: the tagger labelled this word ADV ("probably", "later").
-	adverb bool
-	// needsHead: the tagger did not label this word a noun or name
-	// ("big", "thirty", "nobody"), so it is no phrase on its own.
-	needsHead bool
-	// name: the tagger labelled this word a proper noun or an unclassified
-	// word in at least half its occurrences. A common noun is not a name.
-	name bool
+	number          bool
+	letters         int
+	newline         bool
+	verb            bool
+	adverb          bool
+	needsHead       bool
+	name            bool
 }
 
 type span struct{ start, end int }
 
-// tokenize splits text into sentences and tokens. Every token's offsets refer
-// to text, and the tokens of each sentence cover it contiguously.
 func tokenize(text string, pack lang.Pack) (tokens []token, sentences int) {
 	for i, sentenceSpan := range segmentSentences(text, pack) {
 		sentenceTokens := segmentWords(text, sentenceSpan, i)
@@ -72,12 +56,6 @@ func tokenize(text string, pack lang.Pack) (tokens []token, sentences int) {
 	return tokens, sentences
 }
 
-// segmentSentences applies UAX #29 sentence boundaries, then merges a
-// sentence into the next one when it ends in "X." where X is a known
-// abbreviation, a single letter (initials such as "J. K."), or a dotted form
-// such as "U.S". UAX #29 rule SB8 breaks before an uppercase word after any
-// period, which splits "Dr. Smith" and German "z. B.". Only sentence indices
-// change; offsets are unaffected.
 func segmentSentences(text string, pack lang.Pack) []span {
 	var rawSpans []span
 	state := -1
@@ -173,11 +151,6 @@ func newToken(text string, start, end, sentence int) token {
 	return result
 }
 
-// isMachineToken reports whether segment is an underscore identifier
-// ("SENTRY_PROJECT_DSN") or a source filename ("index.ts", "route.ts").
-// A ".js" token whose stem contains an uppercase letter is a product name
-// ("Node.js", "Vue.js") and is not machine-shaped. "U.S." and "e.g." are
-// not, because their suffix is not a source extension.
 func isMachineToken(segment string) bool {
 	if strings.Contains(segment, "_") {
 		return true
@@ -229,8 +202,6 @@ func isHyphen(text string) bool {
 	return text == "-" || text == "\u2010" || text == "\u2011"
 }
 
-// joinHyphens merges word-hyphen-word runs such as "e-mail" or
-// "Corona-Pandemie", which UAX #29 splits, into one word token.
 func joinHyphens(text string, tokens []token) []token {
 	joined := tokens[:0]
 	for i := 0; i < len(tokens); i++ {
@@ -246,8 +217,6 @@ func joinHyphens(text string, tokens []token) []token {
 	return joined
 }
 
-// extendDottedAbbreviations attaches the final period to dotted forms such as
-// "U.S" so that the phrase reads "U.S.".
 func extendDottedAbbreviations(text string, tokens []token) []token {
 	extended := tokens[:0]
 	for i := 0; i < len(tokens); i++ {
@@ -268,10 +237,6 @@ func mergeTokens(text string, left, right token) token {
 	return merged
 }
 
-// splitClitics separates elided articles ("l'économie" -> "l'" + "économie")
-// and clitic suffixes ("company's" -> "company" + "'s"). The split pieces
-// remain adjacent, so a phrase spanning them still slices exactly from the
-// original text.
 func splitClitics(text string, tokens []token, pack lang.Pack) []token {
 	elisions, clitics := pack.ElisionPrefixes(), pack.CliticSuffixes()
 	if len(elisions) == 0 && len(clitics) == 0 {
@@ -300,7 +265,6 @@ func splitClitics(text string, tokens []token, pack lang.Pack) []token {
 	return split
 }
 
-// apostropheAt returns the byte width of an apostrophe at text[i:], or 0.
 func apostropheAt(text string, i int) int {
 	switch {
 	case strings.HasPrefix(text[i:], "'"):
@@ -311,8 +275,6 @@ func apostropheAt(text string, i int) int {
 	return 0
 }
 
-// elisionCut returns the byte length of a matching elision prefix, including
-// its apostrophe, when a letter follows it.
 func elisionCut(word string, prefixes []string) int {
 	for i := range len(word) {
 		width := apostropheAt(word, i)
@@ -335,7 +297,6 @@ func elisionCut(word string, prefixes []string) int {
 	return 0
 }
 
-// cliticCut returns the byte offset where a matching clitic suffix begins.
 func cliticCut(word string, suffixes []string) int {
 	for i := len(word) - 1; i > 0; i-- {
 		if apostropheAt(word, i) == 0 {

@@ -12,19 +12,6 @@ on:
       - site/package.json
       - site/yarn.lock
       - site/.yarnrc.yml
-      - cmd/sitewasm/**
-      - extractor/**
-      - "!extractor/**/*_test.go"
-      - lang/**
-      - "!lang/**/*_test.go"
-      - "!lang/THIRD_PARTY.md"
-      - postag/**
-      - "!postag/**/*_test.go"
-      - "!postag/models/**"
-      - rarity/**/*.go
-      - "!rarity/**/*_test.go"
-      - go.mod
-      - go.sum
   push:
     branches:
       - main
@@ -46,18 +33,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-
-      - uses: actions/setup-go@v7.0.0
-        with:
-          go-version: "1.27.x"
-
-      - name: Install just
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --tag 1.59.0 --to "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-
-      - name: Build the site
-        run: just site-build
 
       - uses: actions/setup-node@v7.1.0
         with:

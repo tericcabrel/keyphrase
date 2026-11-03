@@ -1,14 +1,4 @@
-// Command build-rarity counts how many sentences each word appears
-// in and writes a rarity table for package rarity.
-//
-// Each argument is a Leipzig *-sentences.txt file: a sentence id, a tab,
-// then the sentence. Words are normalized with extractor.Norms, so the keys
-// match ranking lookups. A word is counted once per sentence and kept when
-// it occurs in at least -min sentences.
-//
-//	go run ./cmd/build-rarity -lang en -out lang/en/rarity.bin.gz \
-//	    rarity/leipzig/eng_news_2024_1M/eng_news_2024_1M-sentences.txt \
-//	    rarity/leipzig/eng_wikipedia_2016_1M/eng_wikipedia_2016_1M-sentences.txt
+// Command build-rarity counts sentences per word and writes a rarity table.
 package main
 
 import (

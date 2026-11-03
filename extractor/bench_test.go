@@ -34,7 +34,7 @@ func benchExtract(b *testing.B, text, language string) {
 	b.ReportAllocs()
 	b.SetBytes(int64(len(text)))
 	for b.Loop() {
-		if _, err := Extract(text, language, DefaultLimit); err != nil {
+		if _, _, err := Extract(text, language, DefaultLimit); err != nil {
 			b.Fatal(err)
 		}
 	}

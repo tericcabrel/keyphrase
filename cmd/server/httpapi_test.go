@@ -1,4 +1,4 @@
-package httpapi
+package main
 
 import (
 	"encoding/json"
@@ -52,7 +52,7 @@ func TestKeywordsOK(t *testing.T) {
 	if ct := rec.Header().Get("Content-Type"); ct != "application/json" {
 		t.Errorf("Content-Type = %q", ct)
 	}
-	res := decode[response](t, rec)
+	res := decode[keywordResponse](t, rec)
 	if res.Language != "en" || len(res.Keywords) == 0 || len(res.Keywords) > 3 {
 		t.Fatalf("unexpected response %+v", res)
 	}
@@ -67,7 +67,7 @@ func TestKeywordsOK(t *testing.T) {
 }
 
 func TestResponseFieldNames(t *testing.T) {
-	rec := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": article, "language": "en", "limit": 1}))
+	rec := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": article, "language": "en", "limit": 1, "counts": false}))
 	var raw map[string]any
 	if err := json.Unmarshal(rec.Body.Bytes(), &raw); err != nil {
 		t.Fatal(err)
@@ -85,6 +85,9 @@ func TestResponseFieldNames(t *testing.T) {
 
 func TestDefaultLimitAndNullLimit(t *testing.T) {
 	long := strings.Repeat(article+" Grid connections delay National Grid projects. Steel prices rise. ", 3)
+	explicit := decode[keywordResponse](t, do(t, http.MethodPost, "/v1/keywords",
+		jsonBody(t, map[string]any{"text": long, "language": "en", "limit": extractor.DefaultLimit})))
+	want := len(explicit.Keywords)
 	for _, body := range []string{
 		jsonBody(t, map[string]any{"text": long, "language": "en"}),
 		`{"text":` + jsonBody(t, long) + `,"language":"en","limit":null}`,
@@ -93,8 +96,8 @@ func TestDefaultLimitAndNullLimit(t *testing.T) {
 		if rec.Code != http.StatusOK {
 			t.Fatalf("status %d: %s", rec.Code, rec.Body)
 		}
-		if n := len(decode[response](t, rec).Keywords); n != extractor.DefaultLimit {
-			t.Errorf("got %d keywords, want default %d", n, extractor.DefaultLimit)
+		if n := len(decode[keywordResponse](t, rec).Keywords); n != want {
+			t.Errorf("got %d keywords, want %d (explicit limit %d)", n, want, extractor.DefaultLimit)
 		}
 	}
 }
@@ -105,7 +108,7 @@ func TestLimitBounds(t *testing.T) {
 		if rec.Code != http.StatusOK {
 			t.Errorf("limit %d: status %d", limit, rec.Code)
 		}
-		if n := len(decode[response](t, rec).Keywords); n > limit {
+		if n := len(decode[keywordResponse](t, rec).Keywords); n > limit {
 			t.Errorf("limit %d: %d keywords", limit, n)
 		}
 	}
@@ -113,9 +116,7 @@ func TestLimitBounds(t *testing.T) {
 
 func TestCounts(t *testing.T) {
 	for _, body := range []string{
-		jsonBody(t, map[string]any{"text": article, "language": "en", "limit": 5}),
 		jsonBody(t, map[string]any{"text": article, "language": "en", "limit": 5, "counts": false}),
-		`{"text":` + jsonBody(t, article) + `,"language":"en","counts":null}`,
 	} {
 		rec := do(t, http.MethodPost, "/v1/keywords", body)
 		if rec.Code != http.StatusOK {
@@ -126,15 +127,15 @@ func TestCounts(t *testing.T) {
 			t.Fatal(err)
 		}
 		if _, ok := raw["counts"]; ok {
-			t.Fatalf("counts present without counts=true: %s", rec.Body)
+			t.Fatalf("counts present with counts=false: %s", rec.Body)
 		}
 	}
 
-	rec := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": article, "language": "en", "limit": 5, "counts": true}))
+	rec := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": article, "language": "en", "limit": 5}))
 	if rec.Code != http.StatusOK {
 		t.Fatalf("status %d: %s", rec.Code, rec.Body)
 	}
-	res := decode[response](t, rec)
+	res := decode[keywordResponse](t, rec)
 	if res.Counts == nil {
 		t.Fatal("missing counts")
 	}
@@ -145,7 +146,7 @@ func TestCounts(t *testing.T) {
 		}
 	}
 	c := res.Counts
-	if c.Ranked != len(res.Keywords) || c.RankedMoreThanOneWord != len(returned) || len(c.MoreThanOneWord) != c.ExtractedMoreThanOneWord {
+	if c.Returned != len(res.Keywords) || c.ReturnedMoreThanOneWord != len(returned) || len(c.MoreThanOneWord) != c.ExtractedMoreThanOneWord {
 		t.Errorf("counts = %+v, keywords %d, returned multiword %q", c, len(res.Keywords), returned)
 	}
 	for _, text := range returned {
@@ -153,7 +154,7 @@ func TestCounts(t *testing.T) {
 			t.Errorf("returned %q missing from %q", text, c.MoreThanOneWord)
 		}
 	}
-	if c.Extracted < c.Ranked || c.ExtractedMoreThanOneWord < c.RankedMoreThanOneWord || c.ExtractedMoreThanOneWord > c.Extracted {
+	if c.Extracted < c.Returned || c.ExtractedMoreThanOneWord < c.ReturnedMoreThanOneWord || c.ExtractedMoreThanOneWord > c.Extracted {
 		t.Errorf("extracted counts = %+v", c)
 	}
 	if c.Extracted == 0 || c.Words == 0 {
@@ -164,7 +165,7 @@ func TestCounts(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Fatalf("empty: status %d: %s", rec.Code, rec.Body)
 	}
-	want := `{"language":"en","keywords":[],"counts":{"words":0,"extracted":0,"ranked":0,"extracted_more_than_one_word":0,"ranked_more_than_one_word":0,"more_than_one_word":[]}}`
+	want := `{"language":"en","keywords":[],"counts":{"words":0,"extracted":0,"returned":0,"extracted_more_than_one_word":0,"returned_more_than_one_word":0,"more_than_one_word":[]}}`
 	if got := strings.TrimSpace(rec.Body.String()); got != want {
 		t.Errorf("empty counts body %s", got)
 	}
@@ -177,9 +178,9 @@ func TestEmptyTextEveryLanguage(t *testing.T) {
 			if rec.Code != http.StatusOK {
 				t.Fatalf("%s: status %d", l, rec.Code)
 			}
-			want := `{"language":"` + l + `","keywords":[]}`
-			if got := strings.TrimSpace(rec.Body.String()); got != want {
-				t.Errorf("%s: body %s, want %s", l, got, want)
+			res := decode[keywordResponse](t, rec)
+			if res.Language != l || len(res.Keywords) != 0 || res.Counts == nil || res.Counts.Words != 0 {
+				t.Errorf("%s: body %+v", l, res)
 			}
 		}
 	}
@@ -225,8 +226,8 @@ func TestBadRequests(t *testing.T) {
 }
 
 func TestTextSizeLimit(t *testing.T) {
-	atLimit := strings.Repeat("wind ", MaxTextBytes/5) + strings.Repeat("x", MaxTextBytes%5)
-	if len(atLimit) != MaxTextBytes {
+	atLimit := strings.Repeat("wind ", maxTextBytes/5) + strings.Repeat("x", maxTextBytes%5)
+	if len(atLimit) != maxTextBytes {
 		t.Fatalf("built %d bytes", len(atLimit))
 	}
 	rec := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": atLimit, "language": "en"}))
@@ -242,9 +243,9 @@ func TestTextSizeLimit(t *testing.T) {
 
 func TestEscapedTextAtLimitFitsBody(t *testing.T) {
 	// Every byte escapes to six ("\u0001"), the worst case for body size.
-	text := strings.Repeat("\x01", MaxTextBytes)
+	text := strings.Repeat("\x01", maxTextBytes)
 	body := jsonBody(t, map[string]any{"text": text, "language": "en"})
-	if len(body) <= 5*MaxTextBytes {
+	if len(body) <= 5*maxTextBytes {
 		t.Fatalf("body only %d bytes; escaping assumption wrong", len(body))
 	}
 	if rec := do(t, http.MethodPost, "/v1/keywords", body); rec.Code != http.StatusOK {
@@ -254,8 +255,8 @@ func TestEscapedTextAtLimitFitsBody(t *testing.T) {
 
 func TestBodySizeLimit(t *testing.T) {
 	for _, body := range []string{
-		`{"text":"x","language":"en","pad":"` + strings.Repeat("a", MaxBodyBytes) + `"}`,
-		`{"text":"x","language":"en"}` + strings.Repeat(" ", MaxBodyBytes),
+		`{"text":"x","language":"en","pad":"` + strings.Repeat("a", maxBodyBytes) + `"}`,
+		`{"text":"x","language":"en"}` + strings.Repeat(" ", maxBodyBytes),
 	} {
 		rec := do(t, http.MethodPost, "/v1/keywords", body)
 		if rec.Code != http.StatusRequestEntityTooLarge {
@@ -289,7 +290,7 @@ func TestExactSpansThroughJSON(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Fatalf("status %d", rec.Code)
 	}
-	res := decode[response](t, rec)
+	res := decode[keywordResponse](t, rec)
 	if len(res.Keywords) == 0 {
 		t.Fatal("no keywords")
 	}
@@ -391,7 +392,42 @@ func TestTextBodyLimit(t *testing.T) {
 }
 
 func TestTextCapMatchesKeywordLimit(t *testing.T) {
-	if webtext.MaxTextBytes != MaxTextBytes {
-		t.Fatalf("webtext cap %d, keyword cap %d", webtext.MaxTextBytes, MaxTextBytes)
+	if webtext.MaxTextBytes != maxTextBytes {
+		t.Fatalf("webtext cap %d, keyword cap %d", webtext.MaxTextBytes, maxTextBytes)
+	}
+}
+
+func TestBearerToken(t *testing.T) {
+	t.Setenv("KEYPHRASE_TOKEN", "secret")
+	rec := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": article, "language": "en"}))
+	if rec.Code != http.StatusUnauthorized {
+		t.Fatalf("missing token: status %d", rec.Code)
+	}
+	req := httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/v1/keywords", strings.NewReader(jsonBody(t, map[string]any{"text": article, "language": "en"})))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer secret")
+	rec = httptest.NewRecorder()
+	NewHandler().ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK {
+		t.Fatalf("with token: status %d: %s", rec.Code, rec.Body)
+	}
+	health := do(t, http.MethodGet, "/healthz", "")
+	if health.Code != http.StatusOK {
+		t.Fatalf("healthz without token: %d", health.Code)
+	}
+}
+
+func TestExtractOptionsJSON(t *testing.T) {
+	body := jsonBody(t, map[string]any{
+		"text":                 article,
+		"language":             "en",
+		"limit":                10,
+		"counts":               false,
+		"drop_lone_nouns":      false,
+		"lone_noun_min_rarity": 0.9,
+	})
+	rec := do(t, http.MethodPost, "/v1/keywords", body)
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status %d: %s", rec.Code, rec.Body)
 	}
 }
