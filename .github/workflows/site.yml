@@ -41,8 +41,9 @@ concurrency:
 jobs:
   deploy:
     name: deploy
-    # A fork pull request cannot read the Cloudflare secrets.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    # A fork or Dependabot pull request cannot read the Cloudflare secrets.
+    # The author check still skips Dependabot when someone reruns the workflow.
+    if: github.event_name != 'pull_request' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.user.login != 'dependabot[bot]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
