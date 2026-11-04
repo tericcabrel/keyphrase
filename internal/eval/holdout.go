@@ -1,10 +1,4 @@
-// Package evalset reads and writes the list of held-out evaluation pages.
-//
-// Held-out pages are labelled like the others but are never looked at while
-// tuning: eval scores them apart and never prints their keywords. The
-// list is <dir>/holdout.txt, one "<lang>/<name>" page per line; blank lines
-// and lines starting with # are ignored.
-package evalset
+package eval
 
 import (
 	"bufio"
@@ -15,10 +9,8 @@ import (
 	"strings"
 )
 
-// HoldoutFile is the list's name inside the data directory.
 const HoldoutFile = "holdout.txt"
 
-// ReadHoldout returns the held-out page names; a missing list has none.
 func ReadHoldout(dir string) (map[string]bool, error) {
 	file, err := os.Open(filepath.Join(dir, HoldoutFile))
 	if errors.Is(err, fs.ErrNotExist) {

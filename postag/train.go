@@ -7,25 +7,19 @@ import (
 	"slices"
 )
 
-// Sentence is one training or evaluation sentence: surface words and their
-// correct tags.
 type Sentence struct {
 	Words []string
 	Tags  []Tag
 }
 
-// TrainOptions controls Train. Zero fields take the defaults noted below.
 type TrainOptions struct {
-	Iterations int     // passes over the data; default 8
-	Seed       uint64  // shuffle seed, so training is reproducible
-	DictMin    int     // minimum count for a tag-dictionary word; default 20
-	DictShare  float64 // minimum share of the majority tag; default 0.97
-	MinWeight  float64 // averaged weights below this magnitude are dropped
+	Iterations int
+	Seed       uint64
+	DictMin    int
+	DictShare  float64
+	MinWeight  float64
 }
 
-// param is one feature-tag weight during training. total and lastStep
-// implement averaging: total accumulates the weight over every update step
-// since training began.
 type param struct {
 	tag      Tag
 	weight   float64
@@ -33,12 +27,6 @@ type param struct {
 	lastStep int
 }
 
-// Train learns a Tagger from tagged sentences with the averaged perceptron
-// algorithm: tag each word with the current weights and, when the guess is
-// wrong, move weight from the guessed tag's features to the correct tag's.
-// The final weights are the average over all steps, which generalizes
-// better than the last ones. progress, if non-nil, is called after each pass
-// with the share of training words tagged correctly during that pass.
 func Train(sentences []Sentence, options TrainOptions, progress func(iter int, accuracy float64)) *Tagger {
 	if options.Iterations == 0 {
 		options.Iterations = 8
@@ -123,7 +111,6 @@ func predictTraining(weights map[uint64][]param, featureHashes []uint64) Tag {
 	return argmax(scores[:])
 }
 
-// finalize averages the weights, drops small ones, and packs the rest.
 func finalize(weights map[uint64][]param, tagDict map[string]Tag, steps int, minWeight float64) *Tagger {
 	tagger := &Tagger{tagDict: tagDict, weights: make(map[uint64]weightRef, len(weights))}
 	for _, featureHash := range slices.Sorted(maps.Keys(weights)) {
@@ -145,8 +132,6 @@ func finalize(weights map[uint64][]param, tagDict map[string]Tag, steps int, min
 	return tagger
 }
 
-// buildTagDict returns the words that occur at least minCount times and
-// carry one tag in at least share of their occurrences.
 func buildTagDict(sentences []Sentence, minCount int, share float64) map[string]Tag {
 	counts := map[string]*[NumTags]int{}
 	for _, sentence := range sentences {
@@ -176,13 +161,8 @@ func buildTagDict(sentences []Sentence, minCount int, share float64) map[string]
 	return dict
 }
 
-// Metrics summarizes tagging accuracy on labelled sentences. Verb counts
-// treat VERB and AUX as one class, since that is the distinction the
-// extractor uses.
 type Metrics struct {
-	Words, Correct int
-	// VerbTP: verbs tagged as verbs. VerbFP: non-verbs tagged as verbs.
-	// VerbFN: verbs tagged as something else.
+	Words, Correct         int
 	VerbTP, VerbFP, VerbFN int
 }
 
@@ -197,7 +177,6 @@ func ratio(numerator, denominator int) float64 {
 	return float64(numerator) / float64(denominator)
 }
 
-// Evaluate tags every sentence and compares the result with its tags.
 func Evaluate(tagger *Tagger, sentences []Sentence) Metrics {
 	var metrics Metrics
 	for _, sentence := range sentences {

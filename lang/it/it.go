@@ -21,8 +21,6 @@ func init() {
 		Connectors:    "di del della dello dei degli delle dell' d' per la il lo le gli l'",
 		Abbreviations: "sig sigg dott prof avv ing on sen pag es n",
 		Elisions:      "l' d' dell' dall' nell' sull' all' coll' un' quest' quell' c' s' v' m' t'",
-		// Italian number and gender inflect the final vowel
-		// (economia/economie, mercato/mercati).
 		Variant: func(word string) string {
 			return lang.TrimSuffixMin(word, 3, "a", "e", "i", "o")
 		},

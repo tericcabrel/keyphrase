@@ -73,3 +73,19 @@
 | 9 | 0.6210 | pressione atmosferica | 3097-3118 |
 | 10 | 0.6198 | acqua alta | 3298-3308 |
 
+#### `examples/pt/wiki-energia-renovavel.txt`
+
+| # | score | text | bytes |
+|---|---|---|---|
+| 1 | 1.0000 | Estados Unidos | 1433-1447 |
+| 2 | 0.7937 | combustíveis fósseis | 2436-2458 |
+| 3 | 0.7867 | Terra | 8342-8347 |
+| 4 | 0.7667 | Deserto de Mojave | 1730-1747 |
+| 5 | 0.7635 | carvão | 237-244 |
+| 6 | 0.7623 | biomassa | 445-453 |
+| 7 | 0.7606 | The Geysers | 1831-1842 |
+| 8 | 0.7561 | energia geotérmica | 128-147 |
+| 9 | 0.7432 | energia solar | 1713-1726 |
+| 10 | 0.7402 | Espanha | 1600-1607 |
+
+

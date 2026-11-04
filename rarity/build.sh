@@ -25,3 +25,6 @@ build es \
 build it \
 	rarity/leipzig/ita_news_2023_1M/ita_news_2023_1M-sentences.txt \
 	rarity/leipzig/ita_wikipedia_2021_1M/ita_wikipedia_2021_1M-sentences.txt
+build pt \
+	rarity/leipzig/por_news_2024_1M/por_news_2024_1M-sentences.txt \
+	rarity/leipzig/por_wikipedia_2021_1M/por_wikipedia_2021_1M-sentences.txt

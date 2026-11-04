@@ -14,12 +14,6 @@ import (
 
 const modelMagic = "APOS1"
 
-// Tagger labels each word of a sentence with a part of speech. It is a
-// greedy left-to-right averaged perceptron: every word gets a score per tag
-// from weighted features (the word, its suffixes, its neighbours, the two
-// previous predicted tags), and the best-scoring tag wins. Frequent words
-// that almost always carry one tag are looked up in a tag dictionary
-// instead. A Tagger is read-only and safe for concurrent use.
 type Tagger struct {
 	tagDict map[string]Tag
 	weights map[uint64]weightRef
@@ -27,24 +21,16 @@ type Tagger struct {
 	values  []float32
 }
 
-// weightRef locates one feature's non-zero weights in Tagger.tags and
-// Tagger.values.
 type weightRef struct {
 	offset uint32
 	count  uint8
 }
 
-// Tag returns one tag per word. words are the surface forms of one
-// sentence's non-space tokens, in order, including punctuation.
 func (t *Tagger) Tag(words []string) []Tag {
 	tags, _ := t.TagWithMargins(words)
 	return tags
 }
 
-// TagWithMargins is Tag plus a confidence value per word: how far the chosen
-// tag's score is ahead of the runner-up tag. A small margin on an adverb
-// means the tagger nearly chose something else, such as an adjective. Words
-// found in the tag dictionary get +Inf.
 func (t *Tagger) TagWithMargins(words []string) ([]Tag, []float32) {
 	tags := make([]Tag, len(words))
 	margins := make([]float32, len(words))
@@ -89,8 +75,6 @@ func (t *Tagger) predict(featureHashes []uint64) (Tag, float32) {
 	return best, scores[best] - runnerUp
 }
 
-// argmax returns the highest-scoring tag; ties go to the lower tag number so
-// that results are deterministic.
 func argmax[S ~float32 | ~float64](scores []S) Tag {
 	best := 0
 	for i := 1; i < len(scores); i++ {
@@ -101,14 +85,10 @@ func argmax[S ~float32 | ~float64](scores []S) Tag {
 	return Tag(best)
 }
 
-// Features reports the number of features with at least one weight, and the
-// number of tag-dictionary words.
 func (t *Tagger) Features() (features, dictWords int) {
 	return len(t.weights), len(t.tagDict)
 }
 
-// WriteTo writes the model as gzip-compressed binary data. The output is
-// deterministic: features are sorted by hash and dictionary words by text.
 func (t *Tagger) WriteTo(w io.Writer) (int64, error) {
 	counter := &countingWriter{writer: w}
 	gzipWriter, err := gzip.NewWriterLevel(counter, gzip.BestCompression)
@@ -148,7 +128,6 @@ func (t *Tagger) WriteTo(w io.Writer) (int64, error) {
 	return counter.written, counter.err
 }
 
-// ReadTagger reads a model written by WriteTo.
 func ReadTagger(r io.Reader) (*Tagger, error) {
 	gzipReader, err := gzip.NewReader(r)
 	if err != nil {

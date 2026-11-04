@@ -67,7 +67,7 @@ España ha sido pionera en la supervisión de la inteligencia
 artificial.`
 
 func extract(lang, text string) {
-	kws, err := extractor.Extract(text, lang, 10)
+	kws, _, err := extractor.Extract(text, lang, 10)
 	if err != nil {
 		panic(err)
 	}

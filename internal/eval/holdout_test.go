@@ -1,4 +1,4 @@
-package evalset
+package eval
 
 import (
 	"os"

@@ -7,6 +7,7 @@
 | `de/snowball_de.txt` | Snowball German stop word list, `algorithms/german/stop.txt` | BSD-3-Clause |
 | `es/snowball_es.txt` | Snowball Spanish stop word list, `algorithms/spanish/stop.txt` | BSD-3-Clause |
 | `it/snowball_it.txt` | Snowball Italian stop word list, `algorithms/italian/stop.txt` | BSD-3-Clause |
+| `pt/snowball_pt.txt` | Snowball Portuguese stop word list, `algorithms/portuguese/stop.txt` | BSD-3-Clause |
 | `<code>/extra_<code>.txt` | Original work for this project: reporting verbs, auxiliaries, dates, units, possessives, generic time nouns | MIT |
 | connectors, elisions, clitics and abbreviations in `<code>/<code>.go` | Original work for this project | MIT |
 
@@ -27,6 +28,7 @@ treebanks and under CC BY-SA terms.
 | `fr/model.bin.gz` | [UD_French-GSD](https://github.com/UniversalDependencies/UD_French-GSD) | CC BY-SA 4.0 |
 | `de/model.bin.gz` | [UD_German-GSD](https://github.com/UniversalDependencies/UD_German-GSD) | CC BY-SA 4.0 |
 | `es/model.bin.gz` | [UD_Spanish-GSD](https://github.com/UniversalDependencies/UD_Spanish-GSD) | CC BY-SA 4.0 |
+| `pt/model.bin.gz` | [UD_Portuguese-GSD](https://github.com/UniversalDependencies/UD_Portuguese-GSD) | CC BY-SA 4.0 |
 | `it/model.bin.gz` | [UD_Italian-ParlaMint](https://github.com/UniversalDependencies/UD_Italian-ParlaMint) | CC BY-SA 4.0 |
 | | [UD_Italian-PUD](https://github.com/UniversalDependencies/UD_Italian-PUD) | CC BY-SA 3.0 |
 | | [UD_Italian-TWITTIRO](https://github.com/UniversalDependencies/UD_Italian-TWITTIRO) | CC BY-SA 4.0 |
@@ -62,6 +64,7 @@ of the 8th International Conference on Language Resources and Evaluation
 | `fr/rarity.bin.gz` | fra_news_2023_1M, fra_wikipedia_2021_1M |
 | `es/rarity.bin.gz` | spa_news_2024_1M, spa_wikipedia_2021_1M |
 | `it/rarity.bin.gz` | ita_news_2023_1M, ita_wikipedia_2021_1M |
+| `pt/rarity.bin.gz` | por_news_2024_1M, por_wikipedia_2021_1M |
 
 English has no Wikipedia sample newer than 2016 at the 1-million-sentence
 size. Counts are per sentence, because Leipzig publishes shuffled sentences

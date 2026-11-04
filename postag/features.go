@@ -34,7 +34,6 @@ const (
 	numFeatures
 )
 
-// Sentinel values for positions outside the sentence.
 const (
 	tagStart  = byte(NumTags)
 	tagStart2 = byte(NumTags + 1)
@@ -45,8 +44,6 @@ var (
 	padAfter  = [2]string{"-END-", "-END2-"}
 )
 
-// context is one sentence prepared for feature extraction: normalized words
-// with two padding entries on each side, and word shapes.
 type context struct {
 	norms  []string
 	shapes []string
@@ -66,8 +63,6 @@ func newContext(words []string) context {
 	return sentenceContext
 }
 
-// features appends the feature hashes for word i, given the two previously
-// predicted tags.
 func (c context) features(dst []uint64, i int, prev, prev2 byte) []uint64 {
 	j := i + 2
 	word := c.norms[j]
@@ -100,8 +95,6 @@ func (c context) features(dst []uint64, i int, prev, prev2 byte) []uint64 {
 	)
 }
 
-// normalize lowercases a word, folds typographic apostrophes, and maps
-// numbers to a few classes so that unseen numbers share features.
 func normalize(word string) string {
 	if r, _ := utf8.DecodeRuneInString(word); unicode.IsDigit(r) {
 		if len(word) == 4 && strings.IndexFunc(word, func(r rune) bool { return !unicode.IsDigit(r) }) < 0 {
@@ -112,9 +105,6 @@ func normalize(word string) string {
 	return strings.ReplaceAll(strings.ToLower(word), "\u2019", "'")
 }
 
-// shape maps a word to a compact character-class pattern: X upper, x lower,
-// d digit, and the character itself otherwise, with repeats collapsed
-// ("Paris" -> "Xx", "COVID-19" -> "X-d").
 func shape(word string) string {
 	var builder strings.Builder
 	var last rune
@@ -138,8 +128,6 @@ func shape(word string) string {
 	return builder.String()
 }
 
-// suffix returns the last runeCount runes of word, or all of word if it is
-// shorter.
 func suffix(word string, runeCount int) string {
 	i := len(word)
 	for ; runeCount > 0 && i > 0; runeCount-- {
@@ -165,8 +153,7 @@ func newHash(template byte) hash { return hash(fnvOffset).byte(template) }
 
 func (h hash) byte(b byte) hash { return (h ^ hash(b)) * fnvPrime }
 
-// str hashes text followed by a separator, so that ("ab","c") and ("a","bc")
-// differ.
+// A trailing separator keeps ("ab", "c") distinct from ("a", "bc").
 func (h hash) str(text string) hash {
 	for i := range len(text) {
 		h = h.byte(text[i])

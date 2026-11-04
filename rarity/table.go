@@ -1,10 +1,5 @@
-// Package rarity scores how uncommon a word is in a large general corpus.
-// The extractor uses that score so a word that is common everywhere ranks
-// below a word that is specific to the article.
-//
-// A table is built by cmd/build-rarity from Leipzig sentence files. Each
-// language pack embeds its table as lang/<code>/rarity.bin.gz. Sources and
-// the licence are in lang/THIRD_PARTY.md.
+// Package rarity scores how uncommon a word is in a general corpus.
+// Sources and the licence are in lang/THIRD_PARTY.md.
 package rarity
 
 import (
@@ -21,28 +16,18 @@ import (
 )
 
 const (
-	magic   = "RIDF"
-	version = 1
-	// MinCount is the smallest number of sentences a word must appear in
-	// to be stored. Rarer words are left out and score as unknown.
+	magic    = "RIDF"
+	version  = 1
 	MinCount = 3
 )
 
-// Table maps a normalized word to a rarity score in [0, 1]. 0 is a word
-// that appears in every sentence of the corpus; 1 is a word that appears
-// in only MinCount sentences. Lookup misses are not stored.
 type Table struct {
 	sentences   int
-	packedWords string   // every stored word, sorted and concatenated
-	offsets     []uint32 // start of each word, plus a final end offset
+	packedWords string
+	offsets     []uint32
 	scores      []uint8
 }
 
-// Build quantises inverse sentence frequency. sentenceCounts maps a
-// normalized word to the number of sentences it appears in; a word is
-// counted once per sentence. Words seen fewer than minCount times are
-// dropped. The stored score is log(sentences/count) /
-// log(sentences/minCount), clamped to [0, 1].
 func Build(sentences int, sentenceCounts map[string]int, minCount int) (*Table, error) {
 	if sentences < 1 || minCount < 1 || minCount > sentences {
 		return nil, fmt.Errorf("rarity: sentences %d, min count %d", sentences, minCount)
@@ -69,8 +54,7 @@ func Build(sentences int, sentenceCounts map[string]int, minCount int) (*Table, 
 	return &Table{sentences: sentences, packedWords: packed.String(), offsets: offsets, scores: scores}, nil
 }
 
-// quantize maps log(ratio) / logFloor onto a byte. logFloor is 0 when every
-// kept word is exactly at the rarity floor, so those words score 1.
+// logFloor is 0 when every kept word sits on the floor, so those words score 1.
 func quantize(ratio, logFloor float64) uint8 {
 	if logFloor <= 0 || ratio <= 1 {
 		if logFloor <= 0 {
@@ -87,7 +71,6 @@ func quantize(ratio, logFloor float64) uint8 {
 	return uint8(math.Round(normalized * 255))
 }
 
-// Words is the number of stored words.
 func (t *Table) Words() int {
 	if t == nil {
 		return 0
@@ -95,7 +78,6 @@ func (t *Table) Words() int {
 	return len(t.scores)
 }
 
-// Sentences is the corpus size the scores were computed from.
 func (t *Table) Sentences() int {
 	if t == nil {
 		return 0
@@ -103,7 +85,6 @@ func (t *Table) Sentences() int {
 	return t.sentences
 }
 
-// Score reports the stored rarity of a normalized word.
 func (t *Table) Score(norm string) (float64, bool) {
 	if t == nil || len(t.scores) == 0 {
 		return 0, false
@@ -131,7 +112,6 @@ func (t *Table) word(i int) string {
 	return t.packedWords[t.offsets[i]:t.offsets[i+1]]
 }
 
-// Write writes the table as gzip. The output is deterministic.
 func (t *Table) Write(writer io.Writer) error {
 	gzipWriter, err := gzip.NewWriterLevel(writer, gzip.BestCompression)
 	if err != nil {
@@ -176,7 +156,6 @@ func writeRaw(writer io.Writer, table *Table) error {
 	return buffered.Flush()
 }
 
-// Read reads a table written by Write.
 func Read(reader io.Reader) (*Table, error) {
 	gzipReader, err := gzip.NewReader(reader)
 	if err != nil {
@@ -244,7 +223,6 @@ func readRaw(reader io.Reader) (*Table, error) {
 	return &Table{sentences: sentences, packedWords: packed.String(), offsets: offsets, scores: scores}, nil
 }
 
-// Bytes is the gzip encoding, for tests.
 func (t *Table) Bytes() ([]byte, error) {
 	var buf bytes.Buffer
 	if err := t.Write(&buf); err != nil {

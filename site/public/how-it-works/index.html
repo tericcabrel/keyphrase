@@ -145,7 +145,7 @@
           <li><strong>Segment.</strong> Unicode sentence and word boundaries (UAX #29) keep the original byte offsets. Known abbreviations, initials, and dotted forms such as "U.S." stay in one sentence.</li>
           <li><strong>Fix tokens.</strong> Hyphenated compounds such as "e-mail" stay one token. Elided articles ("l'", "d'", "dell'") and English "'s" split off, with straight or curly apostrophes. German compounds stay single tokens.</li>
           <li><strong>Tag.</strong> A small model per language labels each token. Verbs and helper verbs never start, end, or appear inside a phrase. Confident adverbs are treated the same way. A word the tagger rarely calls a noun or a name cannot stand as the head of a phrase.</li>
-          <li><strong>Candidates.</strong> Contiguous runs of at most three words inside one sentence, counting connectors such as "of", "de", and "für". Punctuation, line breaks, verbs, and adverbs end a run. A connector can sit inside a phrase, never at either end, and never more than two in a row. A single word is kept only when it is a name, capitalized like a name, or a common noun that is rare in general text.</li>
+          <li><strong>Candidates.</strong> Contiguous runs of at most three words inside one sentence, counting connectors such as "of", "de", and "für". Punctuation, line breaks, verbs, and adverbs end a run. A connector can sit inside a phrase, never at either end, and never more than two in a row. A single word is kept only when it is a name, capitalized like a name, or a common noun that is rare in general text. A phrase of two or more words seen once, with no name in it, is dropped when at least 10 other candidates remain. Both rules can be turned off or tuned: see <a href="/reference/#adjusting-the-output">Adjusting the output</a>.</li>
           <li><strong>Score.</strong> The score is the equal-weight mean of how often the phrase occurs, how early it appears, how many sentences it spans, how often it looks like a name, how tightly its words stay together, and how uncommon its content words are in a general corpus.</li>
           <li><strong>Select.</strong> In rank order, skip a phrase contained in a longer one that ranks at least as high, skip near duplicates, skip anything that overlaps a phrase already chosen, and keep the earliest non-overlapping occurrence. Scores are then divided by the best selected score.</li>
         </ol>
@@ -161,10 +161,11 @@
             <tr><td>French</td><td>GSD, 346k tokens</td><td>96.8%</td><td>96.7%</td><td>98.1%</td></tr>
             <tr><td>German</td><td>GSD, 260k tokens</td><td>93.9%</td><td>96.7%</td><td>97.4%</td></tr>
             <tr><td>Spanish</td><td>GSD, 376k tokens</td><td>95.6%</td><td>97.9%</td><td>96.9%</td></tr>
+            <tr><td>Portuguese</td><td>GSD, 238k tokens</td><td>95.9%</td><td>96.7%</td><td>96.8%</td></tr>
             <tr><td>Italian</td><td>ParlaMint, PUD, TWITTIRO, MarkIT, 90k tokens</td><td>94.4%</td><td>95.5%</td><td>96.4%</td></tr>
           </tbody>
         </table>
-        <p>Italian uses only openly licensed treebanks, about a quarter as much data as the others, so it is the weakest of the five. A model is decoded the first time its language is used. A language with no model still runs, and it keeps verbs.</p>
+        <p>Italian uses only openly licensed treebanks, about a quarter as much data as the others, so it is the weakest of the six. A model is decoded the first time its language is used. A language with no model still runs, and it keeps verbs.</p>
         <h2>Limitations</h2>
         <ul>
           <li>You pass the language code on every call.</li>

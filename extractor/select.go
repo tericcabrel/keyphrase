@@ -7,10 +7,6 @@ import (
 	"strings"
 )
 
-// genericShare controls when a single word yields to a more specific phrase:
-// a single word is skipped if one repeated multiword phrase containing it
-// accounts for at least this share of the word's occurrences, i.e. the word
-// is commonly used as part of that phrase ("wind" in "wind power").
 const genericShare = 0.25
 
 type chosen struct {
@@ -18,11 +14,6 @@ type chosen struct {
 	occurrence occurrence
 }
 
-// selectPhrases picks up to limit phrases in rank order, skipping subsumed
-// phrases, near duplicates, phrases related by containment to an already
-// selected phrase, generic single words, and phrases whose every occurrence
-// overlaps an already selected span. It returns keywords in output order,
-// plus totals over every candidate and over the phrases actually returned.
 func selectPhrases(text string, phrases []*phrase, limit int) ([]Keyword, Counts) {
 	ranked := slices.Clone(phrases)
 	slices.SortFunc(ranked, func(a, b *phrase) int {
@@ -45,8 +36,6 @@ func selectPhrases(text string, phrases []*phrase, limit int) ([]Keyword, Counts
 		return []Keyword{}, counts
 	}
 
-	// mostSpecific maps a content-word variant to the occurrence count of the
-	// most frequent repeated multiword phrase containing it.
 	mostSpecific := map[string]int{}
 	for _, phrase := range ranked {
 		if !phrase.multiword() || len(phrase.occurrences) < 2 {
@@ -98,15 +87,14 @@ func selectPhrases(text string, phrases []*phrase, limit int) ([]Keyword, Counts
 			Score:     normalizeScore(choice.phrase.rawScore, topScore),
 		})
 		if phraseWords(choice.phrase) > 1 {
-			counts.RankedMoreThanOneWord++
+			counts.ReturnedMoreThanOneWord++
 		}
 	}
-	counts.Ranked = len(keywords)
+	counts.Returned = len(keywords)
 	slices.SortFunc(keywords, compareKeywords)
 	return keywords, counts
 }
 
-// phraseWords is the number of words in a candidate, including connectors.
 func phraseWords(phrase *phrase) int {
 	if phrase.key == "" {
 		return 0
@@ -114,8 +102,6 @@ func phraseWords(phrase *phrase) int {
 	return strings.Count(phrase.key, " ") + 1
 }
 
-// compareKeywords is the output order: score descending, then earlier
-// offset, then text.
 func compareKeywords(a, b Keyword) int {
 	return cmp.Or(
 		cmp.Compare(b.Score, a.Score),
@@ -124,8 +110,6 @@ func compareKeywords(a, b Keyword) int {
 	)
 }
 
-// normalizeScore scales raw scores so the best selected keyword is 1 and
-// rounds to four decimals for stable serialization.
 func normalizeScore(rawScore, topScore float64) float64 {
 	if topScore <= 0 {
 		return 0
@@ -133,7 +117,6 @@ func normalizeScore(rawScore, topScore float64) float64 {
 	return math.Round(rawScore/topScore*1e4) / 1e4
 }
 
-// firstFree returns the earliest occurrence that overlaps no picked span.
 func firstFree(phrase *phrase, picked []chosen) (occurrence, bool) {
 	for _, match := range phrase.occurrences {
 		if !slices.ContainsFunc(picked, func(choice chosen) bool {
@@ -145,7 +128,6 @@ func firstFree(phrase *phrase, picked []chosen) (occurrence, bool) {
 	return occurrence{}, false
 }
 
-// containsSeq reports whether needle appears contiguously in haystack.
 func containsSeq(haystack, needle []string) bool {
 	if len(needle) == 0 || len(needle) > len(haystack) {
 		return false

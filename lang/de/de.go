@@ -21,8 +21,6 @@ func init() {
 		Connectors:    "von der des die dem den für zur zum vom",
 		Abbreviations: "z b d h u a s o bzw ca dr prof nr mio mrd str vgl ggf evtl inkl z.b d.h u.a s.o hr fr",
 		NounCaps:      true,
-		// German plurals mostly add -en, -er, -e, -n or -s. Umlaut plurals are
-		// not folded.
 		Variant: func(word string) string {
 			return lang.TrimSuffixMin(word, 4, "en", "er", "e", "n", "s")
 		},

@@ -18,6 +18,7 @@ train en "$U/UD_English-EWT/en_ewt-ud-train.conllu" "$U/UD_English-EWT/en_ewt-ud
 train fr "$U/UD_French-GSD/fr_gsd-ud-train.conllu" "$U/UD_French-GSD/fr_gsd-ud-test.conllu"
 train de "$U/UD_German-GSD/de_gsd-ud-train.conllu" "$U/UD_German-GSD/de_gsd-ud-test.conllu"
 train es "$U/UD_Spanish-GSD/es_gsd-ud-train.conllu" "$U/UD_Spanish-GSD/es_gsd-ud-test.conllu"
+train pt "$U/UD_Portuguese-GSD/pt_gsd-ud-train.conllu" "$U/UD_Portuguese-GSD/pt_gsd-ud-test.conllu"
 # Italian: only openly licensed treebanks (the larger ISDT, VIT, ParTUT and
 # PoSTWITA are non-commercial). PUD has no training split, so all of it is
 # used for training; the test set is the other three test splits.

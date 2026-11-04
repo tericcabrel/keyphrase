@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/tericcabrel/keyphrase/internal/evalset"
+	"github.com/tericcabrel/keyphrase/internal/eval"
 )
 
 func TestSiteName(t *testing.T) {
@@ -41,7 +41,7 @@ func TestReadURLList(t *testing.T) {
 		t.Fatalf("got %v, want %v", got, want)
 	}
 
-	for _, bad := range []string{"https://a.example/ no-lang-first\n", "pt https://a.example/\n", "fr\n", "fr https://a.example/ held\n", "fr https://a.example/ holdout extra\n"} {
+	for _, bad := range []string{"https://a.example/ no-lang-first\n", "nl https://a.example/\n", "fr\n", "fr https://a.example/ held\n", "fr https://a.example/ holdout extra\n"} {
 		path := filepath.Join(dir, "bad.txt")
 		writeFile(t, path, bad)
 		if _, err := readURLList(path); err == nil {
@@ -53,8 +53,6 @@ func TestReadURLList(t *testing.T) {
 	}
 }
 
-// addPages saves Ghost posts under their site name, skips pages already
-// saved and pages that aren't Ghost posts.
 func TestAddPages(t *testing.T) {
 	const ghost = `<html><head><meta name="generator" content="Ghost 6.65"></head><body><h1>T</h1><p>x</p></body></html>`
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -93,7 +91,7 @@ func TestAddPages(t *testing.T) {
 	// The page saved by an earlier run is held out too; the skipped
 	// WordPress page isn't.
 	markHoldout(dir, entries, saved)
-	held, err := evalset.ReadHoldout(dir)
+	held, err := eval.ReadHoldout(dir)
 	if err != nil || len(held) != 2 || !held["fr/page"] || !held["de/page"] {
 		t.Fatalf("held out %v, %v", held, err)
 	}

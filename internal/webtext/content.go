@@ -618,12 +618,12 @@ func (x *extraction) linkBlock(node *html.Node) bool {
 var (
 	creditRe = regexp.MustCompile(`(?i)^(photo|photos|foto|fotos|image|images|bild|bilder|crédit|crédits|credit|credits|source|quelle|fuente|fonte|illustration)\b|©|\b(unsplash|getty|shutterstock|pexels|pixabay|adobe stock|istock)\b`)
 
-	month  = `(?:jan|janv|january|januar|janvier|enero|ene|gennaio|gen|feb|febr|february|februar|févr|fevr|février|fevrier|febrero|febbraio|mar|march|märz|mrz|mars|marzo|apr|april|avr|avril|abril|abr|aprile|may|mai|mayo|maggio|mag|jun|june|juni|juin|junio|giugno|giu|jul|july|juli|juil|juillet|julio|luglio|lug|aug|august|août|aout|agosto|ago|sep|sept|september|septembre|septiembre|settembre|set|oct|october|okt|oktober|octobre|octubre|ottobre|ott|nov|november|novembre|noviembre|dec|december|dez|dezember|déc|décembre|decembre|diciembre|dicembre|dic)\.?`
+	month  = `(?:jan|janv|january|januar|janvier|enero|ene|gennaio|gen|janeiro|feb|febr|february|februar|févr|fevr|février|fevrier|febrero|febbraio|fevereiro|fev|mar|march|märz|mrz|mars|marzo|março|apr|april|avr|avril|abril|abr|aprile|may|mai|mayo|maggio|mag|maio|jun|june|juni|juin|junio|giugno|giu|junho|jul|july|juli|juil|juillet|julio|luglio|lug|julho|aug|august|août|aout|agosto|ago|sep|sept|september|septembre|septiembre|settembre|set|setembro|oct|october|okt|oktober|octobre|octubre|ottobre|ott|outubro|out|nov|november|novembre|noviembre|novembro|dec|december|dez|dezember|déc|décembre|decembre|diciembre|dicembre|dic|dezembro)\.?`
 	dateRe = regexp.MustCompile(`(?i)\b\d{1,2}\.?\s+(?:de\s+)?` + month + `,?\s+(?:de\s+)?\d{4}\b|\b` + month + `\s+\d{1,2},?\s+\d{4}\b|\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}[./]\d{1,2}[./]\d{2,4}\b`)
 	timeRe = regexp.MustCompile(`(?i)\b\d{1,2}[:.h]\d{2}\s*(?:[ap]\.?m\.?|uhr)?`)
-	readRe = regexp.MustCompile(`(?i)\b\d+\s*(?:min|mins|minute|minutes|minuten|minuto|minutos|minuti)\b\.?(?:\s+(?:read|reading|de\s+lecture|lesezeit|lesedauer|de\s+lectura|di\s+lettura|lettura|lectura))?|\b(?:lettura|lectura|lesezeit|lesedauer)\s+\d+\s*min\b\.?`)
+	readRe = regexp.MustCompile(`(?i)\b\d+\s*(?:min|mins|minute|minutes|minuten|minuto|minutos|minuti)\b\.?(?:\s+(?:read|reading|de\s+lecture|lesezeit|lesedauer|de\s+lectura|de\s+leitura|di\s+lettura|lettura|lectura|leitura))?|\b(?:lettura|lectura|leitura|lesezeit|lesedauer)\s+\d+\s*min\b\.?`)
 	// stampWords may surround a date: "Published: September 23, 2026 at 11:02 AM".
-	stampWords = splitSet("published updated posted last on at veröffentlicht aktualisiert am um publié mis à jour le publicado actualizado el pubblicato aggiornato il")
+	stampWords = splitSet("published updated posted last on at veröffentlicht aktualisiert am um publié mis à jour le publicado actualizado atualizado el em pubblicato aggiornato il")
 )
 
 func splitSet(words string) map[string]bool {

@@ -76,7 +76,7 @@
       <article>
         <h1>Installation</h1>
         <p>The module requires Go 1.26.</p>
-        <pre><code>go get github.com/tericcabrel/keyphrase@v0.1.0</code></pre>
+        <pre><code>go get github.com/tericcabrel/keyphrase@v0.2.0</code></pre>
         <p>A blank import registers a language. Import only the languages you need. Each one embeds its own part-of-speech model and rarity table.</p>
         <p>One language:</p>
         <pre><code class="language-go">import (
@@ -86,7 +86,7 @@
     _ "github.com/tericcabrel/keyphrase/lang/en"
 )
 
-kws, err := extractor.Extract(text, "en", 10)
+kws, _, err := extractor.Extract(text, "en", 10)
 if err != nil {
     panic(err)
 }
@@ -105,7 +105,7 @@ for _, kw := range kws {
     _ "github.com/tericcabrel/keyphrase/lang/fr"
 )
 
-kws, err := extractor.Extract(text, "fr", 10)
+kws, _, err := extractor.Extract(text, "fr", 10)
 if err != nil {
     panic(err)
 }
@@ -123,7 +123,7 @@ for _, kw := range kws {
     _ "github.com/tericcabrel/keyphrase/lang/all"
 )
 
-kws, err := extractor.Extract(text, "de", 10)
+kws, _, err := extractor.Extract(text, "de", 10)
 if err != nil {
     panic(err)
 }
@@ -133,7 +133,7 @@ for _, kw := range kws {
         kw.Text, kw.StartByte, kw.EndByte,
     )
 }</code></pre>
-        <p>Call <code>extractor.Extract</code>. <code>ExtractWithCounts</code> returns the same phrases plus a count summary. <code>lang</code>, <code>postag</code>, and <code>rarity</code> are public packages. <code>lang.Pack</code> is how you add a language.</p>
+        <p>Call <code>extractor.Extract</code>. It returns the phrases, a count summary, and an error. Leave the <code>ExtractOptions</code> argument out for the defaults, or pass one value. The blank identifier in the examples is the count summary. <code>lang</code>, <code>postag</code>, and <code>rarity</code> are public packages. <code>lang.Pack</code> is how you add a language. The fields are on the <a href="/reference/">reference</a> page.</p>
         <p>Package docs: <a href="https://pkg.go.dev/github.com/tericcabrel/keyphrase">pkg.go.dev/github.com/tericcabrel/keyphrase</a>.</p>
       </article>
       <footer class="thanks">

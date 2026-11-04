@@ -2,16 +2,18 @@ package extractor
 
 import (
 	"errors"
+	"math"
 	"slices"
 	"strings"
 	"testing"
 
+	"github.com/tericcabrel/keyphrase/internal/eval"
 	"github.com/tericcabrel/keyphrase/lang"
 )
 
-func texts(kws []Keyword) []string {
-	out := make([]string, len(kws))
-	for i, k := range kws {
+func texts(keywords []Keyword) []string {
+	out := make([]string, len(keywords))
+	for i, k := range keywords {
 		out[i] = k.Text
 	}
 	return out
@@ -97,6 +99,12 @@ func TestCandidateBoundaries(t *testing.T) {
 			wantNot: []string{"dell'Unione europea", "d'Italia", "La Banca"},
 		},
 		{
+			name: "pt connector de", language: "pt",
+			text:    "O Banco de Portugal prevê uma descida.",
+			want:    []string{"Banco de Portugal"},
+			wantNot: []string{"O Banco", "de Portugal"},
+		},
+		{
 			name: "punctuation breaks phrases", language: "en",
 			text:    "Paris, Lyon (Marseille) and Nice.",
 			want:    []string{"Paris", "Lyon", "Marseille", "Nice"},
@@ -171,7 +179,7 @@ func TestCandidateBoundaries(t *testing.T) {
 
 func TestElisionOffsets(t *testing.T) {
 	text := "Selon l’économie et l'Europe."
-	kws, err := Extract(text, "fr", 5)
+	kws, _, err := Extract(text, "fr", 5)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -200,6 +208,7 @@ func TestSentenceAbbreviations(t *testing.T) {
 		{"fr", "M. Dupont est arrivé. Mme Durand aussi.", 2},
 		{"es", "La Sra. García habló. Luego se fue.", 2},
 		{"it", "Il prof. Rossi ha parlato. Poi è uscito.", 2},
+		{"pt", "A Sra. Silva falou. Depois saiu.", 2},
 		{"en", "J. K. Rowling wrote books. Many sold.", 2},
 	}
 	for _, tc := range tests {
@@ -220,7 +229,7 @@ func TestDottedAbbreviationKeepsFinalPeriod(t *testing.T) {
 func TestRepeatedPhraseUsesEarliestOccurrenceAndAggregates(t *testing.T) {
 	text := "Heat pumps are popular. Installers fit heat pumps quickly. " +
 		"Grants cover HEAT PUMPS for households. The weather was mild."
-	kws, err := Extract(text, "en", 3)
+	kws, _, err := Extract(text, "en", 3)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -238,7 +247,7 @@ func TestRepeatedPhraseUsesEarliestOccurrenceAndAggregates(t *testing.T) {
 func TestContainedAndOverlappingPhrasesRemoved(t *testing.T) {
 	text := "The European Central Bank raised rates. The European Central Bank's " +
 		"decision surprised markets. Markets expected the European Central Bank to wait."
-	kws, err := Extract(text, "en", 10)
+	kws, _, err := Extract(text, "en", 10)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -257,7 +266,7 @@ func TestContainedAndOverlappingPhrasesRemoved(t *testing.T) {
 func TestNearDuplicatePluralRemoved(t *testing.T) {
 	text := "Wind turbine output rose. Each wind turbine is inspected. " +
 		"Wind turbines need maintenance. Engineers repair wind turbines."
-	kws, err := Extract(text, "en", 10)
+	kws, _, err := Extract(text, "en", 10)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -275,7 +284,7 @@ func TestNearDuplicatePluralRemoved(t *testing.T) {
 func TestGenericWordYieldsToSpecificPhrase(t *testing.T) {
 	text := "Interest rates rose again. Banks raised interest rates on loans. " +
 		"Higher interest rates hurt borrowers. Rates matter."
-	kws, err := Extract(text, "en", 3)
+	kws, _, err := Extract(text, "en", 3)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -292,12 +301,12 @@ func TestDeterministic(t *testing.T) {
 	for _, f := range exampleFiles(t) {
 		raw := mustRead(t, f)
 		language := langOf(f)
-		first, err := Extract(raw, language, 1000)
+		first, _, err := Extract(raw, language, 1000)
 		if err != nil {
 			t.Fatal(err)
 		}
 		for range 20 {
-			again, _ := Extract(raw, language, 1000)
+			again, _, _ := Extract(raw, language, 1000)
 			if !slices.Equal(first, again) {
 				t.Fatalf("%s: nondeterministic output\n%v\n%v", f, first, again)
 			}
@@ -321,7 +330,7 @@ func TestTieBreakOrder(t *testing.T) {
 func TestEmptyAndWhitespaceInput(t *testing.T) {
 	for _, l := range languages {
 		for _, text := range []string{"", " ", "\n\t \u00a0\u2003\n"} {
-			kws, err := Extract(text, l, 5)
+			kws, _, err := Extract(text, l, 5)
 			if err != nil {
 				t.Fatalf("%s %q: %v", l, text, err)
 			}
@@ -339,8 +348,9 @@ func TestOnlyStopwordsOrPunctuation(t *testing.T) {
 		{"de", "und der die – das."},
 		{"es", "de la y el; los."},
 		{"it", "di e il, la."},
+		{"pt", "de a e o, os."},
 	} {
-		kws, err := Extract(tc.text, tc.l, 5)
+		kws, _, err := Extract(tc.text, tc.l, 5)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -352,17 +362,17 @@ func TestOnlyStopwordsOrPunctuation(t *testing.T) {
 
 func TestCounts(t *testing.T) {
 	text := "The Bank of England raised rates. The Bank of England raised rates again."
-	kws, counts, err := ExtractWithCounts(text, "en", 5)
+	kws, counts, err := Extract(text, "en", 5)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if counts.Ranked != len(kws) {
-		t.Fatalf("ranked %d, keywords %d", counts.Ranked, len(kws))
+	if counts.Returned != len(kws) {
+		t.Fatalf("returned %d, keywords %d", counts.Returned, len(kws))
 	}
 	if counts.Words != 13 {
 		t.Fatalf("words = %d, want 13", counts.Words)
 	}
-	if counts.Extracted < counts.Ranked || counts.ExtractedMoreThanOneWord < 1 {
+	if counts.Extracted < counts.Returned || counts.ExtractedMoreThanOneWord < 1 {
 		t.Fatalf("counts = %+v", counts)
 	}
 	var returned []string
@@ -371,8 +381,8 @@ func TestCounts(t *testing.T) {
 			returned = append(returned, k.Text)
 		}
 	}
-	if counts.RankedMoreThanOneWord != len(returned) {
-		t.Fatalf("ranked multiword %d, keyword texts %q", counts.RankedMoreThanOneWord, returned)
+	if counts.ReturnedMoreThanOneWord != len(returned) {
+		t.Fatalf("returned multiword %d, keyword texts %q", counts.ReturnedMoreThanOneWord, returned)
 	}
 	if len(counts.MoreThanOneWord) != counts.ExtractedMoreThanOneWord {
 		t.Fatalf("list %d, extracted multiword %d", len(counts.MoreThanOneWord), counts.ExtractedMoreThanOneWord)
@@ -388,37 +398,181 @@ func TestCounts(t *testing.T) {
 }
 
 func TestLanguageAndLimitErrors(t *testing.T) {
-	for _, l := range []string{"", "EN", "En", "pt", "en-US", "english"} {
-		if _, err := Extract("text", l, 5); !errors.Is(err, ErrUnsupportedLanguage) {
+	for _, l := range []string{"", "EN", "En", "nl", "en-US", "english"} {
+		if _, _, err := Extract("text", l, 5); !errors.Is(err, ErrUnsupportedLanguage) {
 			t.Errorf("language %q: err = %v", l, err)
 		}
 	}
 	for _, n := range []int{-1, 0} {
-		if _, err := Extract("text", "en", n); !errors.Is(err, ErrInvalidLimit) {
+		if _, _, err := Extract("text", "en", n); !errors.Is(err, ErrInvalidLimit) {
 			t.Errorf("limit %d: err = %v", n, err)
 		}
 	}
 	for _, n := range []int{1, 1000} {
-		if _, err := Extract("text", "en", n); err != nil {
+		if _, _, err := Extract("text", "en", n); err != nil {
 			t.Errorf("limit %d: %v", n, err)
+		}
+	}
+}
+
+const offshoreWind = `Offshore wind farms are becoming the backbone of Britain's energy
+strategy. The government wants offshore wind capacity to reach 50
+gigawatts by 2030, enough to power every home in the country.
+
+The largest project, Dogger Bank Wind Farm, sits more than 130
+kilometres off the Yorkshire coast. When complete, Dogger Bank will
+use 277 turbines, each taller than the Eiffel Tower. Engineers say
+the turbines can generate electricity even in moderate winds.
+
+Grid connections remain the biggest obstacle. National Grid has
+warned that some offshore wind farms may wait years before they can
+connect to the transmission network. Developers also face rising
+steel prices and higher interest rates, which have pushed up the
+cost of building turbines at sea.`
+
+func TestExtractOptionsAdjustWhichPhrasesAreReturned(t *testing.T) {
+	tests := []struct {
+		name    string
+		adjust  func(*ExtractOptions)
+		want    []string
+		wantNot []string
+	}{
+		{
+			name:    "defaults drop common lone nouns and one-off phrases",
+			adjust:  func(*ExtractOptions) {},
+			want:    []string{"Dogger Bank", "backbone", "obstacle"},
+			wantNot: []string{"government", "electricity", "transmission network", "steel prices"},
+		},
+		{
+			name:    "keeping lone nouns returns common single words",
+			adjust:  func(weights *ExtractOptions) { weights.DropLoneNouns = false },
+			want:    []string{"government", "electricity", "Engineers", "Developers"},
+			wantNot: []string{"steel prices"},
+		},
+		{
+			name:    "a lower rarity threshold keeps less rare nouns",
+			adjust:  func(weights *ExtractOptions) { weights.LoneNounMinRarity = 0.5 },
+			want:    []string{"electricity", "Engineers"},
+			wantNot: []string{"government"},
+		},
+		{
+			name:    "a zero rarity threshold drops every lone common noun",
+			adjust:  func(weights *ExtractOptions) { weights.LoneNounMinRarity = 0 },
+			want:    []string{"Dogger Bank"},
+			wantNot: []string{"backbone", "obstacle"},
+		},
+		{
+			name:    "keeping one-off phrases returns them",
+			adjust:  func(weights *ExtractOptions) { weights.DropOneOffPhrases = false },
+			want:    []string{"transmission network", "steel prices"},
+			wantNot: []string{"government"},
+		},
+		{
+			name:   "a higher minimum keeps one-off phrases in a short text",
+			adjust: func(weights *ExtractOptions) { weights.OneOffMinOthers = 30 },
+			want:   []string{"transmission network", "steel prices"},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			weights := DefaultExtractOptions
+			tc.adjust(&weights)
+			kws, counts, err := Extract(offshoreWind, "en", 100, weights)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if counts.Returned != len(kws) {
+				t.Fatalf("returned %d, keywords %d", counts.Returned, len(kws))
+			}
+			got := texts(kws)
+			for _, phrase := range tc.want {
+				if !slices.Contains(got, phrase) {
+					t.Errorf("missing %q in %q", phrase, got)
+				}
+			}
+			for _, phrase := range tc.wantNot {
+				if slices.Contains(got, phrase) {
+					t.Errorf("unexpected %q in %q", phrase, got)
+				}
+			}
+		})
+	}
+}
+
+func TestInvalidExtractOptions(t *testing.T) {
+	tests := []struct {
+		name   string
+		adjust func(*ExtractOptions)
+	}{
+		{"negative rarity", func(weights *ExtractOptions) { weights.LoneNounMinRarity = -0.1 }},
+		{"rarity above 1", func(weights *ExtractOptions) { weights.LoneNounMinRarity = 1.5 }},
+		{"rarity NaN", func(weights *ExtractOptions) { weights.LoneNounMinRarity = math.NaN() }},
+		{"negative minimum of other candidates", func(weights *ExtractOptions) { weights.OneOffMinOthers = -1 }},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			weights := DefaultExtractOptions
+			tc.adjust(&weights)
+			if _, _, err := Extract(offshoreWind, "en", 10, weights); !errors.Is(err, ErrInvalidExtractOptions) {
+				t.Errorf("err = %v, want ErrInvalidExtractOptions", err)
+			}
+			if _, _, err := Extract("", "en", 10, weights); !errors.Is(err, ErrInvalidExtractOptions) {
+				t.Errorf("empty text err = %v, want ErrInvalidExtractOptions", err)
+			}
+		})
+	}
+}
+
+func TestExtractOptionsAreOptional(t *testing.T) {
+	text := mustRead(t, "../examples/en/offshore-wind.txt")
+	omitted, _, err := Extract(text, "en", 5)
+	if err != nil {
+		t.Fatal(err)
+	}
+	passed, _, err := Extract(text, "en", 5, DefaultExtractOptions)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Equal(omitted, passed) {
+		t.Fatalf("omitted options = %+v, DefaultExtractOptions = %+v", omitted, passed)
+	}
+	_, _, err = Extract(text, "en", 5, DefaultExtractOptions, DefaultExtractOptions)
+	if !errors.Is(err, ErrTooManyExtractOptions) {
+		t.Fatalf("err = %v, want ErrTooManyExtractOptions", err)
+	}
+	ranked, err := eval.Extract(text, "en", 5, eval.Options{
+		DropLoneNouns:     DefaultExtractOptions.DropLoneNouns,
+		LoneNounMinRarity: DefaultExtractOptions.LoneNounMinRarity,
+		DropOneOffPhrases: DefaultExtractOptions.DropOneOffPhrases,
+		OneOffMinOthers:   DefaultExtractOptions.OneOffMinOthers,
+	}, eval.DefaultRanking)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(ranked) != len(omitted) {
+		t.Fatalf("Extract = %+v, eval hook = %+v", omitted, ranked)
+	}
+	for i := range omitted {
+		if ranked[i].Text != omitted[i].Text || ranked[i].StartByte != omitted[i].StartByte || ranked[i].EndByte != omitted[i].EndByte || ranked[i].Score != omitted[i].Score {
+			t.Fatalf("Extract = %+v, eval hook = %+v", omitted, ranked)
 		}
 	}
 }
 
 func TestLargeLimitReturnsEveryKeyword(t *testing.T) {
 	text := mustRead(t, "../examples/en/offshore-wind.txt")
-	all, err := Extract(text, "en", 100000)
+	all, _, err := Extract(text, "en", 100000)
 	if err != nil {
 		t.Fatal(err)
 	}
-	again, err := Extract(text, "en", 1000000)
+	again, _, err := Extract(text, "en", 1000000)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(all) == 0 || len(all) != len(again) {
 		t.Fatalf("limits above the keyword count returned %d and %d", len(all), len(again))
 	}
-	exact, err := Extract(text, "en", len(all))
+	exact, _, err := Extract(text, "en", len(all))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -445,10 +599,12 @@ func TestPerLanguageExpectations(t *testing.T) {
 		{"es/inteligencia-artificial.txt", []string{"inteligencia artificial", "Parlamento Europeo"}},
 		{"it/banca-italia-inflazione.txt", []string{"Banca d'Italia", "tassi di interesse", "prodotto interno lordo"}},
 		{"it/venezia-turismo.txt", []string{"centro storico", "ticket d'accesso", "turismo di massa"}},
+		{"pt/banco-portugal-inflacao.txt", []string{"Banco de Portugal", "taxas de juro", "produto interno bruto"}},
+		{"pt/habitacao-lisboa.txt", []string{"alojamento local", "mercado de arrendamento", "centro histórico"}},
 	}
 	for _, tc := range tests {
 		path := "../examples/" + tc.file
-		kws, err := Extract(mustRead(t, path), langOf(path), 8)
+		kws, _, err := Extract(mustRead(t, path), langOf(path), 8)
 		if err != nil {
 			t.Fatal(err)
 		}

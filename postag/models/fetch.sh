@@ -13,6 +13,7 @@ UD_English-EWT
 UD_French-GSD
 UD_German-GSD
 UD_Spanish-GSD
+UD_Portuguese-GSD
 UD_Italian-ParlaMint
 UD_Italian-PUD
 UD_Italian-TWITTIRO

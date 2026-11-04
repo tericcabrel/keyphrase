@@ -10,10 +10,10 @@ import (
 )
 
 func TestRegisteredCodes(t *testing.T) {
-	if got, want := lang.Codes(), []string{"de", "en", "es", "fr", "it"}; !slices.Equal(got, want) {
+	if got, want := lang.Codes(), []string{"de", "en", "es", "fr", "it", "pt"}; !slices.Equal(got, want) {
 		t.Fatalf("Codes() = %q, want %q", got, want)
 	}
-	for _, code := range []string{"EN", "pt", "", "en-US"} {
+	for _, code := range []string{"EN", "nl", "", "en-US"} {
 		if _, ok := lang.Get(code); ok {
 			t.Errorf("Get(%q) should fail", code)
 		}
@@ -60,6 +60,7 @@ func TestLanguageSpecifics(t *testing.T) {
 		{"de", []string{"der", "und", "sagte", "prozent"}, []string{"wärmepumpen", "bundesliga"}, []string{"für", "von", "des"}, nil, "z"},
 		{"es", []string{"el", "según", "millones"}, []string{"vivienda", "inteligencia"}, []string{"de", "del"}, nil, "sra"},
 		{"it", []string{"il", "secondo", "euro"}, []string{"inflazione", "turismo"}, []string{"di", "della", "dell'"}, []string{"l'", "dell'", "nell'"}, "prof"},
+		{"pt", []string{"o", "segundo", "milhões"}, []string{"habitação", "inflação"}, []string{"de", "do", "da"}, []string{"d'"}, "sra"},
 	}
 	for _, tc := range tests {
 		p, _ := lang.Get(tc.code)
@@ -120,6 +121,8 @@ func TestVariantKeys(t *testing.T) {
 		{"es", "presidente", "presidentes"},
 		{"it", "economia", "economie"},
 		{"it", "mercato", "mercati"},
+		{"pt", "eleição", "eleições"},
+		{"pt", "cidade", "cidades"},
 	}
 	for _, tc := range tests {
 		p, _ := lang.Get(tc.code)

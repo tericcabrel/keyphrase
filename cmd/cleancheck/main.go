@@ -1,37 +1,4 @@
-// Command cleancheck checks that webtext.FromHTML keeps only the title
-// and article body of the HTML snapshots in data-text.
-//
-// For every data-text/<lang>/<name>.html it extracts the text and compares
-// it with the archived text and labels of the same page:
-//
-//   - leftover chrome: archived phrases labelled I that are still on a short
-//     line, and lines of 1 to 3 words that are not headings, list items or
-//     table cells;
-//   - lost body: archived sentences of at least 15 words, without an I
-//     phrase, that are missing from the new text and were inside the chosen
-//     container. Missing sentences that were pruned as boilerplate, outside
-//     the container, or no longer in the snapshot are listed but pass;
-//   - the text must start with the page title;
-//   - the text must have at least 300 words and fit the 64 KiB limit of
-//     POST /v1/keywords.
-//
-// Pages added since the archive have no old text or labels, so only the
-// title, short-line and size checks apply to them.
-//
-// Lines in <name>.accept were read and judged to be article text; findings on
-// them are listed as accepted. With -write, the text of every passing page is
-// saved as <name>.txt for eval.
-//
-// With -add, the "<lang> <url> [holdout]" lines of a file are fetched first.
-// Each page that is a Ghost post and isn't saved yet becomes
-// <lang>/<name>.html and <name>.url, named after its site; then only those
-// pages are checked and written. Pages marked holdout are added to
-// <dir>/holdout.txt, which eval scores apart.
-//
-// Usage:
-//
-//	go run ./cmd/cleancheck [-dir data-text] [-archive data-text/.archive/2026-09-29] [-page name] [-text] [-where phrase] [-write]
-//	go run ./cmd/cleancheck -add urls.txt [-any]
+// Command cleancheck checks extracted page text against the archived snapshots in data-text.
 package main
 
 import (
@@ -58,14 +25,10 @@ import (
 )
 
 const (
-	// minLostWords is the length of an archived sentence that must survive.
-	minLostWords = 15
-	// maxChromeLineWords is the longest line an I phrase is chrome on.
+	minLostWords       = 15
 	maxChromeLineWords = 9
-	// maxShortWords is the longest line that looks like a menu entry.
-	maxShortWords = 3
-	// minPageWords is the shortest text worth labelling.
-	minPageWords = 300
+	maxShortWords      = 3
+	minPageWords       = 300
 )
 
 func main() {
@@ -180,18 +143,15 @@ type report struct {
 	Pruned    []string
 	Outside   []string
 	Gone      []string // not in the snapshot: the page changed since the old text
-	Accepted  []string // reviewed lines listed in <name>.accept
+	Accepted  []string // lines listed in <name>.accept
 	Words     int
-	Size      string // why the text is too short or too long, if it is
+	Size      string
 }
 
 func (r *report) pass() bool {
 	return r.TitleOK && r.Size == "" && len(r.Chrome) == 0 && len(r.Short) == 0 && len(r.Lost) == 0
 }
 
-// accept moves the chrome and short findings on reviewed lines to Accepted.
-// A line is listed in the .accept file when it was read and judged to be
-// article text.
 func (r *report) accept(lines []string) {
 	ok := map[string]bool{}
 	for _, l := range lines {
@@ -213,7 +173,6 @@ func (r *report) accept(lines []string) {
 	r.Short = keep(r.Short, func(s string) string { return s })
 }
 
-// chromeLine returns the line of a leftover-chrome finding.
 func chromeLine(finding string) string {
 	_, rest, _ := strings.Cut(finding, ` on line "`)
 	return strings.TrimSuffix(rest, `"`)
@@ -273,8 +232,6 @@ func clipLine(s string) string {
 	return s
 }
 
-// check extracts the page and compares it with the archived text and I
-// phrases of the same page.
 func check(page []byte, old string, irrelevant []string) (report, error) {
 	c, err := webtext.Extract(bytes.NewReader(page))
 	if err != nil {
@@ -324,13 +281,10 @@ func check(page []byte, old string, irrelevant []string) (report, error) {
 }
 
 type facts struct {
-	doc    *html.Node
-	titles []string // og:title and every h1
-	// headings holds the keys of h1 to h6 texts.
+	doc      *html.Node
+	titles   []string // og:title and every h1
 	headings map[string]bool
-	// allowed holds the keys of heading, list item, table cell and bold
-	// texts, which may be short.
-	allowed map[string]bool
+	allowed  map[string]bool // heading, list, table and bold text, which may be short
 }
 
 func pageFacts(page []byte) (facts, error) {
@@ -366,7 +320,6 @@ func pageFacts(page []byte) (facts, error) {
 	return f, nil
 }
 
-// printChain prints the ancestors of the deepest element holding phrase.
 func printChain(name string, page []byte, phrase string) {
 	doc, err := html.Parse(bytes.NewReader(page))
 	if err != nil {
@@ -402,14 +355,12 @@ func deepest(doc *html.Node, sk string) *html.Node {
 	return holder
 }
 
-// place is where a missing sentence was in the raw page.
 type place struct {
 	found  bool
-	inside bool   // inside the chosen container
-	pruned string // the boilerplate element that holds it
+	inside bool
+	pruned string // the boilerplate element that holds it, when one does
 }
 
-// locate finds the deepest element whose text holds the sentence key sk.
 func locate(doc *html.Node, sk, container string) place {
 	holder := deepest(doc, sk)
 	if holder == doc {
@@ -430,8 +381,7 @@ func locate(doc *html.Node, sk, container string) place {
 	return p
 }
 
-// flatText is the text of n with a space at element boundaries of blocks,
-// the way the extractor joins it.
+// A space at each block boundary, so the text lines up with what the extractor joins.
 func flatText(n *html.Node) string {
 	var b strings.Builder
 	var walk func(*html.Node)
@@ -466,13 +416,10 @@ func attr(n *html.Node, k string) string {
 	return ""
 }
 
-// key is the form lines, sentences and phrases are compared in.
 func key(s string) string {
 	return strings.Join(strings.Fields(lang.Normalize(s)), " ")
 }
 
-// containsWords reports whether phrase occurs in s as whole words; both are
-// keys.
 func containsWords(s, phrase string) bool {
 	for i := 0; ; {
 		j := strings.Index(s[i:], phrase)
@@ -487,15 +434,11 @@ func containsWords(s, phrase string) bool {
 	}
 }
 
-// isWordByte treats every non-ASCII byte as part of a word, which is right
-// for the letters of the five languages.
+// A non-ASCII byte is part of a word: the letters of these languages are.
 func isWordByte(b byte) bool {
 	return b >= 0x80 || b == '\'' || b == '-' || (b >= '0' && b <= '9') || (b >= 'a' && b <= 'z')
 }
 
-// leftoverChrome lists the I phrases that are still on a line that is not a
-// sentence: up to maxShortWords words, or up to maxChromeLineWords words
-// without an ending punctuation mark.
 func leftoverChrome(lines, irrelevant []string, headings map[string]bool) []string {
 	var out []string
 	for _, p := range irrelevant {
@@ -515,10 +458,6 @@ func leftoverChrome(lines, irrelevant []string, headings map[string]bool) []stri
 	return out
 }
 
-// shortLines lists lines of 1 to maxShortWords words that look like menu
-// entries: they start with a letter, have no digit and no ending
-// punctuation, and are not the text of a heading, list item, table cell or
-// bold run.
 func shortLines(lines []string, allowed map[string]bool) []string {
 	var out []string
 	for _, line := range lines {
@@ -549,8 +488,6 @@ func endsSentence(line string) bool {
 
 var sentenceEnd = regexp.MustCompile(`[.!?…]["»”)]*\s+`)
 
-// missing returns the archived sentences of at least minLostWords words,
-// without an I phrase, that are not in the new text.
 func missing(old, new string, irrelevant []string) []string {
 	have := key(new)
 	keys := make([]string, 0, len(irrelevant))
@@ -594,7 +531,6 @@ func containsAny(s string, phrases []string) bool {
 	return false
 }
 
-// readOld reads an archived text; a missing file is an empty text.
 func readOld(path string) (string, error) {
 	raw, err := os.ReadFile(path)
 	if errors.Is(err, fs.ErrNotExist) {
@@ -606,8 +542,7 @@ func readOld(path string) (string, error) {
 	return decodeText(raw), nil
 }
 
-// decodeText reads the data-text format: a JSON string body without the
-// quotes, or plain text with \n escapes when it is not valid JSON.
+// A JSON string body without the quotes, or plain text with \n escapes when that fails.
 func decodeText(raw []byte) string {
 	body := strings.TrimRight(string(raw), "\r\n")
 	var text string
@@ -617,8 +552,7 @@ func decodeText(raw []byte) string {
 	return strings.NewReplacer(`\n`, "\n", `\"`, `"`, `\t`, "\t").Replace(body)
 }
 
-// writeText stores text the way the /v1/text response carries it: a JSON
-// string without its quotes, on one line.
+// The data-text format is a JSON string without its quotes, on one line.
 func writeText(path, text string) error {
 	var b bytes.Buffer
 	enc := json.NewEncoder(&b)
@@ -630,7 +564,6 @@ func writeText(path, text string) error {
 	return os.WriteFile(path, []byte(line[1:len(line)-1]+"\n"), 0o644)
 }
 
-// readLines returns the non-empty lines of a file; a missing file has none.
 func readLines(path string) ([]string, error) {
 	raw, err := os.ReadFile(path)
 	if errors.Is(err, fs.ErrNotExist) {
@@ -648,7 +581,6 @@ func readLines(path string) ([]string, error) {
 	return out, nil
 }
 
-// readIrrelevant returns the phrases labelled I in an archived labels file.
 func readIrrelevant(path string) ([]string, error) {
 	f, err := os.Open(path)
 	if errors.Is(err, fs.ErrNotExist) {

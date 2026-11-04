@@ -56,7 +56,6 @@ func TestMissing(t *testing.T) {
 	}
 }
 
-// check sorts missing sentences by where they were in the page.
 func TestCheckPlaces(t *testing.T) {
 	const page = `<html><head><meta property="og:title" content="Speed cameras"></head><body>
 <header><p>Subscribe today to get every story from the county newsroom delivered to your inbox each week.</p></header>

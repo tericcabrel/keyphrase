@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>extractor.Extract · keyphrase</title>
-  <meta name="description" content="extractor.Extract returns phrases, byte offsets, and scores. Limits, language codes, empty text, and the count summary are on this page.">
+  <meta name="description" content="extractor.Extract returns phrases, a count summary, and an error. Limits, language codes, empty text, and optional weights are on this page.">
   <link rel="canonical" href="https://keyphrase.tericcabrel.com/reference/">
   <meta name="theme-color" content="#0a0a0a">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <meta property="og:title" content="extractor.Extract · keyphrase">
-  <meta property="og:description" content="extractor.Extract returns phrases, byte offsets, and scores. Limits, language codes, empty text, and the count summary are on this page.">
+  <meta property="og:description" content="extractor.Extract returns phrases, a count summary, and an error. Limits, language codes, empty text, and optional weights are on this page.">
   <meta property="og:url" content="https://keyphrase.tericcabrel.com/reference/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="keyphrase">
@@ -19,7 +19,7 @@
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="extractor.Extract · keyphrase">
-  <meta name="twitter:description" content="extractor.Extract returns phrases, byte offsets, and scores. Limits, language codes, empty text, and the count summary are on this page.">
+  <meta name="twitter:description" content="extractor.Extract returns phrases, a count summary, and an error. Limits, language codes, empty text, and optional weights are on this page.">
   <meta name="twitter:image" content="https://keyphrase.tericcabrel.com/og.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="/styles/site.css">
@@ -75,9 +75,8 @@
     <main>
       <article>
         <h1>Reference</h1>
-        <p><code>Extract</code> returns up to <code>limit</code> non-overlapping phrases. <code>ExtractWithCounts</code> is the same call plus a count summary.</p>
-        <pre><code class="language-go">kws, err := extractor.Extract(text, "en", 10)
-kws, counts, err := extractor.ExtractWithCounts(text, "en", 10)</code></pre>
+        <p><code>Extract</code> returns up to <code>limit</code> non-overlapping phrases, the count summary, and an error. The <code>ExtractOptions</code> argument is optional. Leave it out for <code>DefaultExtractOptions</code>. <a href="#adjusting-the-output">Adjusting the output</a> shows how to pass one value.</p>
+        <pre><code class="language-go">kws, counts, err := extractor.Extract(text, "en", 10)</code></pre>
         <h2>Keyword</h2>
         <p>Each result is a span of the caller's text. <code>Text</code> is <code>text[StartByte:EndByte]</code>. Offsets are zero-based, half-open UTF-8 byte indexes.</p>
         <table>
@@ -95,21 +94,45 @@ kws, counts, err := extractor.ExtractWithCounts(text, "en", 10)</code></pre>
         <h2>Order</h2>
         <p>Results are ordered by score descending, then by earlier <code>StartByte</code>, then by <code>Text</code>. Spans never overlap. The returned text is always a slice of the input.</p>
         <h2>Limit</h2>
-        <p>The default limit is 5. <code>limit</code> must be at least 1. There is no maximum: a limit greater than the number of phrases returns all of them. A limit below 1 returns <code>ErrInvalidLimit</code>.</p>
+        <p>The default limit is 10. <code>limit</code> must be at least 1. There is no maximum: a limit greater than the number of phrases returns all of them. A limit below 1 returns <code>ErrInvalidLimit</code>.</p>
         <h2>Language</h2>
-        <p><code>language</code> is the code of a package the program imported: <code>en</code>, <code>fr</code>, <code>de</code>, <code>es</code>, or <code>it</code>. A code whose package was not imported returns <code>ErrUnsupportedLanguage</code>.</p>
+        <p><code>language</code> is the code of a package the program imported: <code>en</code>, <code>fr</code>, <code>de</code>, <code>es</code>, <code>it</code>, or <code>pt</code>. A code whose package was not imported returns <code>ErrUnsupportedLanguage</code>.</p>
         <h2>Empty text</h2>
         <p>Empty or whitespace-only text is success and returns no phrases.</p>
         <h2>Counts</h2>
-        <p><code>ExtractWithCounts</code> adds:</p>
+        <p>The count summary has these fields:</p>
         <ul>
           <li><code>Words</code> — words in the text. Punctuation is not counted. A hyphenated compound such as "e-mail" is one word.</li>
           <li><code>Extracted</code> — every candidate phrase.</li>
-          <li><code>Ranked</code> — how many of those were returned.</li>
-          <li><code>ExtractedMoreThanOneWord</code> and <code>RankedMoreThanOneWord</code> — the same counts for phrases of two or more words, including connectors.</li>
-          <li><code>MoreThanOneWord</code> — every extracted phrase of two or more words, best-ranked first. Its length equals <code>ExtractedMoreThanOneWord</code>.</li>
+          <li><code>Returned</code> — how many phrases the call returned.</li>
+          <li><code>ExtractedMoreThanOneWord</code> and <code>ReturnedMoreThanOneWord</code> — the same counts for phrases of two or more words, including connectors.</li>
+          <li><code>MoreThanOneWord</code> — every extracted phrase of two or more words, highest score first. Its length equals <code>ExtractedMoreThanOneWord</code>.</li>
         </ul>
-        <p>The Try page always uses this summary. A 64 KiB clip applies there, and to text loaded from a URL. The library call itself does not reject longer text.</p>
+        <p>The <a href="/try/">Try page</a> always uses this summary. A 64 KiB clip applies there, and to text loaded from a URL. The library call itself does not reject longer text.</p>
+        <p><code>Extracted</code> is larger than <code>Returned</code> even when the limit is high. A candidate that overlaps a returned phrase, or repeats its words, is skipped: "offshore wind farms" is not returned next to "Offshore wind".</p>
+        <h2 id="adjusting-the-output">Adjusting the output</h2>
+        <p>Two rules leave out phrases that are rarely good keywords. Both are on in <code>DefaultExtractOptions</code>. Pass one <code>ExtractOptions</code> value to change them. Start from <code>DefaultExtractOptions</code> and change only these fields:</p>
+        <table>
+          <thead>
+            <tr><th>Field</th><th>Default</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>DropLoneNouns</code></td><td><code>true</code></td><td>Leave out a single word that is not a name, such as "government". A capitalized name such as "Britain" is always kept.</td></tr>
+            <tr><td><code>LoneNounMinRarity</code></td><td><code>0.6</code></td><td>Keep a single common noun anyway when its rarity is at least this. Rarity runs from 0, an everyday word, to 1, a word never seen in the language's reference text. "government" is 0.32 and "electricity" 0.53, so both are left out. 0 drops every single common noun.</td></tr>
+            <tr><td><code>DropOneOffPhrases</code></td><td><code>true</code></td><td>Leave out a phrase of two or more words that occurs once and contains no name, such as "transmission network". A phrase that repeats, or contains a name, is always kept.</td></tr>
+            <tr><td><code>OneOffMinOthers</code></td><td><code>10</code></td><td>Apply the previous rule only when at least this many other candidates remain. In a short text every phrase occurs once, so it keeps them. Raise it to keep phrases seen once in longer texts; 0 always drops them.</td></tr>
+          </tbody>
+        </table>
+        <pre><code class="language-go">options := extractor.DefaultExtractOptions
+options.DropLoneNouns = false     // return "government", "electricity"
+options.DropOneOffPhrases = false // return "transmission network", "steel prices"
+
+kws, counts, err := extractor.Extract(text, "en", 20, options)</code></pre>
+        <p>
+          A <code>LoneNounMinRarity</code> outside 0 to 1, or a negative <code>OneOffMinOthers</code>, returns <code>ErrInvalidExtractOptions</code>.<br/>
+          Passing more than one <code>ExtractOptions</code> value returns <code>ErrTooManyExtractOptions</code>.<br/>
+        <p>
+        <a href="/try/">Try the extractor</a> with your own text, and tweak these four settings to see how the results change.</p>
       </article>
       <footer class="thanks">
         <p><a href="https://github.com/tericcabrel/keyphrase">GitHub</a></p>
