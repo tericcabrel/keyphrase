@@ -89,8 +89,9 @@
             <tr><td>Portuguese</td><td><code>lang/pt</code></td><td><code>pt</code></td><td>3.5 MB</td></tr>
           </tbody>
         </table>
-        <p>The blank import registers that language. Import only the languages you need. The bundle is that language's part-of-speech model and rarity table, gzipped.</p>
-        <p>Tagging is what keeps verbs out of phrases. Each language has its own model. A word stays labelled as a verb when the tagger marks it as a verb in at least half of its occurrences in the document. One wrong label does not override that. Italian is trained on less data than the others, and it is the weakest of the six. See <a href="/how-it-works/">How it works</a>.</p>
+        <p>A blank import registers the language, so import only the packages you need. The bundle column is the gzipped part-of-speech model and rarity table for that language.</p>
+        <p>Tagging keeps verbs out of phrases. Each language has its own model, and a word counts as a verb only when the tagger marks it as a verb in at least half of its occurrences in the document, so one wrong label does not override the rest.</p>
+        <p>Italian was trained on less data than the others and is the weakest of the six; see <a href="/how-it-works/">How it works</a>.</p>
       </article>
       <footer class="thanks">
         <p><a href="https://github.com/tericcabrel/keyphrase">GitHub</a></p>
