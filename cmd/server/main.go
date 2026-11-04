@@ -1,4 +1,4 @@
-// Command server serves the keyword extraction API and the page-text route.
+// Command server serves the keyword extraction API.
 package main
 
 import (
