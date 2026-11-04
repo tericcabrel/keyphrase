@@ -12,4 +12,4 @@ Include the version, the language, and an input that reproduces the problem. You
 
 ## Scope
 
-The library is `extractor`, `lang`, `postag`, and `rarity`. The HTTP server in `cmd/server` is a local development tool, and `POST /v1/text` fetches any URL it is given, including private addresses. Do not expose it to a network. Reports about that behaviour are out of scope.
+The library is `extractor`, `lang`, `postag`, and `rarity`. The HTTP server in `cmd/server` exposes only `POST /v1/keywords` and `GET /healthz`. It is also built for the Try page proxy; treat network exposure like any other API that accepts user text.

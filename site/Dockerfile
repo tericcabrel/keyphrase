@@ -6,7 +6,6 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY cmd/server ./cmd/server
 COPY extractor ./extractor
-COPY internal/webtext ./internal/webtext
 COPY lang ./lang
 COPY postag ./postag
 COPY rarity ./rarity
