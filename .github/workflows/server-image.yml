@@ -42,7 +42,7 @@ jobs:
       - id: meta
         run: echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
-      - uses: docker/build-push-action@v7.40.0
+      - uses: docker/build-push-action@v7.4.0
         with:
           context: .
           file: site/Dockerfile
