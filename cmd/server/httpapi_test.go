@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/tericcabrel/keyphrase/extractor"
-	"github.com/tericcabrel/keyphrase/internal/webtext"
 
 	_ "github.com/tericcabrel/keyphrase/lang/all"
 )
@@ -269,9 +268,6 @@ func TestMethodAndRoutes(t *testing.T) {
 	if rec := do(t, http.MethodGet, "/v1/keywords", ""); rec.Code != http.StatusMethodNotAllowed {
 		t.Errorf("GET /v1/keywords: %d", rec.Code)
 	}
-	if rec := do(t, http.MethodGet, "/v1/text", ""); rec.Code != http.StatusMethodNotAllowed {
-		t.Errorf("GET /v1/text: %d", rec.Code)
-	}
 	if rec := do(t, http.MethodPost, "/nope", "{}"); rec.Code != http.StatusNotFound {
 		t.Errorf("POST /nope: %d", rec.Code)
 	}
@@ -298,102 +294,6 @@ func TestExactSpansThroughJSON(t *testing.T) {
 		if text[k.StartByte:k.EndByte] != k.Text {
 			t.Errorf("span mismatch %+v", k)
 		}
-	}
-}
-
-func TestTextOK(t *testing.T) {
-	const page = `<title>Wind</title><p>Offshore wind farms grow.</p>`
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		_, _ = w.Write([]byte(page))
-	}))
-	defer srv.Close()
-
-	rec := do(t, http.MethodPost, "/v1/text", jsonBody(t, map[string]any{"url": srv.URL}))
-	if rec.Code != http.StatusOK {
-		t.Fatalf("status %d: %s", rec.Code, rec.Body)
-	}
-	if ct := rec.Header().Get("Content-Type"); ct != "application/json" {
-		t.Errorf("Content-Type = %q", ct)
-	}
-	res := decode[textResponse](t, rec)
-	if res.Truncated || res.Text != "Wind\nOffshore wind farms grow." {
-		t.Fatalf("response %+v", res)
-	}
-	kw := do(t, http.MethodPost, "/v1/keywords", jsonBody(t, map[string]any{"text": res.Text, "language": "en"}))
-	if kw.Code != http.StatusOK {
-		t.Fatalf("keywords status %d: %s", kw.Code, kw.Body)
-	}
-}
-
-func TestTextFieldNames(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "text/plain")
-		_, _ = w.Write([]byte("hello"))
-	}))
-	defer srv.Close()
-
-	rec := do(t, http.MethodPost, "/v1/text", jsonBody(t, map[string]any{"url": srv.URL}))
-	var raw map[string]any
-	if err := json.Unmarshal(rec.Body.Bytes(), &raw); err != nil {
-		t.Fatal(err)
-	}
-	if raw["text"] != "hello" || raw["truncated"] != false || len(raw) != 2 {
-		t.Fatalf("body %s", rec.Body)
-	}
-}
-
-func TestTextBadRequests(t *testing.T) {
-	tests := []struct{ name, body string }{
-		{"malformed JSON", `{"url":"http://example.com"`},
-		{"not an object", `["http://example.com"]`},
-		{"empty body", ``},
-		{"trailing data", `{"url":"http://example.com"} {"x":1}`},
-		{"missing url", `{}`},
-		{"null url", `{"url":null}`},
-		{"url number", `{"url":5}`},
-		{"empty url", `{"url":""}`},
-		{"ftp", `{"url":"ftp://example.com/a"}`},
-	}
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			rec := do(t, http.MethodPost, "/v1/text", tc.body)
-			if rec.Code != http.StatusBadRequest {
-				t.Fatalf("status %d, want 400: %s", rec.Code, rec.Body)
-			}
-			if res := decode[errorResponse](t, rec); res.Error == "" {
-				t.Errorf("empty error message")
-			}
-		})
-	}
-}
-
-func TestTextUpstream(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		http.Error(w, "nope", http.StatusServiceUnavailable)
-	}))
-	defer srv.Close()
-
-	rec := do(t, http.MethodPost, "/v1/text", jsonBody(t, map[string]any{"url": srv.URL}))
-	if rec.Code != http.StatusBadGateway {
-		t.Fatalf("status %d: %s", rec.Code, rec.Body)
-	}
-	if res := decode[errorResponse](t, rec); res.Error != "upstream returned 503" {
-		t.Fatalf("error %q", res.Error)
-	}
-}
-
-func TestTextBodyLimit(t *testing.T) {
-	body := `{"url":"http://example.com","pad":"` + strings.Repeat("a", maxURLBodyBytes) + `"}`
-	rec := do(t, http.MethodPost, "/v1/text", body)
-	if rec.Code != http.StatusRequestEntityTooLarge {
-		t.Fatalf("status %d, want 413: %s", rec.Code, rec.Body)
-	}
-}
-
-func TestTextCapMatchesKeywordLimit(t *testing.T) {
-	if webtext.MaxTextBytes != maxTextBytes {
-		t.Fatalf("webtext cap %d, keyword cap %d", webtext.MaxTextBytes, maxTextBytes)
 	}
 }
 

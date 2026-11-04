@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/tericcabrel/keyphrase/extractor"
-	"github.com/tericcabrel/keyphrase/internal/webtext"
 )
 
 const (
@@ -21,9 +20,6 @@ const (
 	// text up to six bytes per input byte ("\u0001"), so the cap leaves room
 	// for a maximal escaped text plus the other fields.
 	maxBodyBytes = 6*maxTextBytes + 16<<10
-	// maxURLBodyBytes bounds a POST /v1/text body. A URL does not need the
-	// keyword endpoint's escaped-text allowance.
-	maxURLBodyBytes = 16 << 10
 )
 
 type keywordRequest struct {
@@ -47,21 +43,9 @@ type errorResponse struct {
 	Error string `json:"error"`
 }
 
-type textRequest struct {
-	URL *string `json:"url"`
-}
-
-type textResponse struct {
-	Text      string `json:"text"`
-	Truncated bool   `json:"truncated"`
-}
-
-// NewHandler returns the service mux: POST /v1/keywords, POST /v1/text, and GET /healthz.
-// When KEYPHRASE_TOKEN is set, other routes require Authorization: Bearer <token>.
 func NewHandler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /v1/keywords", handleKeywords)
-	mux.HandleFunc("POST /v1/text", handleText)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
@@ -136,24 +120,6 @@ func extractOptionsFromRequest(body keywordRequest) extractor.ExtractOptions {
 	return options
 }
 
-func handleText(w http.ResponseWriter, r *http.Request) {
-	rawURL, status, err := decodeTextRequest(w, r)
-	if err != nil {
-		writeJSON(w, status, errorResponse{err.Error()})
-		return
-	}
-	text, truncated, err := webtext.Text(r.Context(), rawURL)
-	if err != nil {
-		if fetchErr, ok := errors.AsType[*webtext.Error](err); ok {
-			writeJSON(w, fetchErr.StatusCode, errorResponse{fetchErr.Message})
-			return
-		}
-		writeJSON(w, http.StatusBadGateway, errorResponse{"fetch failed"})
-		return
-	}
-	writeJSON(w, http.StatusOK, textResponse{Text: text, Truncated: truncated})
-}
-
 func decodeKeywordRequest(w http.ResponseWriter, r *http.Request) (keywordRequest, int, error) {
 	var body keywordRequest
 	decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, maxBodyBytes))
@@ -184,31 +150,6 @@ func decodeKeywordRequest(w http.ResponseWriter, r *http.Request) (keywordReques
 	}
 
 	return body, 0, nil
-}
-
-func decodeTextRequest(w http.ResponseWriter, r *http.Request) (string, int, error) {
-	var body textRequest
-	decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, maxURLBodyBytes))
-	if err := decoder.Decode(&body); err != nil {
-		if bodyTooLarge(err) {
-			return "", http.StatusRequestEntityTooLarge, fmt.Errorf("request body exceeds %d bytes", maxURLBodyBytes)
-		}
-		if typeErr, ok := errors.AsType[*json.UnmarshalTypeError](err); ok {
-			return "", http.StatusBadRequest, fmt.Errorf("field %q has the wrong type", typeErr.Field)
-		}
-		return "", http.StatusBadRequest, errors.New("malformed JSON")
-	}
-	if err := decoder.Decode(&struct{}{}); !errors.Is(err, io.EOF) {
-		if bodyTooLarge(err) {
-			return "", http.StatusRequestEntityTooLarge, fmt.Errorf("request body exceeds %d bytes", maxURLBodyBytes)
-		}
-		return "", http.StatusBadRequest, errors.New("request body must contain a single JSON object")
-	}
-	if body.URL == nil {
-		return "", http.StatusBadRequest, errors.New("url is required")
-	}
-
-	return *body.URL, 0, nil
 }
 
 var errBodyTooLarge = fmt.Errorf("request body exceeds %d bytes", maxBodyBytes)

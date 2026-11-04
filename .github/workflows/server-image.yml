@@ -7,7 +7,6 @@ on:
     paths:
       - site/Dockerfile
       - cmd/server/**
-      - internal/webtext/**
       - extractor/**
       - lang/**
       - "!lang/**/*_test.go"

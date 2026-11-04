@@ -6,7 +6,7 @@ Accuracy is not a validated figure. The labelled Ghost posts used for the number
 
 ## Evaluation
 
-`just eval` scores the extractor against hand-written labels. It reads `data-text/<lang>/<name>.txt` (not versioned; each file holds the text as a JSON string body, with `\n` and `\"` escapes) and the labels next to it in `<name>.labels.tsv`, one `<mark><TAB><anchor>` line per anchor. Each text is extracted by `POST /v1/text`'s code from a saved snapshot of the page, `<name>.html`, whose address is in `<name>.url`.
+`just eval` scores the extractor against hand-written labels. It reads `data-text/<lang>/<name>.txt` (not versioned; each file holds the text as a JSON string body, with `\n` and `\"` escapes) and the labels next to it in `<name>.labels.tsv`, one `<mark><TAB><anchor>` line per anchor. Each text comes from `internal/webtext` applied to a saved snapshot of the page, `<name>.html`, whose address is in `<name>.url`.
 
 | mark | meaning |
 |---|---|
@@ -83,7 +83,7 @@ just pages urls.txt
 
 `just pages` runs `scripts/add-pages.sh`. It reads and writes `data-text/`, which is not in the repository. Pass `-any` to also accept pages that are not Ghost posts: `just pages urls.txt -any`.
 
-For each URL not saved yet, it fetches the page with `/v1/text`'s client and limits, and keeps it only if it is a Ghost post (`-any` lifts that). It saves the page as `data-text/<lang>/<site>.html` with its address in `<site>.url` (`<site>-2` and so on when the name is taken). It then runs the clean check on the new pages, writes the `.txt` of those that pass, and drafts their labels with `eval -draft`. A page also fails when its text has fewer than 300 words or is over 64 KiB. Re-running the script with the same file skips the pages already saved.
+For each URL not saved yet, it fetches the page with `webtext.Fetch` and keeps it only if it is a Ghost post (`-any` lifts that). It saves the page as `data-text/<lang>/<site>.html` with its address in `<site>.url` (`<site>-2` and so on when the name is taken). It then runs the clean check on the new pages, writes the `.txt` of those that pass, and drafts their labels with `eval -draft`. A page also fails when its text has fewer than 300 words or is over 64 KiB. Re-running the script with the same file skips the pages already saved.
 
 Pages marked `holdout` are added to `data-text/holdout.txt`, one `<lang>/<name>` per line; marking a page that is already saved works too, and the list can also be edited by hand.
 
@@ -129,7 +129,6 @@ These percentages cannot be reproduced from a clone. The labelled pages are not 
 - A rarity table per language, so words that are common in general text rank below words that are specific to the page.
 - Verbs are kept out of phrases in all six languages by an embedded, reproducibly trained part-of-speech tagger.
 - Deterministic ranking and stable tie-breaks.
-- The development server ran within an enforced 1 CPU / 512 MiB cgroup during development. `cmd/bench -cgroup` repeats that measurement on Linux; it is not run in CI.
 
 ## Limitations
 
@@ -143,7 +142,7 @@ These percentages cannot be reproduced from a clone. The labelled pages are not 
 - **Plural folding is heuristic**, and there is no cross-language deduplication ("IA" versus "AI").
 - **Language support.** No automatic language detection, and no support for scripts without spaces (for example Chinese, Japanese, Thai).
 - **Plain text only, and clean text is the caller's job.** Menus, footers or other page chrome left in the input can surface as phrases, and so can headings and list items. The evaluation texts keep headings and list items as their own lines; if production callers send only paragraphs, measured precision may not match production.
-- **`/v1/text` is a development helper tuned on 69 Ghost posts.** Other CMSs are handled by the `article`, `main` and body fallbacks, which keep whatever chrome the pruning rules don't recognise; only the test fixtures cover them. Featured-image captions are dropped along with the header that holds them.
+- **`internal/webtext` is tuned on 69 Ghost posts.** Other CMSs are handled by the `article`, `main` and body fallbacks, which keep whatever chrome the pruning rules don't recognise; only the test fixtures cover them. Featured-image captions are dropped along with the header that holds them.
 
 ## Next steps toward human-reviewed precision testing
 

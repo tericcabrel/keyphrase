@@ -2,8 +2,6 @@
 
 `server` is a development tool used to build the evaluation set. It is not part of the published package, not a released binary, and not a supported API. Library users call `extractor.Extract` with the text, a language, a limit, and an optional `ExtractOptions` value. The call returns the phrases, the count summary, and an error.
 
-`POST /v1/text` fetches the URL it is given, including private addresses. The server allows only `http` and `https`, waits at most 10 seconds, follows at most 5 redirects, and reads at most 2 MiB of the response.
-
 ## Requirements and versions
 
 | component | version | licence |
@@ -11,7 +9,7 @@
 | Go minimum | `go 1.26.0` (`go` line in `go.mod`). `errors.AsType` and `golang.org/x/net` v0.59.0 both require 1.26.0 | BSD-3-Clause |
 | Go toolchain | go1.27.3 (`toolchain` line in `go.mod`). Used when working in this module | BSD-3-Clause |
 | [github.com/rivo/uniseg](https://github.com/rivo/uniseg) | v0.4.7 (pinned in `go.mod`/`go.sum`) | MIT |
-| [golang.org/x/net](https://pkg.go.dev/golang.org/x/net) | v0.59.0 (HTML parse and charset; pulls in `golang.org/x/text` v0.42.0). Used by the development server, not by `extractor` | BSD-3-Clause |
+| [golang.org/x/net](https://pkg.go.dev/golang.org/x/net) | v0.59.0 (HTML parse and charset; pulls in `golang.org/x/text` v0.42.0). Used by `internal/webtext` for `cleancheck` and `just pages`, not by `extractor` or the HTTP server | BSD-3-Clause |
 | Snowball stop word lists (embedded data) | snowball-website master, fetched 2026-09-28 | BSD-3-Clause, see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
 | Part-of-speech models (embedded data), trained on [Universal Dependencies](https://universaldependencies.org/) treebanks | UD release r2.18: EWT (en), GSD (fr, de, es, pt), ParlaMint + PUD + TWITTIRO + MarkIT (it) | CC BY-SA 4.0 (it: also CC BY-SA 3.0 and CC BY 4.0), see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
 | Rarity tables (embedded data), counted from [Leipzig Corpora Collection](https://wortschatz-leipzig.de/en/download/) 1M-sentence news and Wikipedia samples | eng news 2024 + Wikipedia 2016; deu news 2024 + Wikipedia 2021; fra news 2023 + Wikipedia 2021; spa news 2024 + Wikipedia 2021; ita news 2023 + Wikipedia 2021; por news 2024 + Wikipedia 2021 | CC BY, see [lang/THIRD_PARTY.md](../lang/THIRD_PARTY.md) |
@@ -75,7 +73,6 @@ cmd/eval/           scores output against labels in data-text/, plus label-free 
 cmd/cleancheck/     checks extracted texts and adds pages from URL lists
 scripts/add-pages.sh  fetch, check, write, draft labels, hold out
 internal/eval/      rarity override for the eval command, and the held-out page list
-cmd/bench/          local load generator for the development server
 examples/           short texts and Wikipedia articles (wiki-*.txt)
 quality/            output snapshots per review iteration
 docs/               pipeline, quality, and these development notes
@@ -97,10 +94,6 @@ curl -s localhost:8080/healthz
 curl -s localhost:8080/v1/keywords \
   -d '{"text":"La Banca d'"'"'Italia ha rivisto le stime. Il governatore della Banca d'"'"'Italia parla dei tassi di interesse e dei tassi di interesse reali.","language":"it","limit":3}'
 # {"language":"it","keywords":[{"text":"Banca d'Italia","start_byte":3,"end_byte":17,"score":1},{"text":"tassi di interesse","start_byte":85,"end_byte":103,"score":0.6029},{"text":"stime","start_byte":32,"end_byte":37,"score":0.4068}]}
-
-curl -s localhost:8080/v1/text \
-  -d '{"url":"https://example.com"}'
-# {"text":"...","truncated":false}
 ```
 
 ## Local site
