@@ -8,7 +8,7 @@ keyphrase extracts a few short topical phrases that occur verbatim in plain text
 
 Supported languages are English (`en`), French (`fr`), German (`de`), Spanish (`es`), Italian (`it`), and Portuguese (`pt`). There is no language detection. Requires Go 1.26.
 
-The website is [keyphrase.tericcabrel.com](https://keyphrase.tericcabrel.com). Its [Try page](https://keyphrase.tericcabrel.com/try/) runs the extractor in the browser on any text.
+The website is [keyphrase.tericcabrel.com](https://keyphrase.tericcabrel.com). On the [Try page](https://keyphrase.tericcabrel.com/try/) you paste text or load a URL and see the extracted phrases.
 
 Accuracy is measured on texts that are not versioned. The tools are in this repository and run on any text. The [limitations](#limitations) say what the extractor leaves out.
 
