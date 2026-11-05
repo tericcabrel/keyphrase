@@ -322,6 +322,14 @@ article:has(#results:not([hidden]))+.thanks {
   border-top: 0;
 }
 
+#results>.label {
+  margin: 24px 0 8px;
+}
+
+#results>.counts {
+  margin-bottom: 24px;
+}
+
 button,
 input,
 select,
@@ -603,10 +611,6 @@ button.link {
   padding-top: 16px;
 }
 
-#panel-phrases .label {
-  margin: 0 0 8px;
-}
-
 .passage {
   margin: 0 0 16px;
   white-space: pre-wrap;
@@ -642,7 +646,7 @@ mark {
 
 .keywords {
   list-style: none;
-  margin: 0 0 24px;
+  margin: 0;
   padding: 0;
 }
 

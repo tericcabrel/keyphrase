@@ -40,7 +40,6 @@ Dependabot opens a weekly pull request for Go modules, GitHub Actions refs, and 
 | `just pos-train` | retrain the models. The committed files are `lang/<code>/model.bin.gz` |
 | `just rarity-fetch` | download the Leipzig sentences into `rarity/leipzig/`. The download is a local cache |
 | `just rarity-build` | rebuild the rarity tables. The committed files are `lang/<code>/rarity.bin.gz` |
-| `just site-build` | create static asset directories under `site/public` |
 | `just site` | serve the documentation site and Pages Functions locally with Wrangler |
 | `just site-test` | run the site Function unit tests (no Firecrawl, no Go server) |
 

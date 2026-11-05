@@ -65,11 +65,6 @@ rarity-fetch:
 rarity-build:
     sh rarity/build.sh
 
-# Prepare the documentation site static assets.
-[group('site')]
-site-build:
-    mkdir -p site/public/assets site/public/js/lib
-
 # Serve the documentation site.
 [group('site')]
 site:

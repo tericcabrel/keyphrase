@@ -138,6 +138,8 @@
           <p id="status" class="note" hidden></p>
         </form>
         <div id="results" hidden>
+          <p class="label">Summary</p>
+          <div id="counts" class="counts"></div>
           <div class="tabs" role="tablist" aria-label="Results">
             <button type="button" role="tab" id="tab-phrases" aria-controls="panel-phrases" aria-selected="true" tabindex="0">Phrases</button>
             <button type="button" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="false" tabindex="-1">In the text</button>
@@ -150,8 +152,6 @@
               <span>Bytes</span>
             </div>
             <ul id="keywords" class="keywords"></ul>
-            <p class="label">Counts</p>
-            <div id="counts" class="counts"></div>
           </div>
           <div id="panel-text" class="tab-panel" role="tabpanel" aria-labelledby="tab-text" hidden>
             <div id="passage" class="passage"></div>
