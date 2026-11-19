@@ -8,8 +8,8 @@
     "test": "node --test functions/_lib/text.test.mjs functions/_lib/host.test.mjs functions/_lib/extract.test.mjs"
   },
   "devDependencies": {
-    "sugar-high": "2.6.4",
-    "wrangler": "4.156.2"
+    "sugar-high": "2.7.0",
+    "wrangler": "4.163.0"
   },
   "dependenciesMeta": {
     "esbuild": {
